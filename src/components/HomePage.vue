@@ -5,16 +5,39 @@
 
     <div class="flex flex-wrap justify-between mx-auto max-w-screen-xl">
     <div class="p-4">
-      <input type="file" @change="handleFileUpload" class="mb-4" />
-      <div v-if="date && totalGuests" class="mb-4">
-            <p class="text-lg font-semibold">Datum: {{ date }}</p>
-            <p class="text-lg font-semibold">Totaal aantal gasten: {{ totalGuests }}</p>
-          </div>
-      <button @click="printAll(reservations)" class="bg-gray-700 text-white px-4 py-1 rounded mt-2 mb-5">
-      <svg class="w-6 h-6 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-    <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
-  </svg>Print alle menukaarten
-      </button>
+      <div class="flex flex-col md:flex-row md:items-center justify-between">
+  <!-- Upload links -->
+  <input type="file" @change="handleFileUpload" class="mb-4 md:mb-0" />
+
+  <!-- Rechter content -->
+  <div class="flex flex-col">
+    <div v-if="date && totalGuests" class="mb-4">
+      <p class="text-md font-semibold">Datum: {{ date }}</p>
+      <p class="text-md">Aantal reservaties: {{ reservations.length - 1 }}</p>
+      <p class="text-md">Totaal aantal gasten: {{ totalGuests }} </p>
+    </div>
+    <button @click="printAll(reservations)" class="bg-gray-700 text-white px-4 py-1 rounded mt-0 mb-5 flex items-center">
+      <svg
+        class="w-6 h-6 inline text-white dark:text-white mr-2"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"
+        />
+      </svg>
+      Print alle menukaarten
+    </button>
+  </div>
+</div>
+
 
 
       <table class="table-auto w-full border-collapse border border-gray-400">
@@ -30,12 +53,17 @@
         <tbody>
           <tr v-for="(entry, index) in reservations" :key="index">
 
-            <td class="border border-gray-300 px-4 py-1">{{ entry.time.replace(/"/g, '') }}</td>
-            <td class="border border-gray-300 px-4 py-1">{{ entry.people }}</td>
-            <td class="border border-gray-300 px-4 py-1">{{ entry.name }}</td>
-            <td class="border border-gray-300 px-4 py-1">{{ entry.table }}</td>
+            <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.time.replace(/"/g, '') }}</td>
+            <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.people }}</td>
+            <td 
+  :class="{'bg-gray-100': entry.name === 'beste klant'}" 
+  class="border border-gray-300 px-4 py-1"
+>
+  {{ entry.name }}
+</td>
+            <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.table }}</td>
            
-            <td class="border border-gray-300 px-4 py-1">
+            <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >
             <div>
       <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
@@ -55,7 +83,7 @@
             <input
               type="text"
               v-model="newReservation.time"
-              placeholder="Tijd (bv. 18:00)"
+              placeholder="Tijdstip (bv. 18:00)"
               class="border border-gray-300 px-4 py-1 w-1/4"
               required
             />
@@ -136,13 +164,21 @@ return {
     const response = await fetch('/venise-menu/menu-template.html');
     const template = await response.text();
     console.log(reservation)
+
+    const formatDate = () => {
+  const now = new Date();
+  return now.toLocaleString('nl-NL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+};
+
+
     // Vervang de placeholders in de template
     const filledTemplate = template
   .replace('{{name}}', reservation.name)
   .replace('{{table}}', reservation.table)
   .replace('{{time}}', reservation.time.replace(/\"/g, '')) // Remove / from time
   .replace('{{people}}', reservation.people)
-  .replace('{{note}}', reservation.note);
+  .replace('{{note}}', reservation.note)
+  .replace('{{currentDate}}', formatDate());
 
 
     return filledTemplate;
