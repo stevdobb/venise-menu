@@ -1,0 +1,41 @@
+<template>
+  <div class="max-w-4xl mx-auto bg-white px-6 pt-0 rounded-lg shadow">
+    <!-- Menu Sections -->
+    <div v-for="section in menuSections" :key="section.id" class="mt-4">
+      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-1">
+        {{ section.title }}
+      </h2>
+      <ul class="list-none pl-2 space-y-0 text-gray-700 text-sm">
+        <li v-for="item in section.items" :key="item">{{ item }}</li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      menuSections: [], // Houdt de data van IndexedDB bij
+    };
+  },
+  mounted() {
+    this.loadMenuData(); // Data laden bij het laden van de pagina
+  },
+  methods: {
+    loadMenuData() {
+      const request = indexedDB.open("MenuApp", 1);
+      request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction("menu", "readonly");
+        const store = transaction.objectStore("menu");
+
+        const getAllRequest = store.getAll();
+        getAllRequest.onsuccess = () => {
+          this.menuSections = getAllRequest.result;
+        };
+      };
+    },
+  },
+};
+</script>
