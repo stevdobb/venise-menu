@@ -24,7 +24,6 @@
             <th class="border border-gray-300 px-4 py-1 text-left">Personen</th>
             <th class="border border-gray-300 px-4 py-1 text-left">Naam</th>
             <th class="border border-gray-300 px-4 py-1 text-left">Tafel</th>
-            <th class="border border-gray-300 px-4 py-1 text-left">Opmerking</th>
             <th class="border border-gray-300 px-4 py-1 text-left">Acties</th>
           </tr>
         </thead>
@@ -35,7 +34,7 @@
             <td class="border border-gray-300 px-4 py-1">{{ entry.people }}</td>
             <td class="border border-gray-300 px-4 py-1">{{ entry.name }}</td>
             <td class="border border-gray-300 px-4 py-1">{{ entry.table }}</td>
-            <td class="border border-gray-300 px-4 py-1">{{ entry.note }}</td>
+           
             <td class="border border-gray-300 px-4 py-1">
             <div>
       <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -80,7 +79,7 @@
               class="border border-gray-300 px-4 py-1 w-1/4"
             />
           </div>
-          <button type="submit" class="bg-green-500 text-white px-4 py-1 rounded">
+          <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">
             Voeg toe
           </button>
         </form>
@@ -220,10 +219,10 @@ this.reservations = data.map((row) => {
 
 // Voeg een extra regel toe met de naam "Beste klant"
 this.reservations.push({
-  time: "N.v.t.",
-  people: "1",
-  name: "Beste klant",
-  table: "1",
+  time: "-",
+  people: "-",
+  name: "beste klant",
+  table: "-",
 });
 
 // Sla de data op in localStorage
