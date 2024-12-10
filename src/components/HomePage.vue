@@ -7,7 +7,24 @@
     <div class="p-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between">
   <!-- Upload links -->
-  <input type="file" @change="handleFileUpload" class="mb-4 md:mb-0" />
+  <div class="relative mb-4 md:mb-0">
+    <h4 class="text-sm mb-3">Upload CSV bestand van ZenChef</h4>
+  <label
+    for="file-upload"
+    class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md shadow cursor-pointer hover:bg-blue-600 text-sm cursor-pointer"
+  >
+  <svg class="w-6 h-6 mr-3 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"/>
+</svg>
+ Upload CSV bestand
+  </label>
+  <input
+    id="file-upload"
+    type="file"
+    @change="handleFileUpload"
+    class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+  />
+</div>
 
   <!-- Rechter content -->
   <div class="flex flex-col">
@@ -16,7 +33,7 @@
       <p class="text-md">Aantal reservaties: {{ reservations.length - 1 }}</p>
       <p class="text-md">Totaal aantal gasten: {{ totalGuests }} </p>
     </div>
-    <button @click="printAll(reservations)" class="bg-gray-700 text-white px-4 py-1 rounded mt-0 mb-5 flex items-center">
+    <button @click="printAll(reservations)" class="bg-gray-700 text-white px-4 py-1 rounded mt-0 mb-5 flex items-center text-sm">
       <svg
         class="w-6 h-6 inline text-white dark:text-white mr-2"
         aria-hidden="true"
@@ -112,7 +129,11 @@
           </button>
         </form>
       </div>
+      
 
+      <div class="mt-5 py-4">
+        <a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Bekijk template</a>
+      </div>
 
     </div>
     </div>
