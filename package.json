@@ -1,0 +1,26 @@
+{
+  "name": "vue-project",
+  "version": "1.0.0",
+  "description": "Een Vue 3-app om gepersonaliseerde menu's te genereren en af te drukken.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "papaparse": "^5.4.1",
+    "quill": "^2.0.3",
+    "vue": "^3.2.47",
+    "vue-router": "^4.5.0",
+    "vue3-quill": "^0.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16",
+    "vite": "^6.0.3"
+  }
+}
