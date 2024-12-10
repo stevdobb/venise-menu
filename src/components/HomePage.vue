@@ -21,6 +21,7 @@
   <input
     id="file-upload"
     type="file"
+    accept=".csv"
     @change="handleFileUpload"
     class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
   />
@@ -57,7 +58,7 @@
 
 
 
-      <table class="table-auto w-full border-collapse border border-gray-400">
+      <table class="table-auto w-full border-collapse border border-gray-400 mt-4">
         <thead>
           <tr>
             <th class="border border-gray-300 px-4 py-1 text-left">Tijd</th>
@@ -82,12 +83,15 @@
            
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >
             <div>
-      <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline mr-1 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
   </svg>
    Print Menu</button>
     </div>
             </td>
+          </tr>
+          <tr v-if="reservations.length == 0">
+            <td colspan="5" class="ml-2 text-md bg-gray-50 py-2 px-3">Nog geen reservaties</td>
           </tr>
         </tbody>
       </table>
@@ -124,15 +128,21 @@
               class="border border-gray-300 px-4 py-1 w-1/4"
             />
           </div>
-          <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">
-            Voeg toe
+          <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded text-md hover:bg-blue-600">
+            <svg class="w-4 h-4 inline mr-2 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+</svg>
+Voeg toe
           </button>
         </form>
       </div>
       
 
       <div class="mt-5 py-4">
-        <a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Bekijk template</a>
+        <a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"><svg class="w-4 h-4 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
+</svg>
+Bekijk template</a>
       </div>
 
     </div>
@@ -182,7 +192,7 @@ return {
   methods: {
   async generateHtml(reservation) {
     // Laad het externe HTML-bestand
-    const response = await fetch('/venise-menu/menu-template.html');
+    const response = await fetch('/venise-menu/menu-template-backup.html');
     const template = await response.text();
     console.log(reservation)
 
@@ -192,6 +202,8 @@ return {
 };
 
 
+const block1 = localStorage.getItem('editorContentBlock1');
+  const block2 = localStorage.getItem('editorContentBlock2');
     // Vervang de placeholders in de template
     const filledTemplate = template
   .replace('{{name}}', reservation.name)
@@ -199,6 +211,8 @@ return {
   .replace('{{time}}', reservation.time.replace(/\"/g, '')) // Remove / from time
   .replace('{{people}}', reservation.people)
   .replace('{{note}}', reservation.note)
+  .replace('{{block1}}', block1)
+  .replace('{{block2}}', block2)
   .replace('{{currentDate}}', formatDate());
 
 

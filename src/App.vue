@@ -19,7 +19,7 @@
               <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 ml-5" id="mobile-menu-2">
                   <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <router-link to="/" class="mr-4 text-gray-700 text-sm hover:underline">Home</router-link>
-                  <router-link to="/edit" class="text-gray-700 text-sm hover:underline">Edit Menu</router-link>
+                  <router-link to="/edit" class="text-gray-700 text-sm hover:underline">wijzig menu</router-link>
 
                   </ul>
               </div>
