@@ -134,7 +134,7 @@ return {
   methods: {
   async generateHtml(reservation) {
     // Laad het externe HTML-bestand
-    const response = await fetch('/menu-template.html');
+    const response = await fetch('/venise-menu/menu-template.html');
     const template = await response.text();
     console.log(reservation)
     // Vervang de placeholders in de template

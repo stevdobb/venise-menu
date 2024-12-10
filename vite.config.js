@@ -7,7 +7,7 @@ export default defineConfig({
   base: '/venise-menu/',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // Zorg ervoor dat @ verwijst naar ./src
+      '@': path.resolve(__dirname, './src'),
     },
-  }
+  },
 });
