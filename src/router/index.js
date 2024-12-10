@@ -16,7 +16,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(), // Voor een moderne geschiedenismodus
+  history: createWebHistory('/venise-menu/'),
   routes,
 });
 
