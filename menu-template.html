@@ -11,8 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    @page {
+    size: A4;
+    margin: 10mm;
+  }
+   body {
   font-family: 'Lora', serif;
+  line-height: 1.5;
+  font-size: 16px;
 }
   .print-page {
     page-break-after: always;
@@ -20,6 +26,7 @@
   .print-page:last-child {
     page-break-after: auto;
   }
+  
 </style>
 </head>
 <body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
@@ -74,7 +81,12 @@
 
       <!-- Tapas Section -->
       <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-1">Tapas (à 1 à 2 pers)</h2>
+      <!-- <div class="flex justify-between py-2">
+        <span class="text-sm">Vitello Tonnato</span>
+        <span class="font-bold text-sm">€18,90</span>
+      </div> -->
       <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+        
         <li>kaasballetjes gefrituurd (10st. €8,90)</li>
         <li>bloemkoolroosjes (€6,20)</li>
         <li>kippeboutjes gefrituurd (6st. €12,90)</li>
