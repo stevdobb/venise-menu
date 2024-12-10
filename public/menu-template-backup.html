@@ -28,11 +28,11 @@
   }
   h2 {
   font-size: 0.875rem; /* Equivalent to text-sm */
-  font-weight: bold;
+  font-weight: bold!important;
   color: #2d3748; /* Equivalent to text-gray-800 */
   border-bottom: 2px solid #edf2f7; /* Equivalent to border-b-2 border-gray-200 */
-  margin-bottom: 0.5rem; /* Equivalent to mb-2 */
-  margin-top: 20px;
+  margin-bottom: 0.5rem!important; /* Equivalent to mb-2 */
+  margin-top: 20px!important;
 }
 ul {
   padding-left: 0; /* Equivalent to pl-0 */
@@ -40,9 +40,13 @@ ul {
 }
 
 ul li {
-  font-size: 0.6rem; /* Equivalent to text-sm */
+  font-size: 0.3rem!important; /* Equivalent to text-sm */
   color: #4a5568; /* Equivalent to text-gray-700 */
   margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+}
+
+ul li span{
+  font-size: 0.3rem!important;
 }
 
 </style>
@@ -94,13 +98,13 @@ ul li {
             </div>
           </div>
 
-          <div class="block-1">
+          <div class="block-1 text-md">
       {{block1}}
     </div>
     </div>
 
         <!-- Suggestions -->
-    <div class="block-2">
+    <div class="block-2 text-md">
       {{block2}}
     </div>
 
