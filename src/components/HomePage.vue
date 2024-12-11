@@ -73,14 +73,14 @@
 
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.time.replace(/"/g, '') }}</td>
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.people }}</td>
-            <td 
-  :class="{'bg-gray-100': entry.name === 'beste klant'}" 
+            <td
+  :class="{'bg-gray-100': entry.name === 'beste klant'}"
   class="border border-gray-300 px-4 py-1"
 >
   {{ entry.name }}
 </td>
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.table }}</td>
-           
+
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >
             <div>
       <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline mr-1 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -136,13 +136,13 @@ Voeg toe
           </button>
         </form>
       </div>
-      
+
 
       <div class="mt-5 py-4">
-        <a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"><svg class="w-4 h-4 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <!--<a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"><svg class="w-4 h-4 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
 </svg>
-Bekijk template</a>
+Bekijk template</a>-->
       </div>
 
     </div>
@@ -202,8 +202,26 @@ return {
 };
 
 
-const block1 = localStorage.getItem('editorContentBlock1');
-  const block2 = localStorage.getItem('editorContentBlock2');
+// Default data for block1 and block2
+const defaultBlock1 = `<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballetjes gefrituurd (10st. €8,90) </p><p>bloemkoolroosjes (€6,20) </p><p>kippeboutjes gefrituurd (6st. €12,90) </p><p>Kaasstengels Oude Kaas </p><p>(6st. €12,90) </p><p>Camembert WARM (€17,90)</p><p>Crevettes Royal 6 st. (€18,20)</p><p>Garnaalkroketjes mini (8st. €27,80)</p><p>1/2 pot mosselen natuur (€21,90)</p><p>met wijn | met look | v/h huis (€23,90) </p><p>Potje paté 100gr. (€11,90)</p><p>Scampi in pankojasje (4st. €19,40) </p><p>Spaanse ham gedroogd (€20,90)</p><p>Duo van olijven &amp; Tapenade (€11,90) </p><p>Vleeskroketjes 'Royal' mini 10st. (€17,90) </p><p>Witte worst gegrild (€12,90)</p><p>Zalm gerookt 'PREMIUM' (€25,90)</p>`;
+const defaultBlock2 = `<h2>Dagsuggesties - Voorgerechten</h2><p>Vitello Tonnato (€18,90)</p><p>Carpaccio gemarineerd rund (€23,90)</p><p>Ganzeleverpastei (€23,40)</p><p>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</p><h2>Hoofdgerechten</h2><p>Gehaktballetjes in tomatensaus (€17,90)</p><p>Karnemelksmeus &amp; garnalen (€26,90)</p><h2>Pasta's en rijst</h2><p>Pasta Carbonara (€19,80)</p><h2>Salades</h2><p>Slaatje burrata (€19,50)</p><p>Tomaat garnalen (€33,90)</p><p>Garnalensalade (€34,90)</p><p>Slaatje geitenkaas (spekjes) (€23,40)</p><h2>Vlees en wild</h2><p>Rundsbrochette GEGRILD (€32,90)</p><p>Herteragout (€32,90)</p><p>Hazerug met wildsausje (€37,60)</p><h2>Vis en mosselen</h2><p>garnaalkroketten 2st. €25,90 | 3st. €30,90</p><p>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</p><p>Verse tonijn pepersaus licht gebakken (€34,90)</p><p>Zeebaars Mousseline (€31,90)</p><p>Zeetong gebakken (€42,80) baktijd 25 min.</p><p>Zeeuwse mosselen Natuur (€33,90)</p><p>Witte wijn | Look | v/h huis (€36,90)</p>`;
+
+// Get the stored data
+let block1 = localStorage.getItem('editorContentBlock1');
+let block2 = localStorage.getItem('editorContentBlock2');
+
+// Check if block1 is empty and set default data if needed
+if (!block1) {
+  block1 = defaultBlock1;
+  localStorage.setItem('editorContentBlock1', block1);
+}
+
+// Check if block2 is empty and set default data if needed
+if (!block2) {
+  block2 = defaultBlock2;
+  localStorage.setItem('editorContentBlock2', block2);
+}
+
     // Vervang de placeholders in de template
     const filledTemplate = template
   .replace('{{name}}', reservation.name)
@@ -307,7 +325,7 @@ localStorage.setItem('reservations', JSON.stringify(this.reservations));
 
      this.openPrintWindow(menuHtml);
 
-   });
+     });
     },
     printAll(reservations) {
     Promise.all(reservations.map(this.generateHtml)).then((allMenusHtml) => {

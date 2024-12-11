@@ -49,6 +49,13 @@ ul li span{
   font-size: 0.3rem!important;
 }
 
+.block1 p,
+.block2 p{
+  font-size: 0.6rem!important; /* Equivalent to text-sm */
+  color: #212121; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+}
+
 </style>
 </head>
 <body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
@@ -62,7 +69,7 @@ ul li span{
         <img src="logo-venise-white.png" alt="QR Code" class="w-56">
       </div>
       <div>
-        <h1 class="text-2xl font-bold">Restaurant & Bistro Venise</h1>
+        <h1 class="text-xl font-bold">Restaurant & Bistro Venise</h1>
         <p class="text-sm">Oostduinkerke</p>
       </div>
       <div class="text-right ">
@@ -96,15 +103,16 @@ ul li span{
             <div class="mt-2 mb-4">
               <img src="qr.png" alt="QR Code" class="w-24 h-24">
             </div>
+            <p class="mt-1 mb-3 text-sm font-bold text-gray-900">Pour le menu en français, scannez le QR code !</p>
           </div>
 
-          <div class="block-1 text-md">
+          <div class="block1 text-md">
       {{block1}}
     </div>
     </div>
 
         <!-- Suggestions -->
-    <div class="block-2 text-md">
+    <div class="block2 text-md">
       {{block2}}
     </div>
 

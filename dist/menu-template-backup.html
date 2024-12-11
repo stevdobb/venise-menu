@@ -1,41 +1,131 @@
-<template>
-  <div class="max-w-4xl mx-auto bg-white px-6 pt-0 rounded-lg shadow">
-    <!-- Menu Sections -->
-    <div v-for="section in menuSections" :key="section.id" class="mt-4">
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-1">
-        {{ section.title }}
-      </h2>
-      <ul class="list-none pl-2 space-y-0 text-gray-700 text-sm">
-        <li v-for="item in section.items" :key="item">{{ item }}</li>
-      </ul>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Restaurant Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    @page {
+    size: A4;
+    margin: 10mm;
+  }
+   body {
+  font-family: 'Lora', serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+  .print-page {
+    page-break-after: always;
+  }
+  .print-page:last-child {
+    page-break-after: auto;
+  }
+  h2 {
+  font-size: 0.875rem; /* Equivalent to text-sm */
+  font-weight: bold!important;
+  color: #2d3748; /* Equivalent to text-gray-800 */
+  border-bottom: 2px solid #edf2f7; /* Equivalent to border-b-2 border-gray-200 */
+  margin-bottom: 0.5rem!important; /* Equivalent to mb-2 */
+}
+ul {
+  padding-left: 0; /* Equivalent to pl-0 */
+  list-style-type: none; /* Equivalent to list-none */
+  margin-bottom: 20px!important;
+}
+
+ul li {
+  font-size: 0.3rem!important; /* Equivalent to text-sm */
+  color: #4a5568; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+}
+
+ul li span{
+  font-size: 0.3rem!important;
+}
+
+.block1 p,
+.block2 p{
+  font-size: 0.6rem!important; /* Equivalent to text-sm */
+  color: #212121; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+}
+
+</style>
+</head>
+<body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
+
+  <!-- <div class="container mx-auto"> -->
+
+  <div class="max-w-4xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center">
+      <div>
+        <img src="logo-venise-white.png" alt="QR Code" class="w-56">
+      </div>
+      <div>
+        <h1 class="text-xl font-bold">Restaurant & Bistro Venise</h1>
+        <p class="text-sm">Oostduinkerke</p>
+      </div>
+      <div class="text-right ">
+        <!-- <h2 class="text-lg font-bold text-gray-600">Restaurant Venise</h2> -->
+        <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
+        <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
+        <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
+        <!-- <p class="text-sm" v-if="note && note !=='undefined'">{{note}}</p> -->
+      </div>
     </div>
+
+
+    <!-- Menu Sections -->
+    <div class="mt-0">
+      <div class="grid grid-cols-2 gap-8">
+
+
+        <!-- TAPAS -->
+        <div>
+          <div>
+            <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
+            <p class="mt-2 text-sm text-gray-600">
+              Laat ons beginnen met het belangrijkste: <br>
+              <span class="font-bold text-gray-600">We wensen jullie een aangename dag en een smakelijke maaltijd toe!</span>
+            </p>
+            <p class="mt-2 text-sm text-gray-600">
+              Geniet nu van je gezelschap, de omgeving en het eten. <br>
+              <span class="italic">Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</span>
+            </p>
+            <p class="mt-2 text-sm text-gray-600">SCAN voor de volledige menu en prijzen</p>
+            <div class="mt-2 mb-4">
+              <img src="qr.png" alt="QR Code" class="w-24 h-24">
+            </div>
+            <p class="mt-1 mb-3 text-sm font-bold text-gray-900">Pour le menu en français, scannez le QR code !</p>
+          </div>
+
+          <div class="block1 text-md">
+      {{block1}}
+    </div>
+    </div>
+
+        <!-- Suggestions -->
+    <div class="block2 text-md">
+      {{block2}}
+    </div>
+
+
+      </div>
+    </div>
+
+    <p class="mt-8 text-center text-xs text-gray-500 mb-3">
+      Restaurant Venise - Albert I Laan 65 - 8670 Oostduinkerke
+      <br>
+      T: +3258514654 - www.venise.be - reservatie@venise.be - {{currentDate}}
+    </p>
   </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      menuSections: [], // Houdt de data van IndexedDB bij
-    };
-  },
-  mounted() {
-    this.loadMenuData(); // Data laden bij het laden van de pagina
-  },
-  methods: {
-    loadMenuData() {
-      const request = indexedDB.open("MenuApp", 1);
-      request.onsuccess = (event) => {
-        const db = event.target.result;
-        const transaction = db.transaction("menu", "readonly");
-        const store = transaction.objectStore("menu");
-
-        const getAllRequest = store.getAll();
-        getAllRequest.onsuccess = () => {
-          this.menuSections = getAllRequest.result;
-        };
-      };
-    },
-  },
-};
-</script>
+  <!-- </div> -->
+</body>
+</html>
