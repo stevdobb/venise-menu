@@ -40,20 +40,20 @@ ul {
 }
 
 ul li {
-  font-size: 0.3rem!important; /* Equivalent to text-sm */
-  color: #4a5568; /* Equivalent to text-gray-700 */
-  margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+  font-size: 0.8rem!important; /* Equivalent to text-sm */
+  color: #212121; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.20rem; /* Equivalent to space-y-0 */
 }
 
 ul li span{
-  font-size: 0.3rem!important;
+  font-size: 0.7rem!important;
 }
 
 .block1 p,
 .block2 p{
-  font-size: 0.6rem!important; /* Equivalent to text-sm */
+  font-size: 0.8rem!important; /* Equivalent to text-sm */
   color: #212121; /* Equivalent to text-gray-700 */
-  margin-bottom: 0.25rem; /* Equivalent to space-y-0 */
+  margin-bottom: 0.20rem; /* Equivalent to space-y-0 */
 }
 
 </style>
@@ -67,13 +67,15 @@ ul li span{
     <div class="flex justify-between items-center">
       <div>
         <img src="logo-venise-white.png" alt="QR Code" class="w-56">
+        
       </div>
       <div>
-        <h1 class="text-xl font-bold">Restaurant & Bistro Venise</h1>
+        <h1 class="text-lg font-bold">Restaurant & Bistro Venise</h1>
         <p class="text-sm">Oostduinkerke</p>
       </div>
       <div class="text-right ">
         <!-- <h2 class="text-lg font-bold text-gray-600">Restaurant Venise</h2> -->
+        <p class="text-sm">Datum: <span class="font-bold">{{date}}</span></p>
         <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
         <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
         <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
@@ -83,7 +85,7 @@ ul li span{
 
 
     <!-- Menu Sections -->
-    <div class="mt-0">
+    <div class="mt-4">
       <div class="grid grid-cols-2 gap-8">
 
 
