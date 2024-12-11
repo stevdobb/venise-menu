@@ -14,10 +14,15 @@
     <!-- <p v-if="lastSaved" class="text-gray-500 mb-4">
       Laatst opgeslagen op: {{ lastSaved }}
     </p> -->
-
+    <div class="flex flex-wrap gap-4">
+      <div class="block-3 flex-1 min-w-[300px]">
+        <h2 class="text-xl font-bold mb-2">Tekst links boven</h2>
+        <div id="editorBlock3" class="editor-small"></div>
+      </div>
+    </div>
     <div class="flex flex-wrap gap-4">
       <div class="block-1 flex-1 min-w-[300px]">
-        <h2 class="text-xl font-bold mb-2">Tekst links</h2>
+        <h2 class="text-xl font-bold mb-2">Tekst links onder</h2>
         <div id="editorBlock1" class="editor"></div>
       </div>
 
@@ -26,6 +31,8 @@
         <div id="editorBlock2" class="editor"></div>
       </div>
     </div>
+
+    
 
     <button @click="saveContent" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
       Opslaan
@@ -50,6 +57,7 @@ export default {
     return {
       editorBlock1: null,  // Quill editor voor block-1
       editorBlock2: null,  // Quill editor voor block-2
+      editorBlock3: null,  // Quill editor voor block-2
        showNotification: false,
        lastSaved: null,
     };
@@ -83,10 +91,18 @@ export default {
         toolbar: toolbarOptions,
       },
     });
+    this.editorBlock3 = new Quill("#editorBlock3", {
+      theme: "snow",
+      placeholder: "Pas de tekst linksboven aan...",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
 
     // Laad de opgeslagen inhoud uit localStorage (indien aanwezig)
     const savedContentBlock1 = localStorage.getItem("editorContentBlock1");
     const savedContentBlock2 = localStorage.getItem("editorContentBlock2");
+    const savedContentBlock3 = localStorage.getItem("editorContentBlock3");
 
     if (savedContentBlock1) {
       this.editorBlock1.root.innerHTML = savedContentBlock1;
@@ -100,6 +116,12 @@ this.editorBlock1.root.innerHTML = "<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballet
       this.editorBlock2.root.innerHTML = "<h2>Dagsuggesties - Voorgerechten</h2><p>Vitello Tonnato (€18,90)</p><p>Carpaccio gemarineerd rund (€23,90)</p><p>Ganzeleverpastei (€23,40)</p><p>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</p><p><br></p><h2>Hoofdgerechten</h2><p>Gehaktballetjes in tomatensaus (€17,90)</p><p>Karnemelksmeus &amp; garnalen (€26,90)</p><p><br></p><h2>Pasta's en rijst</h2><p>Pasta Carbonara (€19,80)</p><p><br></p><h2>Salades</h2><p>Slaatje burrata (€19,50)</p><p>Tomaat garnalen (€33,90)</p><p>Garnalensalade (€34,90)</p><p>Slaatje geitenkaas (spekjes) (€23,40)</p><p><br></p><h2>Vlees en wild</h2><p>Rundsbrochette GEGRILD (€32,90)</p><p>Herteragout (€32,90)</p><p>Hazerug met wildsausje (€37,60)</p><p><br></p><h2>Vis en mosselen</h2><p>garnaalkroketten 2st. €25,90 | 3st. €30,90</p><p>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</p><p>Verse tonijn pepersaus licht gebakken (€34,90)</p><p>Zeebaars Mousseline (€31,90)</p><p>Zeetong gebakken (€42,80) baktijd 25 min.</p><p>Zeeuwse mosselen Natuur (€33,90)</p><p>Witte wijn | Look | v/h huis (€36,90)</p>"
     }
 
+    if (savedContentBlock3) {
+      this.editorBlock3.root.innerHTML = savedContentBlock3;
+    } else {
+this.editorBlock3.root.innerHTML = "<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>"
+    }
+
     const savedTime = localStorage.getItem("lastSavedTime");
     if (savedTime) {
       this.lastSaved = savedTime;
@@ -111,10 +133,12 @@ this.editorBlock1.root.innerHTML = "<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballet
       // Verkrijg de inhoud van beide editors
       const contentBlock1 = this.editorBlock1.root.innerHTML;
       const contentBlock2 = this.editorBlock2.root.innerHTML;
+      const contentBlock3 = this.editorBlock3.root.innerHTML;
 
       // Sla de inhoud op in localStorage
       localStorage.setItem("editorContentBlock1", contentBlock1);
       localStorage.setItem("editorContentBlock2", contentBlock2);
+      localStorage.setItem("editorContentBlock3", contentBlock3);
 
       // Stel de huidige datum en tijd in
       const now = new Date();
@@ -138,6 +162,14 @@ this.editorBlock1.root.innerHTML = "<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballet
 <style>
 .editor {
   height: 800px;
+  background: #fff;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.editor-small {
+  height: 300px;
   background: #fff;
   color: black;
   border: 1px solid #ccc;

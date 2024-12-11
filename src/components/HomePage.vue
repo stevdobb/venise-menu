@@ -56,7 +56,21 @@
   </div>
 </div>
 
-
+<div class="flex items-center gap-2 mb-0">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Zoek op naam..."
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+      />
+      <button
+        v-if="searchQuery"
+        @click="resetSearch"
+        class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:ring focus:ring-blue-300 focus:outline-none"
+      >
+        Reset
+      </button>
+    </div>
 
       <table class="table-auto w-full border-collapse border border-gray-400 mt-4">
         <thead>
@@ -65,11 +79,14 @@
             <th class="border border-gray-300 px-4 py-1 text-left">Personen</th>
             <th class="border border-gray-300 px-4 py-1 text-left">Naam</th>
             <th class="border border-gray-300 px-4 py-1 text-left">Tafel</th>
-            <th class="border border-gray-300 px-4 py-1 text-left">Acties</th>
+            <th class="border border-gray-300 px-4 py-1 text-left">Notitie</th>
+            <th class="border border-gray-300 px-4 py-1 text-left"></th>
+            <th class="border border-gray-300 px-4 py-1 text-left"></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(entry, index) in reservations" :key="index">
+          <tr v-for="(entry, index) in filteredReservations" :key="index">
+
 
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.time.replace(/"/g, '') }}</td>
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.people }}</td>
@@ -80,6 +97,7 @@
   {{ entry.name }}
 </td>
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.table }}</td>
+            <td class="border border-gray-300 px-4 py-1" style="max-width: 250px;" :class="{'bg-gray-100': entry.name === 'beste klant'}" v-html="entry.note" ></td>
 
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >
             <div>
@@ -89,6 +107,14 @@
    Print Menu</button>
     </div>
             </td>
+            <td class="border border-gray-300 px-4 py-1">
+        <button
+          @click="deleteReservation(index)"
+          class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600"
+        >
+          x
+        </button>
+      </td>
           </tr>
           <tr v-if="reservations.length == 0">
             <td colspan="5" class="ml-2 text-md bg-gray-50 py-2 px-3">Nog geen reservaties</td>
@@ -128,6 +154,14 @@
               class="border border-gray-300 px-4 py-1 w-1/4"
             />
           </div>
+
+          <div class="flex flex-wrap gap-4">
+      <div class="block-1 flex-1 min-w-[300px]">
+        <h2 class="text-sm font-bold mb-2">Persoonlijke notitie (komt onder verwelkoming)</h2>
+        <div id="editorBlock1" class="editor-small"></div>
+      </div>
+    </div>
+
           <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded text-md hover:bg-blue-600">
             <svg class="w-4 h-4 inline mr-2 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
@@ -152,16 +186,20 @@ Bekijk template</a>-->
 
 <script>
 import Papa from 'papaparse';
+import 'quill/dist/quill.snow.css';
+import Quill from 'quill';
+
 export default {
 data() {
 return {
-  reservations: [],
+  reservations: JSON.parse(localStorage.getItem("reservations")) || [],
   newReservation: {
         time: "",
         name: "",
         people: "",
         table: "",
       },
+      searchQuery: '', 
   date: "",         // Opslag voor de datum
   totalGuests: "",  // Opslag voor het totaal aantal gasten
 };
@@ -171,6 +209,26 @@ return {
   const savedDate = localStorage.getItem('date');
   const savedTotalGuests = localStorage.getItem('totalGuests');
   const savedReservations = localStorage.getItem('reservations');
+
+  const toolbarOptions = [
+    [{ 'header': [2, 3] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  ['link'],
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  ['blockquote'],
+  ['clean'] ,
+
+  [{ 'align': [] }],
+    [{ 'color': [] }],
+];
+
+  this.editorBlock1 = new Quill("#editorBlock1", {
+      theme: "snow",
+      placeholder: "notitie",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
 
   // Als er gegevens zijn, laad deze dan
   if (savedDate && savedTotalGuests && savedReservations) {
@@ -182,12 +240,18 @@ return {
 ,
   computed: {
     filteredReservations() {
-      // Filter de gegevens en verwijder ongebruikte data
-      return this.reservations.filter((row) => {
-        // Alleen rijen met niet-lege naam en tafelwaarde toevoegen
-        return row.name && row.name !== "" && row.table && row.table !== "";
-      });
+      // Filter op de naam en converteer naar kleine letters voor case-insensitieve vergelijking
+      return this.reservations.filter((entry) =>
+        entry.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
     },
+    // filteredReservations() {
+    //   // Filter de gegevens en verwijder ongebruikte data
+    //   return this.reservations.filter((row) => {
+    //     // Alleen rijen met niet-lege naam en tafelwaarde toevoegen
+    //     return row.name && row.name !== "" && row.table && row.table !== "";
+    //   });
+    // },
   },
   methods: {
   async generateHtml(reservation) {
@@ -203,12 +267,14 @@ return {
 
 
 // Default data for block1 and block2
+const defaultBlock3 = `<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>`;
 const defaultBlock1 = `<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballetjes gefrituurd (10st. €8,90) </p><p>bloemkoolroosjes (€6,20) </p><p>kippeboutjes gefrituurd (6st. €12,90) </p><p>Kaasstengels Oude Kaas (6st. €12,90) </p><p>Camembert WARM (€17,90)</p><p>Crevettes Royal 6 st. (€18,20)</p><p>Garnaalkroketjes mini (8st. €27,80)</p><p>1/2 pot mosselen natuur (€21,90)</p><p>met wijn | met look | v/h huis (€23,90) </p><p>Potje paté 100gr. (€11,90)</p><p>Scampi in pankojasje (4st. €19,40) </p><p>Spaanse ham gedroogd (€20,90)</p><p>Duo van olijven &amp; Tapenade (€11,90) </p><p>Vleeskroketjes 'Royal' mini 10st. (€17,90) </p><p>Witte worst gegrild (€12,90)</p><p>Zalm gerookt 'PREMIUM' (€25,90)</p>`;
 const defaultBlock2 = `<h2>Dagsuggesties - Voorgerechten</h2><p>Vitello Tonnato (€18,90)</p><p>Carpaccio gemarineerd rund (€23,90)</p><p>Ganzeleverpastei (€23,40)</p><p>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</p><p><br></p><h2>Hoofdgerechten</h2><p>Gehaktballetjes in tomatensaus (€17,90)</p><p>Karnemelksmeus &amp; garnalen (€26,90)</p><p><br></p><h2>Pasta's en rijst</h2><p>Pasta Carbonara (€19,80)</p><p><br></p><h2>Salades</h2><p>Slaatje burrata (€19,50)</p><p>Tomaat garnalen (€33,90)</p><p>Garnalensalade (€34,90)</p><p>Slaatje geitenkaas (spekjes) (€23,40)</p><p><br></p><h2>Vlees en wild</h2><p>Rundsbrochette GEGRILD (€32,90)</p><p>Herteragout (€32,90)</p><p>Hazerug met wildsausje (€37,60)</p><p><br></p><h2>Vis en mosselen</h2><p>garnaalkroketten 2st. €25,90 | 3st. €30,90</p><p>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</p><p>Verse tonijn pepersaus licht gebakken (€34,90)</p><p>Zeebaars Mousseline (€31,90)</p><p>Zeetong gebakken (€42,80) baktijd 25 min.</p><p>Zeeuwse mosselen Natuur (€33,90)</p><p>Witte wijn | Look | v/h huis (€36,90)</p>`;
 
 // Get the stored data
 let block1 = localStorage.getItem('editorContentBlock1');
 let block2 = localStorage.getItem('editorContentBlock2');
+let block3 = localStorage.getItem('editorContentBlock3');
 
 // Check if block1 is empty and set default data if needed
 if (!block1) {
@@ -221,6 +287,10 @@ if (!block2) {
   block2 = defaultBlock2;
   localStorage.setItem('editorContentBlock2', block2);
 }
+if (!block3) {
+  block3 = defaultBlock3;
+  localStorage.setItem('editorContentBlock3', block3);
+}
 
     // Vervang de placeholders in de template
     const filledTemplate = template
@@ -229,9 +299,10 @@ if (!block2) {
   .replace('{{table}}', reservation.table)
   .replace('{{time}}', reservation.time.replace(/\"/g, '')) // Remove / from time
   .replace('{{people}}', reservation.people)
-  .replace('{{note}}', reservation.note)
+  .replace('{{note}}', reservation.note || ' ')
   .replace('{{block1}}', block1)
   .replace('{{block2}}', block2)
+  .replace('{{block3}}', block3)
   .replace('{{currentDate}}', formatDate());
 
 
@@ -240,9 +311,9 @@ if (!block2) {
 
   addReservation() {
      // Voeg een nieuwe record toe aan reservations
-     const newRecord = { ...this.newReservation, note: "" }; // Voeg een lege opmerking toe
+     const newRecord = { ...this.newReservation, note: this.editorBlock1.root.innerHTML }; // Voeg een lege opmerking toe
      this.reservations.push(newRecord);
-
+    
      // Sla nieuwe data op in localStorage
      localStorage.setItem("reservations", JSON.stringify(this.reservations));
 
@@ -254,6 +325,16 @@ if (!block2) {
        table: "",
      };
    },
+   resetSearch() {
+      this.searchQuery = "";
+    },
+   deleteReservation(index) {
+      // Remove the reservation from the array
+      this.reservations.splice(index, 1);
+
+      // Update the localStorage with the modified reservations array
+      localStorage.setItem("reservations", JSON.stringify(this.reservations));
+    },
 
 
   handleFileUpload(event) {
