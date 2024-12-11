@@ -8,7 +8,8 @@
       <div class="flex flex-col md:flex-row md:items-center justify-between">
   <!-- Upload links -->
   <div class="relative mb-4 md:mb-0">
-    <h4 class="text-sm mb-3">Upload CSV bestand van ZenChef</h4>
+    <h4 class="text-sm mb-1">Upload CSV bestand van ZenChef</h4>
+    <p class="text-xs mb-2">Opgelet! Vorige reservaties worden bij upload verwijderd.</p>
   <label
     for="file-upload"
     class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md shadow cursor-pointer hover:bg-blue-600 text-sm cursor-pointer"
@@ -85,7 +86,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(entry, index) in filteredReservations" :key="index">
+          <tr v-for="(entry, index) in filteredReservations" :key="index" class="text-sm">
 
 
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >{{ entry.time.replace(/"/g, '') }}</td>
@@ -101,7 +102,7 @@
 
             <td class="border border-gray-300 px-4 py-1" :class="{'bg-gray-100': entry.name === 'beste klant'}" >
             <div>
-      <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-6 h-6 inline mr-1 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+      <button @click="printMenu(entry)" class="bg-gray-700 text-white text-sm px-4 py-1 rounded"><svg class="w-4 h-4 inline mr-1 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
     <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
   </svg>
    Print Menu</button>
@@ -123,8 +124,8 @@
       </table>
 
 
-      <div class="mt-5 p-4 border border-gray-400 rounded">
-        <h3 class="text-lg font-semibold mb-2">Nieuwe reservering toevoegen</h3>
+      <div class="mt-5 p-4 border border-gray-200 bg-gray-50 rounded">
+        <h3 class="text-lg font-semibold mb-2">Manueel nieuwe reservering toevoegen</h3>
         <form @submit.prevent="addReservation">
           <div class="flex gap-4 mb-4">
             <input
@@ -224,7 +225,7 @@ return {
 
   this.editorBlock1 = new Quill("#editorBlock1", {
       theme: "snow",
-      placeholder: "notitie",
+      placeholder: "",
       modules: {
         toolbar: toolbarOptions,
       },
@@ -235,6 +236,13 @@ return {
     this.date = savedDate;  // Zet de datum
     this.totalGuests = savedTotalGuests;  // Zet het aantal gasten
     this.reservations = JSON.parse(savedReservations);  // Zet de reserveringen
+  } else {
+    this.reservations.push({
+  time: "-",
+  people: "-",
+  name: "beste klant",
+  table: "-",
+});
   }
 }
 ,
@@ -316,7 +324,7 @@ if (!block3) {
     
      // Sla nieuwe data op in localStorage
      localStorage.setItem("reservations", JSON.stringify(this.reservations));
-
+     this.editorBlock1.root.innerHTML = "";
      // Reset formulier
      this.newReservation = {
        time: "",
