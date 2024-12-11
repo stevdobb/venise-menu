@@ -79,7 +79,6 @@ ul li span{
         <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
         <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
         <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
-        <!-- <p class="text-sm" v-if="note && note !=='undefined'">{{note}}</p> -->
       </div>
     </div>
 
@@ -94,7 +93,8 @@ ul li span{
           <div>
             <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
             <div class="mt-2 block3">
-            {{block3}}
+              {{note}}
+            {{block3}}            
             </div>
             <p class="mt-2 text-xs text-gray-600">Scan deze QR-code voor de volledige menu en prijzen<br/>
               <span class="mt-1 mb-3 text-xs font-bold text-gray-900">Pour le menu en français, scannez le QR code !</span></p>
