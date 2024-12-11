@@ -50,7 +50,7 @@ ul li span{
 }
 
 .block1 p,
-.block2 p{
+.block2 p,.block3 p{
   font-size: 0.8rem!important; /* Equivalent to text-sm */
   color: #212121; /* Equivalent to text-gray-700 */
   margin-bottom: 0.20rem; /* Equivalent to space-y-0 */
@@ -91,16 +91,9 @@ ul li span{
 
         <!-- TAPAS -->
         <div>
-          <div>
+          <div class="block3">
             <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
-            <p class="mt-2 text-sm text-gray-600">
-              Laat ons beginnen met het belangrijkste: <br>
-              <span class="font-bold text-gray-600">We wensen jullie een aangename dag en een smakelijke maaltijd toe!</span>
-            </p>
-            <p class="mt-2 text-sm text-gray-600">
-              Geniet nu van je gezelschap, de omgeving en het eten. <br>
-              <span class="italic">Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</span>
-            </p>
+            {{block3}}
             <p class="mt-2 text-sm text-gray-600">SCAN voor de volledige menu en prijzen</p>
             <div class="mt-2 mb-4">
               <img src="qr.png" alt="QR Code" class="w-24 h-24">
