@@ -418,17 +418,24 @@ export default {
       }
 
       // Vervang de placeholders in de template
-      const filledTemplate = template
-        .replace("{{name}}", reservation.name)
-        .replace("{{date}}", this.date)
-        .replace("{{table}}", reservation.table)
-        .replace("{{time}}", reservation.time.replace(/\"/g, "")) // Remove / from time
-        .replace("{{people}}", reservation.people)
-        .replace("{{note}}", reservation.note || " ")
-        .replace("{{block1}}", block1)
-        .replace("{{block2}}", block2)
-        .replace("{{block3}}", block3)
-        .replace("{{currentDate}}", formatDate());
+      const capitalizeName = (name) => {
+    return name
+        .toLowerCase() // Maak alles eerst kleine letters
+        .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
+};
+
+    const filledTemplate = template
+    .replace("{{name}}", capitalizeName(reservation.name)) // Gebruik capitalizeName hier
+    .replace("{{date}}", this.date)
+    .replace("{{table}}", reservation.table)
+    .replace("{{time}}", reservation.time.replace(/\"/g, "")) // Remove / from time
+    .replace("{{people}}", reservation.people)
+    .replace("{{note}}", reservation.note || " ")
+    .replace("{{block1}}", block1)
+    .replace("{{block2}}", block2)
+    .replace("{{block3}}", block3)
+    .replace("{{currentDate}}", formatDate());
+
 
       return filledTemplate;
     },
