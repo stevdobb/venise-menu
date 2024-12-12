@@ -8,13 +8,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Restaurant Menu</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     @page {
     size: A4;
     margin: 10mm;
   }
-
+   body {
+  font-family: 'Lora', serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
   .print-page {
     page-break-after: always;
   }
@@ -53,7 +58,7 @@ ul li span{
 
 </style>
 </head>
-<body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-sans-serif">
+<body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
 
   <!-- <div class="container mx-auto"> -->
 
@@ -61,7 +66,7 @@ ul li span{
     <!-- Header Section -->
     <div class="flex justify-between items-center">
       <div>
-        <img src="logo-venise-white.png" alt="QR Code" class="w-56">
+        <img src="logo-venise-verjaardag.png" alt="QR Code" class="w-56">
         
       </div>
       <div>
@@ -69,8 +74,6 @@ ul li span{
         <p class="text-sm">{{date}}</p>
       </div>
       <div class="text-right ">
-        <!-- <h2 class="text-lg font-bold text-gray-600">Restaurant Venise</h2> -->
-        <!-- <p class="text-sm">Datum: <span class="font-bold">{{date}}</span></p> -->
         <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
         <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
         <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
@@ -86,7 +89,7 @@ ul li span{
         <!-- TAPAS -->
         <div>
           <div>
-            <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
+            <h3 class="text-xl font-bold text-black">Welkom {{name}} en gelukkige verjaardag</h3>
             <div class="mt-2 block3">
               {{note}}
             {{block3}}            
