@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import HomePage from '@/components/HomePage.vue';
-import EditPage from '@/components/EditPage.vue';
+import HomePage from "@/components/HomePage.vue";
+import EditPage from "@/components/EditPage.vue";
 export default {
   components: {
     HomePage,

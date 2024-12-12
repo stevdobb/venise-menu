@@ -1,173 +1,211 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Restaurant Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="UTF-8">
-  <meta charset="utf-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Restaurant Menu</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+      body {
+        font-family: "Lora", serif;
+        line-height: 1.5;
+        font-size: 16px;
+      }
+      .print-page {
+        page-break-after: always;
+      }
+      .print-page:last-child {
+        page-break-after: auto;
+      }
+    </style>
+  </head>
+  <body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
+    <!-- <div class="container mx-auto"> -->
 
-  <style>
-    @page {
-    size: A4;
-    margin: 10mm;
-  }
-   body {
-  font-family: 'Lora', serif;
-  line-height: 1.5;
-  font-size: 16px;
-}
-  .print-page {
-    page-break-after: always;
-  }
-  .print-page:last-child {
-    page-break-after: auto;
-  }
-  
-</style>
-</head>
-<body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
-
-  <!-- <div class="container mx-auto"> -->
-
-  <div class="max-w-4xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page">
-    <!-- Header Section -->
-    <div class="flex justify-between items-center">
-      <div>
-        <img src="logo-venise-white.png" alt="QR Code" class="w-56">
-      </div>
-      <div>
-        <h1 class="text-2xl font-bold">Restaurant & Bistro Venise</h1>
-        <p class="text-sm">Oostduinkerke</p>
-      </div>
-      <div class="text-right ">
-        <!-- <h2 class="text-lg font-bold text-gray-600">Restaurant Venise</h2> -->
-        <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
-        <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
-        <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
-        <!-- <p class="text-sm" v-if="note && note !=='undefined'">{{note}}</p> -->
-      </div>
-    </div>
-
-
-    <!-- Menu Sections -->
-    <div class="mt-0">
-      <div class="grid grid-cols-2 gap-8">
-
-
-        <!-- TAPAS -->
+    <div
+      class="max-w-4xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page"
+    >
+      <!-- Header Section -->
+      <div class="flex justify-between items-center">
         <div>
-          <div>
-            <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
-            <p class="mt-2 text-sm text-gray-600">
-              Laat ons beginnen met het belangrijkste: <br>
-              <span class="font-bold text-gray-600">We wensen jullie een aangename dag en een smakelijke maaltijd toe!</span>
-            </p>
-            <p class="mt-2 text-sm text-gray-600">
-              Geniet nu van je gezelschap, de omgeving en het eten. <br>
-              <span class="italic">Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</span>
-            </p>
-            <p class="mt-2 text-sm text-gray-600">SCAN voor de volledige menu en prijzen</p>
-            <div class="mt-2 mb-4">
-              <img src="qr.png" alt="QR Code" class="w-24 h-24">
-            </div>
-          </div>
+          <img src="logo-venise-white.png" alt="QR Code" class="w-56" />
+        </div>
+        <div>
+          <h1 class="text-2xl font-bold">Restaurant & Bistro Venise</h1>
+          <p class="text-sm">Oostduinkerke</p>
+        </div>
+        <div class="text-right">
+          <!-- <h2 class="text-lg font-bold text-gray-600">Restaurant Venise</h2> -->
+          <p class="text-sm">
+            Tijdstip: <span class="font-bold">{{time}}</span>
+          </p>
+          <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
+          <p class="text-sm">
+            <span class="font-bold">{{people}}</span> personen
+          </p>
+          <!-- <p class="text-sm" v-if="note && note !=='undefined'">{{note}}</p> -->
+        </div>
+      </div>
 
-          <div class="block-1">
-      <!-- Tapas Section -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-1">Tapas (à 1 à 2 pers)</h2>
-      <!-- <div class="flex justify-between py-2">
+      <!-- Menu Sections -->
+      <div class="mt-0">
+        <div class="grid grid-cols-2 gap-8">
+          <!-- TAPAS -->
+          <div>
+            <div>
+              <h3 class="text-xl font-bold text-black">Welkom {{name}}</h3>
+              <p class="mt-2 text-sm text-gray-600">
+                Laat ons beginnen met het belangrijkste: <br />
+                <span class="font-bold text-gray-600"
+                  >We wensen jullie een aangename dag en een smakelijke maaltijd
+                  toe!</span
+                >
+              </p>
+              <p class="mt-2 text-sm text-gray-600">
+                Geniet nu van je gezelschap, de omgeving en het eten. <br />
+                <span class="italic"
+                  >Jullie zijn natuurlijk niet naar hier gekomen om onze krant
+                  te lezen maar vooral om culinair te genieten en daar gaan we
+                  met plezier voor zorgen.</span
+                >
+              </p>
+              <p class="mt-2 text-sm text-gray-600">
+                SCAN voor de volledige menu en prijzen
+              </p>
+              <div class="mt-2 mb-4">
+                <img src="qr.png" alt="QR Code" class="w-24 h-24" />
+              </div>
+            </div>
+
+            <div class="block-1">
+              <!-- Tapas Section -->
+              <h2
+                class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-1"
+              >
+                Tapas (à 1 à 2 pers)
+              </h2>
+              <!-- <div class="flex justify-between py-2">
         <span class="text-sm">Vitello Tonnato</span>
         <span class="font-bold text-sm">€18,90</span>
       </div> -->
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>kaasballetjes gefrituurd (10st. €8,90)</li>
-        <li>bloemkoolroosjes (€6,20)</li>
-        <li>kippeboutjes gefrituurd (6st. €12,90)</li>
-        <li>Kaasstengels Oude Kaas (6st. €12,90)</li>
-        <li>Camembert WARM (€17,90)</li>
-        <li>Crevettes Royal 6 st. (€18,20)</li>
-        <li>Garnaalkroketjes mini (8st. €27,80)</li>
-        <li>1/2 pot mosselen natuur (€21,90)</li>
-        <li>met wijn | met look | v/h huis (€23,90)</li>
-        <li>Potje paté 100gr. (€11,90)</li>
-        <li>Scampi in pankojasje (4st. €19,40)</li>
-        <li>Spaanse ham gedroogd (€20,90)</li>
-        <li>Duo van olijven & Tapenade (€11,90)</li>
-        <li>Vleeskroketjes 'Royal' mini 10st. (€17,90)</li>
-        <li>Witte worst gegrild (€12,90)</li>
-        <li>Zalm gerookt 'PREMIUM' (€25,90)</li>
-      </ul>
-    </div>
-    </div>
+              <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+                <li>kaasballetjes gefrituurd (10st. €8,90)</li>
+                <li>bloemkoolroosjes (€6,20)</li>
+                <li>kippeboutjes gefrituurd (6st. €12,90)</li>
+                <li>Kaasstengels Oude Kaas (6st. €12,90)</li>
+                <li>Camembert WARM (€17,90)</li>
+                <li>Crevettes Royal 6 st. (€18,20)</li>
+                <li>Garnaalkroketjes mini (8st. €27,80)</li>
+                <li>1/2 pot mosselen natuur (€21,90)</li>
+                <li>met wijn | met look | v/h huis (€23,90)</li>
+                <li>Potje paté 100gr. (€11,90)</li>
+                <li>Scampi in pankojasje (4st. €19,40)</li>
+                <li>Spaanse ham gedroogd (€20,90)</li>
+                <li>Duo van olijven & Tapenade (€11,90)</li>
+                <li>Vleeskroketjes 'Royal' mini 10st. (€17,90)</li>
+                <li>Witte worst gegrild (€12,90)</li>
+                <li>Zalm gerookt 'PREMIUM' (€25,90)</li>
+              </ul>
+            </div>
+          </div>
 
-        <!-- Suggestions -->
-    <div class="block-2">
-      <!-- Dagsuggesties - Voorgerechten -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-2">Dagsuggesties - Voorgerechten</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>Vitello Tonnato (€18,90)</li>
-        <li>Carpaccio gemarineerd rund (€23,90)</li>
-        <li>Ganzeleverpastei (€23,40)</li>
-        <li>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</li>
-      </ul>
+          <!-- Suggestions -->
+          <div class="block-2">
+            <!-- Dagsuggesties - Voorgerechten -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-200 mb-2"
+            >
+              Dagsuggesties - Voorgerechten
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>Vitello Tonnato (€18,90)</li>
+              <li>Carpaccio gemarineerd rund (€23,90)</li>
+              <li>Ganzeleverpastei (€23,40)</li>
+              <li>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</li>
+            </ul>
 
-      <!-- Hoofdgerechten -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2">Hoofdgerechten</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>Gehaktballetjes in tomatensaus (€17,90)</li>
-        <li>Karnemelksmeus & garnalen (€26,90)</li>
-      </ul>
+            <!-- Hoofdgerechten -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2"
+            >
+              Hoofdgerechten
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>Gehaktballetjes in tomatensaus (€17,90)</li>
+              <li>Karnemelksmeus & garnalen (€26,90)</li>
+            </ul>
 
-      <!-- Pasta's & Rijst -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2">Pasta's en rijst</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>Pasta Carbonara (€19,80)</li>
-      </ul>
+            <!-- Pasta's & Rijst -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2"
+            >
+              Pasta's en rijst
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>Pasta Carbonara (€19,80)</li>
+            </ul>
 
-      <!-- Salades -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2">Salades</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>Slaatje burrata (€19,50)</li>
-        <li>Tomaat garnalen (€33,90)</li>
-        <li>Garnalensalade (€34,90)</li>
-        <li>Slaatje geitenkaas (spekjes) (€23,40)</li>
-      </ul>
+            <!-- Salades -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2"
+            >
+              Salades
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>Slaatje burrata (€19,50)</li>
+              <li>Tomaat garnalen (€33,90)</li>
+              <li>Garnalensalade (€34,90)</li>
+              <li>Slaatje geitenkaas (spekjes) (€23,40)</li>
+            </ul>
 
-      <!-- Vlees & Wild -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2">Vlees en wild</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>Rundsbrochette GEGRILD (€32,90)</li>
-        <li>Herteragout (€32,90)</li>
-        <li>Hazerug met wildsausje (€37,60)</li>
-      </ul>
+            <!-- Vlees & Wild -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2"
+            >
+              Vlees en wild
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>Rundsbrochette GEGRILD (€32,90)</li>
+              <li>Herteragout (€32,90)</li>
+              <li>Hazerug met wildsausje (€37,60)</li>
+            </ul>
 
-      <!-- Vis & Mosselen -->
-      <h2 class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2">Vis en mosselen</h2>
-      <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
-        <li>garnaalkroketten 2st. €25,90 | 3st. €30,90</li>
-        <li>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</li>
-        <li>Verse tonijn pepersaus licht gebakken (€34,90)</li>
-        <li>Zeebaars Mousseline (€31,90)</li>
-        <li>Zeetong gebakken (€42,80) baktijd 25 min.</li>
-        <li>Zeeuwse mosselen Natuur (€33,90)</li>
-        <li>Witte wijn | Look | v/h huis (€36,90)</li>
-      </ul>
-    </div>
-
-
+            <!-- Vis & Mosselen -->
+            <h2
+              class="text-sm font-bold text-gray-800 border-b-2 border-gray-300 mt-3 mb-2"
+            >
+              Vis en mosselen
+            </h2>
+            <ul class="list-none pl-0 space-y-0 text-gray-700 text-sm">
+              <li>garnaalkroketten 2st. €25,90 | 3st. €30,90</li>
+              <li>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</li>
+              <li>Verse tonijn pepersaus licht gebakken (€34,90)</li>
+              <li>Zeebaars Mousseline (€31,90)</li>
+              <li>Zeetong gebakken (€42,80) baktijd 25 min.</li>
+              <li>Zeeuwse mosselen Natuur (€33,90)</li>
+              <li>Witte wijn | Look | v/h huis (€36,90)</li>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <p class="mt-8 text-center text-xs text-gray-500 mb-3">
-      Restaurant Venise - Albert I Laan 65 - 8670 Oostduinkerke
-      <br>
-      T: +3258514654 - www.venise.be - reservatie@venise.be - {{currentDate}}
-    </p>
-  </div>
-  <!-- </div> -->
-</body>
+      <p class="mt-8 text-center text-xs text-gray-500 mb-3">
+        Restaurant Venise - Albert I Laan 65 - 8670 Oostduinkerke
+        <br />
+        T: +3258514654 - www.venise.be - reservatie@venise.be - {{currentDate}}
+      </p>
+    </div>
+    <!-- </div> -->
+  </body>
 </html>
