@@ -5,7 +5,7 @@
 
     <div class="flex flex-wrap justify-between mx-auto max-w-screen-xl">
     <div class="p-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between">
+      <div class="flex flex-col md:flex-row justify-between">
   <!-- Upload links -->
   <div class="relative mb-4 md:mb-0">
     <h4 class="text-sm mb-1">Upload CSV bestand van ZenChef</h4>
@@ -27,6 +27,23 @@
     class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
   />
 </div>
+
+
+<!-- Template Dropdown -->
+<div class="mb-4">
+      <label for="template-select" class="block text-sm font-medium text-gray-700">Kies een template:</label>
+      <select
+        id="template-select"
+        v-model="selectedTemplate"
+        class="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      >
+        <option value="menukaart.html">Standaard Menu</option>
+        <option value="menukaart-kerst.html">🎄 Kerst</option>
+        <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+        <option value="menukaart-sans-serif.html">Sans-serif font</option>
+        <!-- Voeg hier meer opties toe indien nodig -->
+      </select>
+    </div>
 
   <!-- Rechter content -->
   <div class="flex flex-col">
@@ -201,6 +218,8 @@ return {
         table: "",
       },
       searchQuery: '', 
+      selectedTemplate: 'menukaart.html', // Standaard template
+
   date: "",         // Opslag voor de datum
   totalGuests: "",  // Opslag voor het totaal aantal gasten
 };
@@ -264,7 +283,8 @@ return {
   methods: {
   async generateHtml(reservation) {
     // Laad het externe HTML-bestand
-    const response = await fetch('/venise-menu/menukaart.html');
+    const selectedTemplate = this.selectedTemplate;
+    const response = await fetch('/venise-menu/' + selectedTemplate);
     const template = await response.text();
     console.log(reservation)
 
@@ -411,6 +431,7 @@ localStorage.setItem('reservations', JSON.stringify(this.reservations));
 
 
     printMenu(reservation) {
+      
     this.generateHtml(reservation).then((menuHtml) => {
 
      this.openPrintWindow(menuHtml);

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Restaurant Menu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    @page {
+    size: A4;
+    margin: 10mm;
+  }
+   body {
+  font-family: 'Lora', serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+  .print-page {
+    page-break-after: always;
+  }
+  .print-page:last-child {
+    page-break-after: auto;
+  }
+  h2 {
+  font-size: 0.875rem; /* Equivalent to text-sm */
+  font-weight: bold!important;
+  color: #2d3748; /* Equivalent to text-gray-800 */
+  border-bottom: 2px solid #edf2f7; /* Equivalent to border-b-2 border-gray-200 */
+  margin-bottom: 0.5rem!important; /* Equivalent to mb-2 */
+}
+ul {
+  padding-left: 0; /* Equivalent to pl-0 */
+  list-style-type: none; /* Equivalent to list-none */
+  margin-bottom: 20px!important;
+}
+
+ul li {
+  font-size: 0.8rem!important; /* Equivalent to text-sm */
+  color: #212121; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.20rem; /* Equivalent to space-y-0 */
+}
+
+ul li span{
+  font-size: 0.7rem!important;
+}
+
+.block1 p,
+.block2 p,.block3 p{
+  font-size: 0.8rem!important; /* Equivalent to text-sm */
+  color: #212121; /* Equivalent to text-gray-700 */
+  margin-bottom: 0.20rem; /* Equivalent to space-y-0 */
+}
+
+</style>
+</head>
+<body class="py-2 bg-gray-200 font-sans bg-gray-50 pb-8 font-serif">
+
+  <!-- <div class="container mx-auto"> -->
+
+  <div class="max-w-4xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center">
+      <div>
+        <img src="logo-venise-verjaardag.png" alt="QR Code" class="w-56">
+        
+      </div>
+      <div>
+        <h1 class="text-lg font-bold">Suggesties van de dag</h1>
+        <p class="text-sm">{{date}}</p>
+      </div>
+      <div class="text-right ">
+        <p class="text-sm">Tijdstip: <span class="font-bold">{{time}}</span></p>
+        <p class="text-sm">Tafel: <span class="font-bold">{{table}}</span></p>
+        <p class="text-sm"><span class="font-bold">{{people}}</span> personen</p>
+      </div>
+    </div>
+
+
+    <!-- Menu Sections -->
+    <div class="mt-4">
+      <div class="grid grid-cols-2 gap-8">
+
+
+        <!-- TAPAS -->
+        <div>
+          <div>
+            <h3 class="text-xl font-bold text-black">Welkom {{name}} en gelukkige verjaardag</h3>
+            <div class="mt-2 block3">
+              {{note}}
+            {{block3}}            
+            </div>
+            <p class="mt-2 text-xs text-gray-600">Scan deze QR-code voor de volledige menu en prijzen<br/>
+              <span class="mt-1 mb-3 text-xs font-bold text-gray-900">Pour le menu en français, scannez le QR code !</span></p>
+            <div class="mt-2 mb-4">
+              <img src="qr.png" alt="QR Code" class="w-24 h-24">
+            </div>
+            
+          </div>
+
+          <div class="block1 text-md">
+      {{block1}}
+    </div>
+    </div>
+
+        <!-- Suggestions -->
+    <div class="block2 text-md">
+      {{block2}}
+    </div>
+
+
+      </div>
+    </div>
+
+    <p class="mt-8 text-center text-xs text-gray-500 mb-3">
+      Restaurant Venise - Albert I Laan 65 - 8670 Oostduinkerke
+      <br>
+      T: +3258514654 - www.venise.be - reservatie@venise.be - {{currentDate}}
+    </p>
+  </div>
+  <!-- </div> -->
+</body>
+</html>
