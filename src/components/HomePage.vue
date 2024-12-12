@@ -39,7 +39,10 @@
       >
         <option value="menukaart.html">Standaard Menu</option>
         <option value="menukaart-kerst.html">🎄 Kerst</option>
+        <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
         <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+        <option value="menukaart-valentijn.html">♥️ Valentijn</option>
+        <option value="menukaart-pasen.html">🐣 Pasen</option>
         <option value="menukaart-sans-serif.html">Sans-serif font</option>
         <!-- Voeg hier meer opties toe indien nodig -->
       </select>
