@@ -540,13 +540,22 @@ export default {
       });
     },
     printAll(reservations) {
-      Promise.all(reservations.map(this.generateHtml)).then((allMenusHtml) => {
-        let allMenusCombined = allMenusHtml.join(
-          "<hr style='margin: 2rem 0;'>",
-        );
-        this.openPrintWindow(allMenusCombined);
-      });
-    },
+  // Sorteer de reserveringen op tafelnummer
+  const sortedReservations = [...reservations].sort((a, b) => {
+    const tableA = parseInt(a.table, 10) || 0; // Converteer naar getal, gebruik 0 als fallback
+    const tableB = parseInt(b.table, 10) || 0;
+    return tableA - tableB; // Sorteer oplopend
+  });
+
+  // Genereer HTML voor elke reservering en combineer ze
+  Promise.all(sortedReservations.map(this.generateHtml)).then((allMenusHtml) => {
+    let allMenusCombined = allMenusHtml.join(
+      "<hr style='margin: 2rem 0;'>",
+    );
+    this.openPrintWindow(allMenusCombined);
+  });
+},
+
 
     openPrintWindow(content) {
       const printWindow = window.open("", "_blank");
