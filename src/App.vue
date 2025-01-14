@@ -67,6 +67,11 @@
                 class="text-gray-700 text-sm hover:underline"
                 >Wijzig menu</router-link
               >
+              <router-link
+                to="/reset"
+                class="text-gray-700 text-sm hover:underline"
+                >Reset</router-link
+              >
             </ul>
           </div>
         </div>
