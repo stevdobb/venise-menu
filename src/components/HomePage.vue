@@ -11,7 +11,7 @@
             </p>
             <label
               for="file-upload"
-              class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md shadow cursor-pointer hover:bg-blue-600 text-sm cursor-pointer"
+              class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md shadow cursor-pointer hover:bg-blue-600 text-sm cursor-pointer mb-3"
             >
               <svg
                 class="w-6 h-6 mr-3 inline text-white dark:text-white"

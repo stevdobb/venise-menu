@@ -10,7 +10,7 @@
       v-if="showNotification"
       class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
     >
-      Opgeslagen reservaties zijn verwijdert
+    Opgeslagen reservaties zijn verwijderd.
     </div>
 
     
