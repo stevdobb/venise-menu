@@ -82,13 +82,13 @@ export default {
   mounted() {
     // Initialiseer de Quill-editors
     const toolbarOptions = [
-      [{ header: [2, 3] }],
+      [{ header: [false, 2, 3] }],
+      [{ size: ['small', 'normal', 'large', 'huge'] }],
       ["bold", "italic", "underline", "strike"],
       ["link"],
       [{ list: "ordered" }, { list: "bullet" }],
       ["blockquote"],
-      ["clean"],
-
+      ["clean"],      
       [{ align: [] }],
       [{ color: [] }],
     ];
