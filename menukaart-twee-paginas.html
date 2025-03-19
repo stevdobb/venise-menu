@@ -25,9 +25,9 @@
       .print-page {
         page-break-after: always;
       }
-      .print-page:last-child {
+      /* .print-page:last-child {
         page-break-after: auto;
-      }
+      } */
       h2 {
         font-size: 0.875rem; /* Equivalent to text-sm */
         font-weight: bold !important;
@@ -64,7 +64,7 @@
     <!-- <div class="container mx-auto"> -->
 
     <div
-      class="max-w-4xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page"
+      class="max-w-6xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page"
     >
       <!-- Header Section -->
       <div class="flex justify-between items-center">
@@ -81,16 +81,16 @@
           <p class="text-md">
             Tijdstip: <span class="font-bold">{{time}}</span>
           </p>
-          <p class="text-md">Tafel: <span class="font-bold">{{table}}</span></p>
+          <p class="text-md">Tafel: <span class="font-bold text-lg">{{table}}</span></p>
           <p class="text-md">
-            <span class="font-bold">{{people}}</span> personen
+            <span class="font-bold text-lg">{{people}}</span> personen
           </p>
         </div>
       </div>
 
       <!-- Menu Sections -->
       <div class="mt-4">
-        <div class="grid grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 gap-8">
           <!-- TAPAS -->
           <div>
             <div>
@@ -111,13 +111,14 @@
               </div>
             </div>
 
-            <div class="block1 text-md">{{block1}}</div>
           </div>
 
-          <!-- Suggestions -->
-          <div class="block2 text-md">{{block2}}</div>
+
+
         </div>
       </div>
+
+
 
       <p class="mt-8 text-center text-xs text-gray-500 mb-3">
         Restaurant Venise - Albert I Laan 65 - 8670 Oostduinkerke
@@ -125,6 +126,26 @@
         T: +3258514654 - www.venise.be - reservatie@venise.be - {{currentDate}}
       </p>
     </div>
+
+
+                    <!-- Nieuwe pagina voor Block1 en Block2 -->
+<div class="print-page">
+
+  <div
+      class="max-w-6xl mx-auto bg-white px-6 pt-0 pb-4 rounded-lg print-page"
+    >
+      <!-- Header Section -->
+      <div class="flex justify-between items-center">
+  <div class="grid grid-cols-2 gap-4">
+    <!-- Block1 links -->
+    <div class="block1 text-md border p-4 border-gray-300">{{block1}}</div>
+
+    <!-- Block2 rechts -->
+    <div class="block2 text-md border p-4 border-gray-300">{{block2}}</div>
+  </div>
+  </div>
+  </div>
+</div>
     <!-- </div> -->
   </body>
 </html>
