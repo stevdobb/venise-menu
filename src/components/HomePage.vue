@@ -54,13 +54,15 @@
               class="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               <option value="menukaart.html">Standaard Menu</option>
-              <option value="menukaart-twee-paginas.html">Op 2 pagina's</option>
+              <option value="menukaart-twee-paginas.html">📑  2 pagina's</option>
+              <option value="menukaart-boxes.html">🔲 Met een box</option>
               <option value="menukaart-kerst.html">🎄 Kerst</option>
               <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
               <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
               <option value="menukaart-valentijn.html">♥️ Valentijn</option>
               <option value="menukaart-pasen.html">🐣 Pasen</option>
               <option value="menukaart-sans-serif.html">Sans-serif font</option>
+              
               
               <!-- Voeg hier meer opties toe indien nodig -->
             </select>
@@ -326,7 +328,9 @@ export default {
     const savedReservations = localStorage.getItem("reservations");
 
     const toolbarOptions = [
-      [{ header: [false, 2, 3] }],
+    [{ header: [false, 1, 2, 3, 4, 5] }],
+      [{ 'color': [] }, { 'background': [] }], 
+      [{ size: ['small', 'normal', 'large', 'huge'] }],
       ["bold", "italic", "underline", "strike"],
       ["link"],
       [{ list: "ordered" }, { list: "bullet" }],

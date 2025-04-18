@@ -82,7 +82,8 @@ export default {
   mounted() {
     // Initialiseer de Quill-editors
     const toolbarOptions = [
-      [{ header: [false, 2, 3] }],
+      [{ header: [false, 1, 2, 3, 4, 5] }],
+      [{ 'color': [] }, { 'background': [] }], 
       [{ size: ['small', 'normal', 'large', 'huge'] }],
       ["bold", "italic", "underline", "strike"],
       ["link"],
