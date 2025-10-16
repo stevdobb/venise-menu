@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <header>
-      <nav
-        class="bg-gray-100 border-b border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-100"
-      >
+      <nav class="bg-gray-50 border-b border-gray-200 shadow-sm px-4 lg:px-6 py-3">
+
         <div class="flex flex-wrap mx-auto max-w-screen-xl">
           <router-link to="/" class="flex items-center">
             <img
@@ -50,35 +49,39 @@
               </svg>
             </button>
           </div>
-          <div
-            class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 ml-5"
-            id="mobile-menu-2"
-          >
-            <ul
-              class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"
-            >
-              <router-link
-                to="/"
-                class="mr-4 text-gray-700 text-sm hover:underline"
-                >Home</router-link
-              >
-              <router-link
-                to="/edit"
-                class="text-gray-700 text-sm hover:underline"
-                >Wijzig menu</router-link
-              >
-              <router-link
-                to="/reset"
-                class="text-gray-700 text-sm hover:underline"
-                >Reset</router-link
-              >
-              <router-link
-                to="/schoolvakanties"
-                class="text-gray-700 text-sm hover:underline"
-                >Schoolvakanties</router-link
-              >
-            </ul>
-          </div>
+          <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 ml-5" id="mobile-menu-2">
+  <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-6 lg:mt-0">
+    <router-link
+      to="/"
+      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
+      active-class="bg-blue-500 text-white"
+    >
+      Home
+    </router-link>
+    <router-link
+      to="/edit"
+      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
+      active-class="bg-blue-500 text-white"
+    >
+      Wijzig menu
+    </router-link>
+    <router-link
+      to="/reset"
+      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
+      active-class="bg-blue-500 text-white"
+    >
+      Reset
+    </router-link>
+    <router-link
+      to="/schoolvakanties"
+      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
+      active-class="bg-blue-500 text-white"
+    >
+      Schoolvakanties
+    </router-link>
+  </ul>
+</div>
+
         </div>
       </nav>
     </header>
