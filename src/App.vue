@@ -1,106 +1,149 @@
 <template>
-  <div id="app">
-    <header>
-      <nav class="bg-gray-50 border-b border-gray-200 shadow-sm px-4 lg:px-6 py-3">
-
-        <div class="flex flex-wrap mx-auto max-w-screen-xl">
+  <div id="app" class="min-h-screen bg-gray-50">
+    <header class="shadow-sm">
+      <nav class="bg-white border-b border-gray-200 px-4 lg:px-6 py-3">
+        <div class="flex items-center max-w-screen-xl mx-auto">
+          <!-- Logo -->
           <router-link to="/" class="flex items-center">
-            <img
-              src="/logo-venise-white.png"
-              class="mr-3 w-32 ml-3"
-              alt="Venise Logo"
-            />
-            <!-- <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Restaurant Venise</span> -->
+            <img src="/logo-venise-white.png" class="w-32 mr-5 ml-4" alt="Venise Logo" />
           </router-link>
 
-          <div class="flex items-center lg:order-2">
-            <!-- <a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Bekijk template</a> -->
-            <button
-              data-collapse-toggle="mobile-menu-2"
-              type="button"
-              class="inline-flex items-center p-2 ml-1 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="mobile-menu-2"
-              aria-expanded="false"
-            >
-              <span class="sr-only">Open main menu</span>
-              <svg
-                class="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+          <!-- Desktop Menu -->
+          <ul class="hidden lg:flex space-x-4 font-medium text-gray-700">
+            <li>
+              <router-link
+                to="/"
+                class="px-3 py-2 rounded hover:bg-blue-100 hover:text-blue-600"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/' }"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              <svg
-                class="hidden w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+                Home
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                to="/edit"
+                class="px-3 py-2 rounded hover:bg-blue-100 hover:text-blue-600"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/edit' }"
               >
-                <path
-                  fill-rule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 ml-5" id="mobile-menu-2">
-  <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-6 lg:mt-0">
-    <router-link
-      to="/"
-      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
-      active-class="bg-blue-500 text-white"
-    >
-      Home
-    </router-link>
-    <router-link
-      to="/edit"
-      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
-      active-class="bg-blue-500 text-white"
-    >
-      Wijzig menu
-    </router-link>
-    <router-link
-      to="/reset"
-      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
-      active-class="bg-blue-500 text-white"
-    >
-      Reset
-    </router-link>
-    <router-link
-      to="/schoolvakanties"
-      class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-100 hover:text-blue-700 transition"
-      active-class="bg-blue-500 text-white"
-    >
-      Schoolvakanties
-    </router-link>
-  </ul>
-</div>
+                Wijzig menu
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                to="/reset"
+                class="px-3 py-2 rounded hover:bg-blue-100 hover:text-blue-600"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/reset' }"
+              >
+                Reset
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                to="/schoolvakanties"
+                class="px-3 py-2 rounded hover:bg-blue-100 hover:text-blue-600"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/schoolvakanties' }"
+              >
+                Schoolvakanties
+              </router-link>
+            </li>
+          </ul>
 
+          <!-- Mobile Hamburger -->
+          <button
+            @click="toggleMenu"
+            type="button"
+            class="lg:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-200 text-black"
+          >
+            <span class="sr-only">Open main menu</span>
+            <svg v-if="!mobileMenuOpen" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3 5h14M3 10h14M3 15h14" clip-rule="evenodd" />
+            </svg>
+            <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4.293 4.293l11.414 11.414M4.293 15.707L15.707 4.293" clip-rule="evenodd" />
+            </svg>
+          </button>
         </div>
+
+        <!-- Mobile Menu -->
+        <transition name="slide-fade">
+          <ul
+            v-if="mobileMenuOpen"
+            class="lg:hidden mt-2 space-y-1 px-4 pb-4 border-t border-gray-200 text-gray-700 font-medium"
+          >
+            <li>
+              <router-link
+                @click="toggleMenu"
+                to="/"
+                class="block py-2 px-3 rounded hover:bg-blue-100 hover:text-blue-600 text-left"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/' }"
+              >
+                Home
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                @click="toggleMenu"
+                to="/edit"
+                class="block py-2 px-3 rounded hover:bg-blue-100 hover:text-blue-600 text-left"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/edit' }"
+              >
+                Wijzig menu
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                @click="toggleMenu"
+                to="/reset"
+                class="block py-2 px-3 rounded hover:bg-blue-100 hover:text-blue-600 text-left"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/reset' }"
+              >
+                Reset
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                @click="toggleMenu"
+                to="/schoolvakanties"
+                class="block py-2 px-3 rounded hover:bg-blue-100 hover:text-blue-600 text-left"
+                :class="{ 'bg-blue-100 text-blue-600': $route.path === '/schoolvakanties' }"
+              >
+                Schoolvakanties
+              </router-link>
+            </li>
+          </ul>
+        </transition>
       </nav>
     </header>
 
-    <main class="p-4">
-      <!-- Router View toont de juiste component op basis van de route -->
+    <main class="p-4 max-w-screen-xl mx-auto">
       <router-view></router-view>
     </main>
   </div>
 </template>
 
-<script>
-export default {
-  name: "App",
-};
+<script setup>
+import { ref } from 'vue'
+
+const mobileMenuOpen = ref(false)
+
+function toggleMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
 </script>
 
 <style>
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Animatie voor mobiele menu */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 </style>

@@ -1,303 +1,167 @@
 <template>
-  <div>
-    <div class="flex flex-wrap justify-between mx-auto max-w-screen-xl">
-      <div class="p-4">
-        <div class="flex flex-col md:flex-row justify-between">
-          <!-- Upload links -->
-          <div class="relative mb-4 md:mb-0">
-            <h4 class="text-sm mb-1">Upload CSV bestand van ZenChef</h4>
-            <p class="text-xs mb-2">
-              Opgelet! Vorige reservaties worden bij upload verwijderd.
-            </p>
-            <label
-              for="file-upload"
-              class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md shadow cursor-pointer hover:bg-blue-600 text-sm cursor-pointer mb-3"
+  <div class="p-6 bg-gray-50 min-h-screen">
+    <div class="max-w-screen-xl mx-auto space-y-6">
+      <!-- Header / Upload & Template -->
+      <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+        <!-- Upload CSV -->
+        <div class="flex-1">
+          <h4 class="text-lg font-semibold mb-2">Upload CSV bestand van ZenChef</h4>
+          <p class="text-sm text-gray-500 mb-3">
+            Opgelet! Vorige reservaties worden bij upload verwijderd.
+          </p>
+          <label
+            for="file-upload"
+            class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 cursor-pointer transition-colors text-sm font-medium"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
             >
-              <svg
-                class="w-6 h-6 mr-3 inline text-white dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01"
-                />
-              </svg>
-              Upload CSV bestand
-            </label>
-            <input
-              id="file-upload"
-              type="file"
-              accept=".csv"
-              @change="handleFileUpload"
-              class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-            />
-          </div>
-
-          <!-- Template Dropdown -->
-          <div class="mb-4">
-            <label
-              for="template-select"
-              class="block text-sm font-medium text-gray-700"
-              >Kies een template:</label
-            >
-            <select
-              id="template-select"
-              v-model="selectedTemplate"
-              class="mt-1 block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            >
-              <option value="menukaart.html">Standaard Menu</option>
-              <option value="menukaart-twee-paginas.html">📑  2 pagina's</option>
-              <option value="menukaart-boxes.html">🔲 Met een box</option>
-              <option value="menukaart-kerst.html">🎄 Kerst</option>
-              <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
-              <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
-              <option value="menukaart-valentijn.html">♥️ Valentijn</option>
-              <option value="menukaart-pasen.html">🐣 Pasen</option>
-              <option value="menukaart-sans-serif.html">Sans-serif font</option>
-              
-              
-              <!-- Voeg hier meer opties toe indien nodig -->
-            </select>
-          </div>
-
-          <!-- Rechter content -->
-          <div class="flex flex-col">
-            <div v-if="date && totalGuests" class="mb-4">
-              <p class="text-md font-semibold">Datum: {{ date }}</p>
-              <p class="text-md">
-                Aantal reservaties: {{ reservations.length - 1 }}
-              </p>
-              <p class="text-md">Totaal aantal gasten: {{ totalGuests }}</p>
-            </div>
-            <button
-              @click="printAll(reservations)"
-              class="bg-gray-700 text-white px-4 py-1 rounded mt-0 mb-5 flex items-center text-sm"
-            >
-              <svg
-                class="w-6 h-6 inline text-white dark:text-white mr-2"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"
-                />
-              </svg>
-              Print alle menukaarten
-            </button>
-          </div>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
+            </svg>
+            Upload CSV
+          </label>
+          <input id="file-upload" type="file" accept=".csv" @change="handleFileUpload" class="hidden" />
         </div>
 
-        <div class="flex items-center gap-2 mb-0">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Zoek op naam..."
-            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
-          />
-          <button
-            v-if="searchQuery"
-            @click="resetSearch"
-            class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:ring focus:ring-blue-300 focus:outline-none"
+        <!-- Template Dropdown -->
+        <div class="flex-1">
+          <label for="template-select" class="block text-sm font-medium text-gray-700 mb-1 mt-11">Kies een template:</label>
+          <select
+            id="template-select"
+            v-model="selectedTemplate"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            Reset
+            <option value="menukaart.html">Standaard Menu</option>
+            <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
+            <option value="menukaart-boxes.html">🔲 Met een box</option>
+            <option value="menukaart-kerst.html">🎄 Kerst</option>
+            <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
+            <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+            <option value="menukaart-valentijn.html">♥️ Valentijn</option>
+            <option value="menukaart-pasen.html">🐣 Pasen</option>
+            <option value="menukaart-sans-serif.html">Sans-serif font</option>
+          </select>
+        </div>
+
+        <!-- Print Info -->
+        <div class="flex-1 flex flex-col items-start gap-3">
+          <div v-if="date && totalGuests" class="text-gray-700">
+            <p class="font-semibold text-md">Datum: {{ date }}</p>
+            <p>Aantal reservaties: {{ reservations.length - 1 }}</p>
+            <p>Totaal aantal gasten: {{ totalGuests }}</p>
+          </div>
+          <button
+            @click="printAll(reservations)"
+            class="flex items-center gap-2 bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+            </svg>
+            Print alle menukaarten
           </button>
         </div>
+      </div>
 
-        <table
-          class="table-auto w-full border-collapse border border-gray-400 mt-4"
+      <!-- Search Bar -->
+      <div class="flex gap-2">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Zoek op naam..."
+          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
+        />
+        <button
+          v-if="searchQuery"
+          @click="resetSearch"
+          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 shadow transition-colors"
         >
-          <thead>
+          Reset
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full table-auto border-collapse">
+          <thead class="bg-gray-100 text-gray-700">
             <tr>
-              <th class="border border-gray-300 px-4 py-1 text-left">Tijd</th>
-              <th class="border border-gray-300 px-4 py-1 text-left">
-                Personen
-              </th>
-              <th class="border border-gray-300 px-4 py-1 text-left">Naam</th>
-              <th class="border border-gray-300 px-4 py-1 text-left">Tafel</th>
-              <th class="border border-gray-300 px-4 py-1 text-left">
-                Notitie
-              </th>
-              <th class="border border-gray-300 px-4 py-1 text-left"></th>
-              <th class="border border-gray-300 px-4 py-1 text-left"></th>
+              <th class="px-4 py-2 text-left">Tijd</th>
+              <th class="px-4 py-2 text-left">Personen</th>
+              <th class="px-4 py-2 text-left">Naam</th>
+              <th class="px-4 py-2 text-left">Tafel</th>
+              <th class="px-4 py-2 text-left">Notitie</th>
+              <th class="px-4 py-2"></th>
+              <th class="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="(entry, index) in filteredReservations"
               :key="index"
-              class="text-sm"
+              :class="entry.name === 'beste klant' ? 'bg-gray-50' : 'hover:bg-gray-50'"
+              class="text-sm border-b"
             >
-              <td
-                class="border border-gray-300 px-4 py-1"
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-              >
-                {{ entry.time.replace(/"/g, "") }}
-              </td>
-              <td
-                class="border border-gray-300 px-4 py-1"
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-              >
-                {{ entry.people }}
-              </td>
-              <td
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-                class="border border-gray-300 px-4 py-1"
-              >
-                {{ entry.name }}
-              </td>
-              <td
-                class="border border-gray-300 px-4 py-1"
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-              >
-                {{ entry.table }}
-              </td>
-              <td
-                class="border border-gray-300 px-4 py-1"
-                style="max-width: 250px"
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-                v-html="entry.note"
-              ></td>
+              <td class="px-4 py-2">{{ entry.time.replace(/"/g, "") }}</td>
+              <td class="px-4 py-2">{{ entry.people }}</td>
+              <td class="px-4 py-2">{{ entry.name }}</td>
+              <td class="px-4 py-2">{{ entry.table }}</td>
+              <td class="px-4 py-2 max-w-xs" v-html="entry.note"></td>
+              <td class="px-2 py-1">
+  <button
+    @click="printMenu(entry)"
+    class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gray-800 rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 active:scale-95 transition-all duration-150"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+    </svg>
+    Print Menu
+  </button>
+</td>
 
-              <td
-                class="border border-gray-300 px-4 py-1"
-                :class="{ 'bg-gray-100': entry.name === 'beste klant' }"
-              >
-                <div>
-                  <button
-                    @click="printMenu(entry)"
-                    class="px-3 py-2 text-xs font-medium text-center text-white bg-gray-700 rounded-md hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-gray-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  >
-                    <svg
-                      class="w-4 h-4 inline mr-1 text-white dark:text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"
-                      />
-                    </svg>
-                    Print Menu
-                  </button>
-                </div>
-              </td>
-              <td class="border border-gray-300 px-4 py-1">
+              <td class="px-2 py-1">
                 <button
                   @click="deleteReservation(index)"
-                  class="bg-red-500 text-white text-sm px-4 py-1 rounded hover:bg-red-600"
+                  class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition-colors"
                 >
                   x
                 </button>
               </td>
             </tr>
-            <tr v-if="reservations.length == 0">
-              <td colspan="5" class="ml-2 text-md bg-gray-50 py-2 px-3">
-                Nog geen reservaties
-              </td>
+            <tr v-if="reservations.length === 0">
+              <td colspan="7" class="text-center py-4 text-gray-500">Nog geen reservaties</td>
             </tr>
           </tbody>
         </table>
+      </div>
 
-        <div class="mt-5 p-4 border border-gray-200 bg-gray-50 rounded">
-          <h3 class="text-lg font-semibold mb-2">
-            Manueel nieuwe reservering toevoegen
-          </h3>
-          <form @submit.prevent="addReservation">
-            <div class="flex gap-4 mb-4">
-              <input
-                type="text"
-                v-model="newReservation.time"
-                placeholder="Tijdstip (bv. 18:00)"
-                class="border border-gray-300 px-4 py-1 w-1/4"
-                required
-              />
-              <input
-                type="text"
-                v-model="newReservation.name"
-                placeholder="Naam"
-                class="border border-gray-300 px-4 py-1 w-1/4"
-                required
-              />
-              <input
-                type="text"
-                v-model="newReservation.people"
-                placeholder="Aantal Personen"
-                class="border border-gray-300 px-4 py-1 w-1/4"
-              />
-              <input
-                type="text"
-                v-model="newReservation.table"
-                placeholder="Tafel"
-                class="border border-gray-300 px-4 py-1 w-1/4"
-              />
-            </div>
+      <!-- Add Reservation Form -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+        <h3 class="text-lg font-semibold mb-4">Manueel nieuwe reservering toevoegen</h3>
+        <form @submit.prevent="addReservation" class="space-y-4">
+          <div class="flex flex-wrap gap-4">
+            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.name" type="text" placeholder="Naam" class="flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="flex-1 px-4 py-2 border rounded-lg" />
+            <input v-model="newReservation.table" type="text" placeholder="Tafel" class="flex-1 px-4 py-2 border rounded-lg" />
+          </div>
 
-            <div class="flex flex-wrap gap-4">
-              <div class="block-1 flex-1 min-w-[300px]">
-                <h2 class="text-sm font-bold mb-2">
-                  Persoonlijke notitie (komt onder verwelkoming)
-                </h2>
-                <div id="editorBlock1" class="editor-small"></div>
-              </div>
-            </div>
+          <div>
+            <h2 class="text-sm font-bold mb-2">Persoonlijke notitie</h2>
+            <div id="editorBlock1" class="editor-small border rounded-lg h-32"></div>
+          </div>
 
-            <button
-              type="submit"
-              class="bg-blue-500 text-white px-4 py-1 rounded text-md hover:bg-blue-600"
-            >
-              <svg
-                class="w-4 h-4 inline mr-2 text-white dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M5 12h14m-7 7V5"
-                />
-              </svg>
-              Voeg toe
-            </button>
-          </form>
-        </div>
-
-        <div class="mt-5 py-4">
-          <!--<a href="/venise-menu/menu-template.html" target="_blank" class="text-white bg-gray-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-md text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"><svg class="w-4 h-4 inline text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 14v4.833A1.166 1.166 0 0 1 16.833 20H5.167A1.167 1.167 0 0 1 4 18.833V7.167A1.166 1.166 0 0 1 5.167 6h4.618m4.447-2H20v5.768m-7.889 2.121 7.778-7.778"/>
-</svg>
-Bekijk template</a>-->
-        </div>
+          <button type="submit" class="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            Voeg toe
+          </button>
+        </form>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import Papa from "papaparse";
@@ -329,13 +193,13 @@ export default {
 
     const toolbarOptions = [
     [{ header: [false, 1, 2, 3, 4, 5] }],
-      [{ 'color': [] }, { 'background': [] }], 
+      [{ 'color': [] }, { 'background': [] }],
       [{ size: ['small', 'normal', 'large', 'huge'] }],
       ["bold", "italic", "underline", "strike"],
       ["link"],
       [{ list: "ordered" }, { list: "bullet" }],
       ["blockquote"],
-      ["clean"],      
+      ["clean"],
       [{ align: [] }],
       [{ color: [] }],
     ];
