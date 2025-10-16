@@ -72,6 +72,11 @@
                 class="text-gray-700 text-sm hover:underline"
                 >Reset</router-link
               >
+              <router-link
+                to="/schoolvakanties"
+                class="text-gray-700 text-sm hover:underline"
+                >Schoolvakanties</router-link
+              >
             </ul>
           </div>
         </div>
