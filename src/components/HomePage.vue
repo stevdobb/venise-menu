@@ -406,8 +406,8 @@ export default {
       if (hour < 18) return "bg-sky-50";         // 16-17u
       if (hour === 18) return "bg-amber-50";     // 18u
       if (hour === 19) return "bg-amber-100";    // 19u
-      if (hour === 20) return "bg-rose-50";      // 20u
-      if (hour === 21) return "bg-rose-100";     // 21u
+      if (hour === 20) return "bg-orange-100";   // 20u (oranje)
+      if (hour === 21) return "bg-orange-200";   // 21u (donkerder oranje)
       return "bg-slate-100";                     // later
     },
     getRowClasses(entry, index) {
