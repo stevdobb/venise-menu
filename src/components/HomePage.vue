@@ -20,10 +20,10 @@
           <!-- Upload CSV -->
           <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
             <div class="flex items-center gap-2">
-              <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800 font-semibold">Stap 1</span>
+              <span class="text-xs px-2 py-1 rounded-md bg-blue-100 text-blue-800 font-semibold">Stap 1</span>
               <p class="text-sm font-semibold text-gray-800">Upload CSV</p>
             </div>
-            <p class="text-xs text-gray-600">Enkel .csv. Eerst datum + totaal gasten, daarna reservaties.</p>
+            
             <label
               for="file-upload"
               class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 cursor-pointer transition-colors text-sm font-medium"
@@ -55,7 +55,7 @@
               <span class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-semibold">Stap 2</span>
               <p class="text-sm font-semibold text-gray-800">Kies template</p>
             </div>
-            <label for="template-select" class="block text-xs font-medium text-gray-700">Menukaart</label>
+            <!-- <label for="template-select" class="block text-xs font-medium text-gray-700">Menukaart</label> -->
             <select
               id="template-select"
               v-model="selectedTemplate"
@@ -79,7 +79,7 @@
           <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
             <div class="flex items-center gap-2">
               <span class="text-xs px-2 py-1 rounded bg-purple-100 text-purple-800 font-semibold">Stap 3</span>
-              <p class="text-sm font-semibold text-gray-800">Controle & print</p>
+              <p class="text-sm font-semibold text-gray-800">Import info</p>
             </div>
             <div class="text-gray-700 text-sm space-y-1">
               <p class="font-semibold" v-if="date">Datum: {{ date }}</p>
@@ -88,7 +88,7 @@
             </div>
             <button
               @click="printAll(reservations)"
-              class="flex items-center justify-center gap-2 w-full bg-gray-800 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-900 transition-colors"
+              class="flex items-center justify-center gap-2 w-full bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
@@ -149,13 +149,13 @@
             >
               <td class="px-4 py-2 font-semibold text-gray-900">{{ entry.time.replace(/"/g, "") }}</td>
               <td class="px-4 py-2">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-900 text-white">
                   {{ entry.people || '-' }}
                 </span>
               </td>
               <td class="px-4 py-2 text-gray-900 font-medium">{{ entry.name }}</td>
               <td class="px-4 py-2">
-                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800">
+                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-gray-900 text-white">
                   {{ entry.table }}
                 </span>
               </td>
@@ -173,9 +173,12 @@
                   </button>
                   <button
                     @click="deleteReservation(index)"
+                    aria-label="Verwijder reservering"
                     class="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
                   >
-                    Verwijder
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 7H5m3 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-1 4v5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5m3-3v8" />
+                    </svg>
                   </button>
                 </div>
               </td>
