@@ -61,7 +61,7 @@
       </nav>
     </header>
 
-    <main class="p-4 max-w-screen-xl mx-auto">
+    <main class="max-w-screen-xl mx-auto">
       <router-view></router-view>
     </main>
   </div>

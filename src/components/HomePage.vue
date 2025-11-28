@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 bg-gray-50 min-h-screen">
+  <div class="py-6 bg-gray-50 min-h-screen">
     <div class="max-w-screen-xl mx-auto space-y-6">
       <!-- Header / Upload & Template -->
       <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md space-y-6">
@@ -95,7 +95,7 @@
               </svg>
               Print alle menukaarten
             </button>
-            <p class="text-xs text-gray-600">Sortering gebeurt automatisch op tafelnummers.</p>
+            <!-- <p class="text-xs text-gray-600">Sortering gebeurt automatisch op tafelnummers.</p> -->
           </div>
         </div>
       </div>
