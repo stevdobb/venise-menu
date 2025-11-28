@@ -22,7 +22,7 @@
           </ul>
 
           <div class="ml-auto flex items-center gap-2">
-            <span class="hidden md:inline-block text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold">Venise tools</span>
+            <!-- <span class="hidden md:inline-block text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold">Venise tools</span> -->
             <!-- Mobile Hamburger -->
             <button
               @click="toggleMenu"

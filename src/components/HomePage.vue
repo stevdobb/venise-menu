@@ -9,11 +9,11 @@
             <h2 class="text-xl font-bold text-gray-800">Laad reserveringen en kies je menutemplate</h2>
             <p class="text-sm text-gray-600">Vorige reservaties worden vervangen zodra je een nieuw CSV-bestand laadt.</p>
           </div>
-          <div class="flex flex-wrap gap-2">
+          <!-- <div class="flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">Templates: 9</span>
             <span class="px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-semibold">Print ready</span>
             <span class="px-3 py-1 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold">CSV only</span>
-          </div>
+          </div> -->
         </div>
 
         <div class="grid gap-4 md:grid-cols-3">
