@@ -2,67 +2,101 @@
   <div class="p-6 bg-gray-50 min-h-screen">
     <div class="max-w-screen-xl mx-auto space-y-6">
       <!-- Header / Upload & Template -->
-      <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-        <!-- Upload CSV -->
-        <div class="flex-1">
-          <h4 class="text-lg font-semibold mb-2">Upload CSV bestand van ZenChef</h4>
-          <p class="text-sm text-gray-500 mb-3">
-            Opgelet! Vorige reservaties worden bij upload verwijderd.
-          </p>
-          <label
-            for="file-upload"
-            class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 cursor-pointer transition-colors text-sm font-medium"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
-            </svg>
-            Upload CSV
-          </label>
-          <input id="file-upload" type="file" accept=".csv" @change="handleFileUpload" class="hidden" />
-        </div>
-
-        <!-- Template Dropdown -->
-        <div class="flex-1">
-          <label for="template-select" class="block text-sm font-medium text-gray-700 mb-1 mt-11">Kies een template:</label>
-          <select
-            id="template-select"
-            v-model="selectedTemplate"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="menukaart.html">Standaard Menu</option>
-            <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
-            <option value="menukaart-boxes.html">🔲 Met een box</option>
-            <option value="menukaart-kerst.html">🎄 Kerst</option>
-            <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
-            <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
-            <option value="menukaart-valentijn.html">♥️ Valentijn</option>
-            <option value="menukaart-pasen.html">🐣 Pasen</option>
-            <option value="menukaart-sans-serif.html">Sans-serif font</option>
-          </select>
-        </div>
-
-        <!-- Print Info -->
-        <div class="flex-1 flex flex-col items-start gap-3">
-          <div v-if="date && totalGuests" class="text-gray-700">
-            <p class="font-semibold text-md">Datum: {{ date }}</p>
-            <p>Aantal reservaties: {{ reservations.length - 1 }}</p>
-            <p>Totaal aantal gasten: {{ totalGuests }}</p>
+      <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div class="space-y-1">
+            <p class="text-xs uppercase tracking-widest font-semibold text-blue-500">Zenchef upload</p>
+            <h2 class="text-xl font-bold text-gray-800">Laad reserveringen en kies je menutemplate</h2>
+            <p class="text-sm text-gray-600">Vorige reservaties worden vervangen zodra je een nieuw CSV-bestand laadt.</p>
           </div>
-          <button
-            @click="printAll(reservations)"
-            class="flex items-center gap-2 bg-gray-700 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition-colors"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
-            </svg>
-            Print alle menukaarten
-          </button>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">Templates: 9</span>
+            <span class="px-3 py-1 rounded-full bg-green-50 text-green-700 text-xs font-semibold">Print ready</span>
+            <span class="px-3 py-1 rounded-full bg-gray-50 text-gray-600 text-xs font-semibold">CSV only</span>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <!-- Upload CSV -->
+          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-800 font-semibold">Stap 1</span>
+              <p class="text-sm font-semibold text-gray-800">Upload CSV</p>
+            </div>
+            <p class="text-xs text-gray-600">Enkel .csv. Eerst datum + totaal gasten, daarna reservaties.</p>
+            <label
+              for="file-upload"
+              class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 cursor-pointer transition-colors text-sm font-medium"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
+              </svg>
+              Kies CSV bestand
+            </label>
+            <input id="file-upload" type="file" accept=".csv" @change="handleFileUpload" class="hidden" />
+            <div class="text-xs text-gray-700 bg-white border border-dashed border-gray-200 rounded p-2">
+              <p class="font-semibold">Bestand:</p>
+              <p>{{ selectedFileName || 'Nog geen bestand gekozen' }}</p>
+              <p v-if="uploadMessage" :class="uploadStatusClass" class="mt-2">
+                {{ uploadMessage }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Template Dropdown -->
+          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-semibold">Stap 2</span>
+              <p class="text-sm font-semibold text-gray-800">Kies template</p>
+            </div>
+            <label for="template-select" class="block text-xs font-medium text-gray-700">Menukaart</label>
+            <select
+              id="template-select"
+              v-model="selectedTemplate"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+            >
+              <option value="menukaart.html">Standaard Menu</option>
+              <option value="menukaart-vintage.html">Classic Vintage</option>
+              <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
+              <option value="menukaart-boxes.html">🔲 Met een box</option>
+              <option value="menukaart-kerst.html">🎄 Kerst</option>
+              <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
+              <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+              <option value="menukaart-valentijn.html">♥️ Valentijn</option>
+              <option value="menukaart-pasen.html">🐣 Pasen</option>
+              <option value="menukaart-sans-serif.html">Sans-serif font</option>
+            </select>
+        
+          </div>
+
+          <!-- Print Info -->
+          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs px-2 py-1 rounded bg-purple-100 text-purple-800 font-semibold">Stap 3</span>
+              <p class="text-sm font-semibold text-gray-800">Controle & print</p>
+            </div>
+            <div class="text-gray-700 text-sm space-y-1">
+              <p class="font-semibold" v-if="date">Datum: {{ date }}</p>
+              <p>Reservaties: {{ reservations.length ? reservations.length - 1 : 0 }}</p>
+              <p v-if="totalGuests">Totaal gasten: {{ totalGuests }}</p>
+            </div>
+            <button
+              @click="printAll(reservations)"
+              class="flex items-center justify-center gap-2 w-full bg-gray-800 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-900 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+              </svg>
+              Print alle menukaarten
+            </button>
+            <p class="text-xs text-gray-600">Sortering gebeurt automatisch op tafelnummers.</p>
+          </div>
         </div>
       </div>
 
@@ -85,49 +119,58 @@
 
       <!-- Table -->
       <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <table class="min-w-full table-auto border-collapse">
-          <thead class="bg-gray-100 text-gray-700">
+        <div class="flex items-center justify-between px-4 py-3 text-sm text-gray-600 border-b">
+          <p>{{ filteredReservations.length }} zichtbare rijen · {{ reservations.length ? reservations.length - 1 : 0 }} totaal</p>
+          <p v-if="selectedFileName" class="text-xs text-gray-500 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
+        </div>
+        <table class="min-w-full table-auto">
+          <thead class="bg-gray-100 text-gray-700 text-xs uppercase tracking-wide">
             <tr>
               <th class="px-4 py-2 text-left">Tijd</th>
               <th class="px-4 py-2 text-left">Personen</th>
               <th class="px-4 py-2 text-left">Naam</th>
               <th class="px-4 py-2 text-left">Tafel</th>
               <th class="px-4 py-2 text-left">Notitie</th>
-              <th class="px-4 py-2"></th>
-              <th class="px-4 py-2"></th>
+              <th class="px-4 py-2 text-right">Acties</th>
             </tr>
           </thead>
           <tbody>
             <tr
               v-for="(entry, index) in filteredReservations"
               :key="index"
-              :class="entry.name === 'beste klant' ? 'bg-gray-50' : 'hover:bg-gray-50'"
-              class="text-sm border-b"
+              :class="getRowClasses(entry, index)"
             >
-              <td class="px-4 py-2">{{ entry.time.replace(/"/g, "") }}</td>
-              <td class="px-4 py-2">{{ entry.people }}</td>
-              <td class="px-4 py-2">{{ entry.name }}</td>
-              <td class="px-4 py-2">{{ entry.table }}</td>
-              <td class="px-4 py-2 max-w-xs" v-html="entry.note"></td>
-              <td class="px-2 py-1">
-  <button
-    @click="printMenu(entry)"
-    class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-white bg-gray-800 rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 active:scale-95 transition-all duration-150"
-  >
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
-    </svg>
-    Print Menu
-  </button>
-</td>
-
-              <td class="px-2 py-1">
-                <button
-                  @click="deleteReservation(index)"
-                  class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  x
-                </button>
+              <td class="px-4 py-2 font-semibold text-gray-900">{{ entry.time.replace(/"/g, "") }}</td>
+              <td class="px-4 py-2">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                  {{ entry.people || '-' }}
+                </span>
+              </td>
+              <td class="px-4 py-2 text-gray-900 font-medium">{{ entry.name }}</td>
+              <td class="px-4 py-2">
+                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-800">
+                  {{ entry.table }}
+                </span>
+              </td>
+              <td class="px-4 py-2 max-w-xs text-gray-700 text-sm" v-html="entry.note || '<span class=&quot;text-gray-400&quot;>—</span>'"></td>
+              <td class="px-4 py-2 text-right">
+                <div class="flex justify-end gap-2">
+                  <button
+                    @click="printMenu(entry)"
+                    class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-white bg-gray-800 rounded-md shadow hover:bg-gray-900 active:scale-95 transition"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
+                    </svg>
+                    Print
+                  </button>
+                  <button
+                    @click="deleteReservation(index)"
+                    class="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
+                  >
+                    Verwijder
+                  </button>
+                </div>
               </td>
             </tr>
             <tr v-if="reservations.length === 0">
@@ -183,6 +226,9 @@ export default {
 
       date: "", // Opslag voor de datum
       totalGuests: "", // Opslag voor het totaal aantal gasten
+      selectedFileName: "",
+      uploadMessage: "",
+      uploadStatus: "",
     };
   },
   mounted() {
@@ -232,6 +278,12 @@ export default {
       return this.reservations.filter((entry) =>
         entry.name.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
+    },
+    uploadStatusClass() {
+      if (this.uploadStatus === "success") return "text-green-700";
+      if (this.uploadStatus === "error") return "text-red-700";
+      if (this.uploadStatus === "info") return "text-blue-700";
+      return "text-gray-600";
     },
     // filteredReservations() {
     //   // Filter de gegevens en verwijder ongebruikte data
@@ -293,17 +345,23 @@ export default {
         .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
 };
 
-    const filledTemplate = template
-    .replace("{{name}}", capitalizeName(reservation.name)) // Gebruik capitalizeName hier
-    .replace("{{date}}", this.date)
-    .replace("{{table}}", reservation.table)
-    .replace("{{time}}", reservation.time.replace(/\"/g, "")) // Remove / from time
-    .replace("{{people}}", reservation.people)
-    .replace("{{note}}", reservation.note || " ")
-    .replace("{{block1}}", block1)
-    .replace("{{block2}}", block2)
-    .replace("{{block3}}", block3)
-    .replace("{{currentDate}}", formatDate());
+    const replacements = {
+      "{{name}}": capitalizeName(reservation.name),
+      "{{date}}": this.date,
+      "{{table}}": reservation.table,
+      "{{time}}": reservation.time.replace(/\"/g, ""),
+      "{{people}}": reservation.people,
+      "{{note}}": reservation.note || " ",
+      "{{block1}}": block1,
+      "{{block2}}": block2,
+      "{{block3}}": block3,
+      "{{currentDate}}": formatDate(),
+    };
+
+    let filledTemplate = template;
+    Object.entries(replacements).forEach(([token, value]) => {
+      filledTemplate = filledTemplate.replace(new RegExp(token, "g"), value);
+    });
 
 
       return filledTemplate;
@@ -331,6 +389,49 @@ export default {
     resetSearch() {
       this.searchQuery = "";
     },
+    getTimeColor(timeStr) {
+      if (!timeStr) return "";
+      const cleaned = timeStr.replace(/"/g, "").trim();
+      const match = cleaned.match(/^(\d{1,2})/);
+      if (!match) return "";
+      const hour = parseInt(match[1], 10);
+      if (Number.isNaN(hour)) return "";
+
+      // Specifieke blokken per uur
+      if (hour < 12) return "bg-gray-50";        // voor 12u
+      if (hour === 12) return "bg-emerald-50";   // 12u
+      if (hour === 13) return "bg-emerald-100";  // 13u
+      if (hour === 14) return "bg-emerald-200";  // 14u
+      if (hour === 15) return "bg-emerald-300/60"; // 15u
+      if (hour < 18) return "bg-sky-50";         // 16-17u
+      if (hour === 18) return "bg-amber-50";     // 18u
+      if (hour === 19) return "bg-amber-100";    // 19u
+      if (hour === 20) return "bg-rose-50";      // 20u
+      if (hour === 21) return "bg-rose-100";     // 21u
+      return "bg-slate-100";                     // later
+    },
+    getRowClasses(entry, index) {
+      const classes = [
+        "text-sm",
+        "border-b",
+        "last:border-0",
+        "transition",
+        "hover:bg-gray-50",
+      ];
+
+      if (entry.name === "beste klant") {
+        classes.push("bg-amber-100");
+        return classes;
+      }
+
+      const timeClass = this.getTimeColor(entry.time);
+      if (timeClass) {
+        classes.push(timeClass);
+      } else {
+        classes.push(index % 2 ? "bg-gray-50/50" : "bg-white");
+      }
+      return classes;
+    },
     deleteReservation(index) {
       // Remove the reservation from the array
       this.reservations.splice(index, 1);
@@ -342,6 +443,15 @@ export default {
     handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
+        if (!file.name.toLowerCase().endsWith(".csv")) {
+          this.selectedFileName = file.name;
+          this.uploadMessage = "Alleen .csv bestanden worden ondersteund.";
+          this.uploadStatus = "error";
+          return;
+        }
+        this.selectedFileName = file.name;
+        this.uploadMessage = "Bezig met laden...";
+        this.uploadStatus = "info";
         // Clear previous data from localStorage before saving new data
         localStorage.removeItem("reservations"); // Verwijder bestaande reserveringen
         localStorage.removeItem("date"); // Verwijder oude datum
@@ -376,6 +486,13 @@ export default {
               "reservations",
               JSON.stringify(this.reservations),
             ); // Sla de reserveringen op
+
+            this.uploadMessage = `Succes: ${this.reservations.length - 1} reservaties geladen.`;
+            this.uploadStatus = "success";
+          },
+          error: () => {
+            this.uploadMessage = "Fout bij het lezen van het CSV-bestand.";
+            this.uploadStatus = "error";
           },
         });
       }

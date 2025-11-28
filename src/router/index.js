@@ -3,6 +3,7 @@ import HomePage from "@/components/HomePage.vue";
 import EditPage from "@/components/EditPage.vue";
 import ResetPage from "@/components/ResetPage.vue";
 import SchoolvakantiesPage from "@/components/Schoolvakanties.vue";
+import RestaurantTranslationsPage from "@/components/RestaurantTranslations.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/schoolvakanties",
     name: "Schoolvakanties",
     component: SchoolvakantiesPage, // De pagina waar je WYSIWYG-editor komt
+  },
+  {
+    path: "/vertalingen",
+    name: "RestaurantTranslations",
+    component: RestaurantTranslationsPage,
   },
 ];
 
