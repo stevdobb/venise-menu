@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl mx-auto space-y-6">
+  <div class="py-6 mx-auto space-y-6">
     <div class="bg-gradient-to-r from-indigo-50 via-white to-emerald-50 border border-indigo-100 rounded-xl p-6 shadow-sm">
       <p class="text-xs uppercase font-semibold tracking-widest text-indigo-600">Taalhulp in de zaal</p>
       <h1 class="text-3xl font-bold text-gray-900">Handige restaurantvertalingen</h1>

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-screen-xl p-4 sm:p-6 lg:p-8">
+  <div class="mx-auto max-w-screen-xl py-6 ">
     <div class="container bg-white rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
       <div class="bg-gradient-to-r from-indigo-50 via-white to-sky-50 border border-indigo-100 rounded-xl p-5 md:p-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
