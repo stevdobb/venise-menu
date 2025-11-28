@@ -123,6 +123,13 @@
           <p>{{ filteredReservations.length }} zichtbare rijen · {{ reservations.length ? reservations.length - 1 : 0 }} totaal</p>
           <p v-if="selectedFileName" class="text-xs text-gray-500 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
         </div>
+        <div class="px-4 pt-3 pb-4 text-xs text-gray-700 flex flex-wrap items-center gap-3 border-b border-gray-100">
+          <span class="font-semibold text-gray-800">Legenda:</span>
+          <div v-for="item in timeColorLegend" :key="item.label" class="flex items-center gap-2">
+            <span :class="['w-4 h-4 rounded border border-gray-200 shrink-0', item.class]"></span>
+            <span class="text-gray-600">{{ item.label }}</span>
+          </div>
+        </div>
         <table class="min-w-full table-auto">
           <thead class="bg-gray-100 text-gray-700 text-xs uppercase tracking-wide">
             <tr>
@@ -279,6 +286,21 @@ export default {
         entry.name.toLowerCase().includes(this.searchQuery.toLowerCase()),
       );
     },
+    timeColorLegend() {
+      return [
+        { label: "Voor 12u", class: "bg-gray-50" },
+        { label: "12u", class: "bg-emerald-50" },
+        { label: "13u", class: "bg-emerald-100" },
+        { label: "14u", class: "bg-emerald-200" },
+        { label: "15u", class: "bg-emerald-300/60" },
+        { label: "16-17u", class: "bg-sky-50" },
+        { label: "18u", class: "bg-amber-50" },
+        { label: "19u", class: "bg-amber-100" },
+        { label: "20u", class: "bg-orange-100" },
+        { label: "21u", class: "bg-orange-200" },
+        { label: "Later", class: "bg-slate-100" },
+      ];
+    },
     uploadStatusClass() {
       if (this.uploadStatus === "success") return "text-green-700";
       if (this.uploadStatus === "error") return "text-red-700";
@@ -390,10 +412,11 @@ export default {
       this.searchQuery = "";
     },
     getTimeColor(timeStr) {
-      if (!timeStr) return "";
+      if (!timeStr) return "bg-white";
       const cleaned = timeStr.replace(/"/g, "").trim();
+      if (!cleaned || cleaned === "-") return "bg-white";
       const match = cleaned.match(/^(\d{1,2})/);
-      if (!match) return "";
+      if (!match) return "bg-white";
       const hour = parseInt(match[1], 10);
       if (Number.isNaN(hour)) return "";
 
