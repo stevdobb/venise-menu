@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="min-h-screen bg-gray-50">
-    <header class="shadow-sm bg-white/90 backdrop-blur">
-      <nav class="border-b border-gray-200 px-4 lg:px-6 py-3">
+    <header class="shadow-sm bg-gradient-to-r from-white via-slate-50 to-white">
+      <nav class="border-b border-gray-200/80 px-4 lg:px-6 py-3 relative">
         <div class="flex items-center max-w-screen-xl mx-auto gap-4">
           <!-- Logo -->
           <router-link to="/" class="flex items-center">
@@ -13,8 +13,8 @@
             <li v-for="item in navItems" :key="item.path">
               <router-link
                 :to="item.path"
-                class="px-3 py-2 rounded-md hover:bg-blue-50 hover:text-blue-700 transition flex items-center gap-1"
-                :class="{ 'bg-blue-100 text-blue-700 shadow-sm': $route.path === item.path }"
+                class="px-4 py-2 rounded-full border border-transparent hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition flex items-center gap-2 shadow-sm/50"
+                :class="{ 'bg-blue-600 text-white shadow-md border-blue-600': $route.path === item.path }"
               >
                 <span>{{ item.label }}</span>
               </router-link>
@@ -22,7 +22,9 @@
           </ul>
 
           <div class="ml-auto flex items-center gap-2">
-            <!-- <span class="hidden md:inline-block text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold">Venise tools</span> -->
+            <!-- <span class="hidden md:inline-block text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold">
+              Venise tools
+            </span> -->
             <!-- Mobile Hamburger -->
             <button
               @click="toggleMenu"
@@ -41,17 +43,24 @@
         </div>
 
         <!-- Mobile Menu -->
-        <transition name="slide-fade">
+        <transition name="fade">
+          <div
+            v-if="mobileMenuOpen"
+            class="lg:hidden fixed inset-0 bg-black/40"
+            @click="toggleMenu"
+          ></div>
+        </transition>
+        <transition name="slide-down">
           <ul
             v-if="mobileMenuOpen"
-            class="lg:hidden mt-2 space-y-1 px-4 pb-4 border-t border-gray-200 text-gray-700 font-medium"
+            class="lg:hidden fixed top-16 inset-x-0 mx-4 rounded-2xl bg-white shadow-2xl border border-gray-100 text-gray-800 font-medium overflow-hidden"
           >
-            <li v-for="item in navItems" :key="item.path">
+            <li v-for="item in navItems" :key="item.path" class="border-b last:border-0 border-gray-100">
               <router-link
                 @click="toggleMenu"
                 :to="item.path"
-                class="block py-2 px-3 rounded hover:bg-blue-100 hover:text-blue-600 text-left"
-                :class="{ 'bg-blue-100 text-blue-600': $route.path === item.path }"
+                class="block py-3 px-4 hover:bg-blue-50 hover:text-blue-700"
+                :class="{ 'bg-blue-600 text-white': $route.path === item.path }"
               >
                 {{ item.label }}
               </router-link>
@@ -97,5 +106,23 @@ body {
 .slide-fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.25s ease;
+}
+.slide-down-enter-from,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 </style>
