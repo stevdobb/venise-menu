@@ -1,19 +1,19 @@
 <template>
   <div class="py-6 mx-auto space-y-6">
-    <div class="bg-gradient-to-r from-indigo-50 via-white to-emerald-50 border border-indigo-100 rounded-xl p-6 shadow-sm">
-      <p class="text-xs uppercase font-semibold tracking-widest text-indigo-600">Taalhulp in de zaal</p>
+    <div class="bg-gradient-to-r from-gray-50 via-white to-gray-100 border border-gray-200 rounded-xl p-6 shadow-sm">
+      <p class="text-xs uppercase font-semibold tracking-widest text-gray-600">Taalhulp in de zaal</p>
       <h1 class="text-3xl font-bold text-gray-900">Handige restaurantvertalingen</h1>
       <p class="text-sm text-gray-700">
         Vind snel hoe je veelgebruikte woorden zegt in het Engels, Frans en Duits. Ideaal voor zaal, bar en keuken.
       </p>
       <div class="mt-4 grid gap-3 md:grid-cols-3">
-        <div class="p-3 bg-white border border-gray-100 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
           <span class="font-semibold">Totaal termen:</span> {{ translations.length }}
         </div>
-        <div class="p-3 bg-white border border-gray-100 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
           <span class="font-semibold">Categorieën:</span> {{ categories.length }}
         </div>
-        <div class="p-3 bg-white border border-gray-100 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
           Tip: filter op bv. "glutenvrij", "rekening", "mild".
         </div>
       </div>
@@ -141,11 +141,32 @@ const translations = [
   { nl: 'Tonijn', en: 'Tuna', fr: 'Thon', de: 'Thunfisch', category: 'Vis' },
   { nl: 'Forel', en: 'Trout', fr: 'Truite', de: 'Forelle', category: 'Vis' },
   { nl: 'Tarbot', en: 'Turbot', fr: 'Turbot', de: 'Steinbutt', category: 'Vis' },
+  { nl: 'Rog', en: 'Skate', fr: 'Raie', de: 'Rochen', category: 'Vis' },
+  { nl: 'Zeebaars', en: 'Sea bass', fr: 'Bar / loup de mer', de: 'Seebarsch', category: 'Vis' },
+  { nl: 'Heilbot', en: 'Halibut', fr: 'Flétan', de: 'Heilbutt', category: 'Vis' },
+  { nl: 'Schelvis', en: 'Haddock', fr: 'Églefin', de: 'Schellfisch', category: 'Vis' },
+  { nl: 'Zeeduivel', en: 'Monkfish', fr: 'Lotte', de: 'Seeteufel', category: 'Vis' },
+  { nl: 'Sint-jakobsschelp', en: 'Scallop', fr: 'Coquille Saint-Jacques', de: 'Jakobsmuschel', category: 'Vis' },
+  { nl: 'Paling', en: 'Eel', fr: 'Anguille', de: 'Aal', category: 'Vis' },
+  { nl: 'Inktvis', en: 'Squid', fr: 'Calamar', de: 'Tintenfisch', category: 'Vis' },
+  { nl: 'Octopus', en: 'Octopus', fr: 'Poulpe', de: 'Oktopus', category: 'Vis' },
+  { nl: 'Kreeft', en: 'Lobster', fr: 'Homard', de: 'Hummer', category: 'Vis' },
+  { nl: 'Krab', en: 'Crab', fr: 'Crabe', de: 'Krabbe', category: 'Vis' },
+  { nl: 'Haring', en: 'Herring', fr: 'Hareng', de: 'Hering', category: 'Vis' },
   { nl: 'Varkenshaas', en: 'Pork tenderloin', fr: 'Filet de porc', de: 'Schweinefilet', category: 'Vlees' },
   { nl: 'Lamskroon', en: 'Rack of lamb', fr: 'Carré d’agneau', de: 'Lammkarree', category: 'Vlees' },
   { nl: 'Eendenborst', en: 'Duck breast', fr: 'Magret de canard', de: 'Entenbrust', category: 'Vlees' },
   { nl: 'Kalfszwezerik', en: 'Sweetbreads', fr: 'Ris de veau', de: 'Kalbsbries', category: 'Vlees' },
   { nl: 'Gehaktbal', en: 'Meatball', fr: 'Boulettes', de: 'Frikadelle', category: 'Vlees' },
+  { nl: 'Côte à l’os', en: 'Bone-in rib steak', fr: 'Côte à l’os', de: 'Rippensteak mit Knochen', category: 'Vlees' },
+  { nl: 'Ribeye', en: 'Ribeye steak', fr: 'Entrecôte ribeye', de: 'Ribeye-Steak', category: 'Vlees' },
+  { nl: 'Entrecote', en: 'Sirloin steak', fr: 'Entrecôte', de: 'Rumpsteak', category: 'Vlees' },
+  { nl: 'T-bonesteak', en: 'T-bone steak', fr: 'T-bone', de: 'T-Bone-Steak', category: 'Vlees' },
+  { nl: 'Tomahawk', en: 'Tomahawk steak', fr: 'Tomahawk', de: 'Tomahawk-Steak', category: 'Vlees' },
+  { nl: 'Ossenhaas', en: 'Beef tenderloin', fr: 'Filet de bœuf', de: 'Rinderfilet', category: 'Vlees' },
+  { nl: 'Bavette', en: 'Flank steak', fr: 'Bavette', de: 'Flanksteak', category: 'Vlees' },
+  { nl: 'Short rib', en: 'Short rib', fr: 'Plat de côte', de: 'Short Rib', category: 'Vlees' },
+  { nl: 'Runderwang', en: 'Beef cheek', fr: 'Joue de bœuf', de: 'Rinderbacke', category: 'Vlees' },
   { nl: 'Charcuterie', en: 'Cold cuts', fr: 'Charcuterie', de: 'Aufschnitt', category: 'Gerechten' },
   { nl: 'Ambachtelijk brood', en: 'Artisanal bread', fr: 'Pain artisanal', de: 'Handwerkliches Brot', category: 'Service' },
   { nl: 'Olijfolie', en: 'Olive oil', fr: 'Huile d’olive', de: 'Olivenöl', category: 'Service' },
