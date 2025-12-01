@@ -95,6 +95,15 @@
               </svg>
               Print alle menukaarten
             </button>
+            <button
+              @click="openClearModal"
+              class="flex items-center justify-center gap-2 w-full bg-red-600 text-white px-4 py-2 rounded-md shadow hover:bg-red-700 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
+              </svg>
+              Wis reservaties
+            </button>
             <!-- <p class="text-xs text-gray-600">Sortering gebeurt automatisch op tafelnummers.</p> -->
           </div>
         </div>
@@ -212,6 +221,31 @@
         </form>
       </div>
     </div>
+    <div
+      v-if="showClearModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+    >
+      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 space-y-4">
+        <h3 class="text-lg font-semibold text-gray-900">Reservaties wissen</h3>
+        <p class="text-sm text-gray-700">
+          Weet je zeker dat je alle opgeslagen reservaties wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
+        </p>
+        <div class="flex justify-end gap-2">
+          <button
+            @click="closeClearModal"
+            class="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100"
+          >
+            Annuleer
+          </button>
+          <button
+            @click="confirmClearReservations"
+            class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+          >
+            Verwijder
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -239,6 +273,7 @@ export default {
       selectedFileName: "",
       uploadMessage: "",
       uploadStatus: "",
+      showClearModal: false,
     };
   },
   mounted() {
@@ -464,6 +499,22 @@ export default {
 
       // Update the localStorage with the modified reservations array
       localStorage.setItem("reservations", JSON.stringify(this.reservations));
+    },
+    openClearModal() {
+      this.showClearModal = true;
+    },
+    closeClearModal() {
+      this.showClearModal = false;
+    },
+    confirmClearReservations() {
+      localStorage.removeItem("reservations");
+      localStorage.removeItem("date");
+      localStorage.removeItem("totalGuests");
+      this.reservations = [];
+      this.date = "";
+      this.totalGuests = "";
+      this.selectedFileName = "";
+      this.showClearModal = false;
     },
 
     handleFileUpload(event) {

@@ -71,6 +71,21 @@
         </svg>
         Export naar Word
       </button>
+      <button
+        @click="resetReservations"
+        class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
+        </svg>
+        Verwijder reservaties
+      </button>
     </div>
 
     <div
@@ -78,6 +93,12 @@
       class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
     >
       Inhoud opgeslagen!
+    </div>
+    <div
+      v-if="showResetNotification"
+      class="fixed top-5 right-5 bg-red-600 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
+    >
+      Reservaties verwijderd.
     </div>
   </div>
 </template>
@@ -94,6 +115,7 @@ export default {
       editorBlock3: null, // Quill editor voor block-2
       showNotification: false,
       lastSaved: null,
+      showResetNotification: false,
     };
   },
   mounted() {
@@ -191,6 +213,13 @@ export default {
       // Hide notification after 3 seconds
       setTimeout(() => {
         this.showNotification = false;
+      }, 3000);
+    },
+    resetReservations() {
+      localStorage.removeItem("reservations");
+      this.showResetNotification = true;
+      setTimeout(() => {
+        this.showResetNotification = false;
       }, 3000);
     },
     exportToWord() {

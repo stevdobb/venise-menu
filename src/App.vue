@@ -74,7 +74,6 @@ const mobileMenuOpen = ref(false)
 const navItems = [
   { path: '/', label: 'Home' },
   { path: '/edit', label: 'Wijzig menu' },
-  { path: '/reset', label: 'Reset' },
   { path: '/schoolvakanties', label: 'Schoolvakanties' },
   { path: '/vertalingen', label: 'Vertalingen' },
 ]
