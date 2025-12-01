@@ -1,96 +1,118 @@
 <template>
-  <div class="p-6 max-w-7xl mx-auto">
-    <h1 class="text-2xl font-semibold mb-4">Bewerk menukaart</h1>
-
-    <div
-      class="p-2 px-4 text-sm text-gray-800 rounded-lg bg-gray-100 dark:bg-gray-100 dark:text-black dark:border dark:border-gray-200 dark:text-gray-700 mb-4"
-      role="alert"
-      v-if="lastSaved"
-    >
-      Laatst opgeslagen op: <span class="font-medium">{{ lastSaved }}</span>
-    </div>
-    <div
-      class="flex items-center p-2 px-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-yellow-50 dark:text-yellow-800 dark:border dark:border-yellow-300"
-      role="alert"
-      v-else
-    >
-      <svg
-        class="flex-shrink-0 inline w-4 h-4 me-3"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
-        <path
-          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
-        />
-      </svg>
-      Dit is een standaard versie. Er zijn nog geen aanpassingen gemaakt hier
-      aan.
-    </div>
-    <!-- <p v-if="lastSaved" class="text-gray-500 mb-4">
-      Laatst opgeslagen op: {{ lastSaved }}
-    </p> -->
-    <div class="flex flex-wrap gap-4">
-      <div class="block-3 flex-1 min-w-[300px]">
-        <h2 class="text-xl font-bold mb-2">Tekst links boven</h2>
-        <div id="editorBlock3" class="editor-small"></div>
+  <div class="py-6 space-y-6">
+    <div class="bg-gradient-to-r from-gray-50 via-white to-gray-100 border border-gray-200 rounded-xl p-6 shadow-sm">
+      <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div class="space-y-1">
+          <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Wijzig menu</p>
+          <h1 class="text-3xl font-bold text-gray-900">Bewerk menukaart</h1>
+          <p class="text-sm text-gray-700">
+            Pas de standaardteksten aan, sla lokaal op en exporteer desgewenst een backup voor Word.
+          </p>
+        </div>
+        <div class="grid gap-2 w-full sm:w-auto">
+          <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800">
+            Laatst opgeslagen:
+            <span class="font-semibold" v-if="lastSaved">{{ lastSaved }}</span>
+            <span class="font-semibold text-gray-500" v-else>Nog niet opgeslagen</span>
+          </div>
+          <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800">
+            Tekstblokken: <span class="font-semibold">3</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="flex flex-wrap gap-4">
-      <div class="block-1 flex-1 min-w-[300px]">
-        <h2 class="text-xl font-bold mb-2">Tekst links onder</h2>
-        <div id="editorBlock1" class="editor"></div>
-      </div>
-
-      <div class="block-2 flex-1 min-w-[300px]">
-        <h2 class="text-xl font-bold mb-2">Tekst rechts</h2>
-        <div id="editorBlock2" class="editor"></div>
-      </div>
-    </div>
-
-    <div class="flex flex-wrap gap-2 mt-4">
-      <button
-        @click="saveContent"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Opslaan
-      </button>
-      <button
-        @click="exportToWord"
-        class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded"
+      <div
+        class="mt-4 flex items-center gap-2 px-4 py-3 text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-lg"
+        role="alert"
+        v-if="!lastSaved"
       >
         <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
+          class="flex-shrink-0 inline w-4 h-4"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 20 20"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2m-4 9v3m-4 0h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm8-13H9v4h6V6Z" />
+          <path
+            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"
+          />
         </svg>
-        Export naar Word
-      </button>
-      <button
-        @click="resetReservations"
-        class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded"
-      >
-        <svg
-          class="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          viewBox="0 0 24 24"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
-        </svg>
-        Verwijder reservaties
-      </button>
+        Dit is een standaard versie. Er zijn nog geen aanpassingen gemaakt hier aan.
+      </div>
+    </div>
+
+    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5 space-y-5">
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Tekstblokken</p>
+          <h2 class="text-xl font-bold text-gray-900">Werk de menu-inhoud bij</h2>
+          <p class="text-sm text-gray-600">Aanpassingen worden lokaal opgeslagen in je browser.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            @click="saveContent"
+            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
+            </svg>
+            Opslaan
+          </button>
+          <button
+            @click="exportToWord"
+            class="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2m-4 9v3m-4 0h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm8-13H9v4h6V6Z" />
+            </svg>
+            Export naar Word
+          </button>
+          <button
+            @click="resetReservations"
+            class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
+            </svg>
+            Verwijder reservaties
+          </button>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+          <div>
+            <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 3</p>
+            <h3 class="text-lg font-semibold text-gray-900">Tekst links boven</h3>
+            <p class="text-sm text-gray-600">Korte introductie bovenaan de menukaart.</p>
+          </div>
+          <div id="editorBlock3" class="editor-small"></div>
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+            <div>
+              <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 1</p>
+              <h3 class="text-lg font-semibold text-gray-900">Tekst links onder</h3>
+              <p class="text-sm text-gray-600">Tapas of bijgerechten die naast het menu staan.</p>
+            </div>
+            <div id="editorBlock1" class="editor"></div>
+          </div>
+
+          <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+            <div>
+              <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 2</p>
+              <h3 class="text-lg font-semibold text-gray-900">Tekst rechts</h3>
+              <p class="text-sm text-gray-600">Hoofdgerechten, suggesties en extra info.</p>
+            </div>
+            <div id="editorBlock2" class="editor"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div
       v-if="showNotification"
-      class="fixed top-5 right-5 bg-green-500 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
+      class="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
     >
       Inhoud opgeslagen!
     </div>
@@ -287,20 +309,20 @@ export default {
 };
 </script>
 <style>
+.editor,
+.editor-small {
+  width: 100%;
+  background: #fff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: inset 0 1px 0 #f3f4f6;
+}
 .editor {
   height: 800px;
-  background: #fff;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-bottom: 1rem;
 }
 .editor-small {
-  height: 300px;
-  background: #fff;
-  color: black;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  height: 280px;
 }
 </style>
