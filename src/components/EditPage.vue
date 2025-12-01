@@ -49,12 +49,29 @@
       </div>
     </div>
 
-    <button
-      @click="saveContent"
-      class="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      Opslaan
-    </button>
+    <div class="flex flex-wrap gap-2 mt-4">
+      <button
+        @click="saveContent"
+        class="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Opslaan
+      </button>
+      <button
+        @click="exportToWord"
+        class="flex items-center gap-2 bg-black text-white px-4 py-2 rounded"
+      >
+        <svg
+          class="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2m-4 9v3m-4 0h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm8-13H9v4h6V6Z" />
+        </svg>
+        Export naar Word
+      </button>
+    </div>
 
     <div
       v-if="showNotification"
@@ -175,6 +192,67 @@ export default {
       setTimeout(() => {
         this.showNotification = false;
       }, 3000);
+    },
+    exportToWord() {
+      const block1 = this.editorBlock1.root.innerHTML;
+      const block2 = this.editorBlock2.root.innerHTML;
+      const block3 = this.editorBlock3.root.innerHTML;
+      const now = new Date();
+      const timestamp = now.toLocaleString("nl-BE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const docTitle = "Backup menukaart";
+      const htmlContent = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+          <head>
+            <meta charset='utf-8'>
+            <title>${docTitle}</title>
+            <style>
+              body { font-family: Arial, sans-serif; color: #111; line-height: 1.5; }
+              h1 { font-size: 24px; margin: 0 0 4px; }
+              .meta { margin: 0 0 20px; color: #555; font-size: 12px; }
+              .section { margin-bottom: 24px; }
+              .section h2 { font-size: 16px; margin-bottom: 8px; }
+              .content { border: 1px solid #d1d5db; padding: 12px; border-radius: 6px; background: #fafafa; }
+            </style>
+          </head>
+          <body>
+            <h1>${docTitle}</h1>
+            <p class="meta">
+              Geëxporteerd op: ${timestamp}${this.lastSaved ? `<br>Laatst opgeslagen in app: ${this.lastSaved}` : ""}
+            </p>
+            <div class="section">
+              <h2>Tekst links boven</h2>
+              <div class="content">${block3}</div>
+            </div>
+            <div class="section">
+              <h2>Tekst links onder</h2>
+              <div class="content">${block1}</div>
+            </div>
+            <div class="section">
+              <h2>Tekst rechts</h2>
+              <div class="content">${block2}</div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      // Create a Word-compatible .doc from the HTML so it opens nicely in Word.
+      const blob = new Blob(["\ufeff", htmlContent], {
+        type: "application/msword",
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `menukaart-backup-${now.toISOString().slice(0, 10)}.doc`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     },
   },
 };
