@@ -117,28 +117,40 @@
         </div>
       </div>
 
-      <!-- Search Bar -->
-      <div class="flex gap-2">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Zoek op naam..."
-          class="flex-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
-        />
-        <button
-          v-if="searchQuery"
-          @click="resetSearch"
-          class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 shadow transition-colors"
-        >
-          Reset
-        </button>
-      </div>
-
-      <!-- Table -->
+      <!-- Tabel + Zoek -->
       <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <div class="flex items-center justify-between px-4 py-3 text-sm text-gray-600 border-b">
-          <p>{{ filteredReservations.length }} zichtbare rijen · {{ reservations.length ? reservations.length - 1 : 0 }} totaal</p>
-          <p v-if="selectedFileName" class="text-xs text-gray-500 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between px-4 py-3 text-sm text-gray-700 border-b bg-gray-50">
+          <div class="flex items-center gap-3 flex-wrap">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-900 text-white text-xs font-semibold shadow-sm">
+              {{ filteredReservations.length }} zichtbare rijen
+            </span>
+            <span class="text-gray-600 text-xs">
+              {{ reservations.length ? reservations.length - 1 : 0 }} totaal
+            </span>
+            <p v-if="selectedFileName" class="text-xs text-gray-500 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
+          </div>
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <div class="relative w-full md:w-64">
+              <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                </svg>
+              </span>
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Zoek op naam..."
+                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none text-sm"
+              />
+            </div>
+            <button
+              v-if="searchQuery"
+              @click="resetSearch"
+              class="px-3 py-2 text-xs font-semibold bg-gray-900 text-white rounded-lg shadow hover:bg-black transition"
+            >
+              Reset
+            </button>
+          </div>
         </div>
         <div class="px-4 pt-3 pb-4 text-xs text-gray-700 flex flex-wrap items-center gap-3 border-b border-gray-100">
           <span class="font-semibold text-gray-800">Legenda:</span>
