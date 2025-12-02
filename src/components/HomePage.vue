@@ -72,7 +72,15 @@
               <option value="menukaart-pasen.html">🐣 Pasen</option>
               <option value="menukaart-sans-serif.html">Sans-serif font</option>
             </select>
-        
+            <button
+              @click="openTemplatePreview"
+              class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 text-white text-sm font-semibold rounded-md shadow hover:bg-gray-900 transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h4.5M9 18l2.25 2.25L18 9" />
+              </svg>
+              Bekijk voorbeeld
+            </button>
           </div>
 
           <!-- Print Info -->
@@ -246,6 +254,37 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="showTemplatePreview"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
+    >
+      <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full p-5 md:p-6 space-y-4 relative">
+        <div class="flex items-start justify-between gap-3">
+          <div class="space-y-1">
+            <h3 class="text-lg font-semibold text-gray-900">Voorbeeld met "Beste klant"</h3>
+            <p class="text-sm text-gray-600">Template: {{ selectedTemplate }}</p>
+          </div>
+          <button
+            @click="closeTemplatePreview"
+            class="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800 transition"
+            aria-label="Sluit voorbeeld"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M6 18 18 6" />
+            </svg>
+          </button>
+        </div>
+        <div class="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+          <div v-if="previewLoading" class="p-6 text-center text-gray-700">Voorbeeld laden...</div>
+          <iframe
+            v-else
+            class="w-full h-[70vh] bg-white"
+            :srcdoc="templatePreviewHtml"
+            title="Template voorbeeld"
+          ></iframe>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -274,6 +313,9 @@ export default {
       uploadMessage: "",
       uploadStatus: "",
       showClearModal: false,
+      showTemplatePreview: false,
+      templatePreviewHtml: "",
+      previewLoading: false,
     };
   },
   mounted() {
@@ -354,6 +396,20 @@ export default {
     // },
   },
   methods: {
+    getBesteKlantReservation() {
+      const match = this.reservations.find(
+        (entry) => entry.name && entry.name.toLowerCase().includes("beste klant"),
+      );
+      return (
+        match || {
+          time: "19:00",
+          people: "2",
+          name: "Beste klant",
+          table: "1",
+          note: "Voorbeeldnotitie voor deze template-preview.",
+        }
+      );
+    },
     async generateHtml(reservation) {
       // Laad het externe HTML-bestand
       const selectedTemplate = this.selectedTemplate;
@@ -425,6 +481,26 @@ export default {
 
 
       return filledTemplate;
+    },
+    openTemplatePreview() {
+      const reservation = this.getBesteKlantReservation();
+      this.previewLoading = true;
+      this.showTemplatePreview = true;
+      this.generateHtml(reservation)
+        .then((html) => {
+          this.templatePreviewHtml = html;
+        })
+        .catch(() => {
+          this.templatePreviewHtml =
+            "<div style='padding:16px;font-family:Arial,sans-serif;color:#b91c1c;'>Voorbeeld kon niet worden geladen.</div>";
+        })
+        .finally(() => {
+          this.previewLoading = false;
+        });
+    },
+    closeTemplatePreview() {
+      this.showTemplatePreview = false;
+      this.templatePreviewHtml = "";
     },
 
     addReservation() {
