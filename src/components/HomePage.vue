@@ -224,8 +224,8 @@
                     aria-label="Verwijder reservering"
                     class="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
                   >
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 7H5m3 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-1 4v5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5m3-3v8" />
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M6 18 18 6" />
                     </svg>
                   </button>
                 </div>
