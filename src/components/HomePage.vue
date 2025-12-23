@@ -82,14 +82,22 @@
             >
               <option value="menukaart.html">Standaard Menu</option>
               <option value="menukaart-vintage.html">Classic Vintage</option>
+              <option value="menukaart-vintage-boxes.html">Classic Vintage (box)</option>
               <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
+              <option value="menukaart-twee-paginas-boxes.html">📑 2 pagina's (box)</option>
               <option value="menukaart-boxes.html">🔲 Met een box</option>
               <option value="menukaart-kerst.html">🎄 Kerst</option>
+              <option value="menukaart-kerst-boxes.html">🎄 Kerst (box)</option>
               <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
+              <option value="menukaart-nieuwjaar-boxes.html">🥂 Nieuwjaar (box)</option>
               <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+              <option value="menukaart-verjaardag-boxes.html">🎈 Verjaardag (box)</option>
               <option value="menukaart-valentijn.html">♥️ Valentijn</option>
+              <option value="menukaart-valentijn-boxes.html">♥️ Valentijn (box)</option>
               <option value="menukaart-pasen.html">🐣 Pasen</option>
+              <option value="menukaart-pasen-boxes.html">🐣 Pasen (box)</option>
               <option value="menukaart-sans-serif.html">Sans-serif font</option>
+              <option value="menukaart-sans-serif-boxes.html">Sans-serif font (box)</option>
             </select>
             <button
               @click="openTemplatePreview"
