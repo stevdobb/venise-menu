@@ -526,11 +526,13 @@ export default {
       const defaultBlock3 = `<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>`;
       const defaultBlock1 = `<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballetjes gefrituurd (10st. €8,90) </p><p>bloemkoolroosjes (€6,20) </p><p>kippeboutjes gefrituurd (6st. €12,90) </p><p>Kaasstengels Oude Kaas (6st. €12,90) </p><p>Camembert WARM (€17,90)</p><p>Crevettes Royal 6 st. (€18,20)</p><p>Garnaalkroketjes mini (8st. €27,80)</p><p>1/2 pot mosselen natuur (€21,90)</p><p>met wijn | met look | v/h huis (€23,90) </p><p>Potje paté 100gr. (€11,90)</p><p>Scampi in pankojasje (4st. €19,40) </p><p>Spaanse ham gedroogd (€20,90)</p><p>Duo van olijven &amp; Tapenade (€11,90) </p><p>Vleeskroketjes 'Royal' mini 10st. (€17,90) </p><p>Witte worst gegrild (€12,90)</p><p>Zalm gerookt 'PREMIUM' (€25,90)</p>`;
       const defaultBlock2 = `<h2>Dagsuggesties - Voorgerechten</h2><p>Vitello Tonnato (€18,90)</p><p>Carpaccio gemarineerd rund (€23,90)</p><p>Ganzeleverpastei (€23,40)</p><p>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</p><p><br></p><h2>Hoofdgerechten</h2><p>Gehaktballetjes in tomatensaus (€17,90)</p><p>Karnemelksmeus &amp; garnalen (€26,90)</p><p><br></p><h2>Pasta's en rijst</h2><p>Pasta Carbonara (€19,80)</p><p><br></p><h2>Salades</h2><p>Slaatje burrata (€19,50)</p><p>Tomaat garnalen (€33,90)</p><p>Garnalensalade (€34,90)</p><p>Slaatje geitenkaas (spekjes) (€23,40)</p><p><br></p><h2>Vlees en wild</h2><p>Rundsbrochette GEGRILD (€32,90)</p><p>Herteragout (€32,90)</p><p>Hazerug met wildsausje (€37,60)</p><p><br></p><h2>Vis en mosselen</h2><p>garnaalkroketten 2st. €25,90 | 3st. €30,90</p><p>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</p><p>Verse tonijn pepersaus licht gebakken (€34,90)</p><p>Zeebaars Mousseline (€31,90)</p><p>Zeetong gebakken (€42,80) baktijd 25 min.</p><p>Zeeuwse mosselen Natuur (€33,90)</p><p>Witte wijn | Look | v/h huis (€36,90)</p>`;
+      const defaultHighlight = "";
 
       // Get the stored data
       let block1 = localStorage.getItem("editorContentBlock1");
       let block2 = localStorage.getItem("editorContentBlock2");
       let block3 = localStorage.getItem("editorContentBlock3");
+      let highlight = localStorage.getItem("editorContentHighlight");
 
       // Check if block1 is empty and set default data if needed
       if (!block1) {
@@ -547,32 +549,48 @@ export default {
         block3 = defaultBlock3;
         localStorage.setItem("editorContentBlock3", block3);
       }
+      if (!highlight) {
+        highlight = defaultHighlight;
+      }
 
       // Vervang de placeholders in de template
       const capitalizeName = (name) => {
-    return name
-        .toLowerCase() // Maak alles eerst kleine letters
-        .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
-};
+        return name
+          .toLowerCase() // Maak alles eerst kleine letters
+          .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
+      };
 
-    const replacements = {
-      "{{name}}": capitalizeName(reservation.name),
-      "{{date}}": this.date,
-      "{{table}}": reservation.table,
-      "{{time}}": reservation.time.replace(/\"/g, ""),
-      "{{people}}": reservation.people,
-      "{{note}}": reservation.note || " ",
-      "{{block1}}": block1,
-      "{{block2}}": block2,
-      "{{block3}}": block3,
-      "{{currentDate}}": formatDate(),
-    };
+      const isRichTextEmpty = (html) => {
+        if (!html) return true;
+        const stripped = html
+          .replace(/<[^>]*>/g, "")
+          .replace(/&nbsp;/g, "")
+          .trim();
+        return stripped.length === 0;
+      };
 
-    let filledTemplate = template;
-    Object.entries(replacements).forEach(([token, value]) => {
-      filledTemplate = filledTemplate.replace(new RegExp(token, "g"), value);
-    });
+      const highlightMarkup = isRichTextEmpty(highlight)
+        ? ""
+        : `<div class="highlight mt-3 bg-gray-50 border border-gray-200 p-3 rounded-md">${highlight}</div>`;
 
+      const replacements = {
+        "{{name}}": capitalizeName(reservation.name),
+        "{{date}}": this.date,
+        "{{table}}": reservation.table,
+        "{{time}}": reservation.time.replace(/\"/g, ""),
+        "{{people}}": reservation.people,
+        "{{note}}": reservation.note || " ",
+        "{{block1}}": block1,
+        "{{block2}}": block2,
+        "{{block3}}": block3,
+        "{{highlight}}": highlightMarkup,
+        "{{currentDate}}": formatDate(),
+      };
+
+      let filledTemplate = template;
+      Object.entries(replacements).forEach(([token, value]) => {
+        filledTemplate = filledTemplate.replace(new RegExp(token, "g"), value);
+      });
 
       return filledTemplate;
     },

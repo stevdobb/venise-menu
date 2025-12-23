@@ -53,7 +53,8 @@
 
       .block1 p,
       .block2 p,
-      .block3 p {
+      .block3 p,
+      .highlight p {
         font-size: 0.8rem !important; /* Equivalent to text-sm */
         color: #212121; /* Equivalent to text-gray-700 */
         margin-bottom: 0.2rem; /* Equivalent to space-y-0 */
@@ -148,8 +149,11 @@
       <!-- Header Section -->
       <div class="flex justify-between items-center">
   <div class="grid grid-cols-2 gap-4">
-    <!-- Block1 links -->
-    <div class="block1 text-md border border-gray-600 p-4">{{block1}}</div>
+    <div class="space-y-3">
+      <!-- Block1 links -->
+      <div class="block1 text-md border border-gray-600 p-4">{{block1}}</div>
+      {{highlight}}
+    </div>
 
     <!-- Block2 rechts -->
     <div class="block2 text-md border p-4 border-gray-300">{{block2}}</div>

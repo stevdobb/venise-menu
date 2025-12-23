@@ -16,7 +16,7 @@
             <span class="font-semibold text-gray-500" v-else>Nog niet opgeslagen</span>
           </div>
           <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800">
-            Tekstblokken: <span class="font-semibold">3</span>
+            Tekstblokken: <span class="font-semibold">4</span>
           </div>
         </div>
       </div>
@@ -107,6 +107,15 @@
             <div id="editorBlock2" class="editor"></div>
           </div>
         </div>
+
+        <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+          <div>
+            <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Highlight</p>
+            <h3 class="text-lg font-semibold text-gray-900">Extra box onder blok 1</h3>
+            <p class="text-sm text-gray-600">Optioneel: wordt enkel getoond als er inhoud is.</p>
+          </div>
+          <div id="editorHighlight" class="editor-small"></div>
+        </div>
       </div>
     </div>
 
@@ -134,7 +143,8 @@ export default {
     return {
       editorBlock1: null, // Quill editor voor block-1
       editorBlock2: null, // Quill editor voor block-2
-      editorBlock3: null, // Quill editor voor block-2
+      editorBlock3: null, // Quill editor voor block-3
+      editorHighlight: null, // Quill editor voor highlight
       showNotification: false,
       lastSaved: null,
       showResetNotification: false,
@@ -177,11 +187,19 @@ export default {
         toolbar: toolbarOptions,
       },
     });
+    this.editorHighlight = new Quill("#editorHighlight", {
+      theme: "snow",
+      placeholder: "Optionele highlight onder blok 1...",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
 
     // Laad de opgeslagen inhoud uit localStorage (indien aanwezig)
     const savedContentBlock1 = localStorage.getItem("editorContentBlock1");
     const savedContentBlock2 = localStorage.getItem("editorContentBlock2");
     const savedContentBlock3 = localStorage.getItem("editorContentBlock3");
+    const savedContentHighlight = localStorage.getItem("editorContentHighlight");
 
     if (savedContentBlock1) {
       this.editorBlock1.root.innerHTML = savedContentBlock1;
@@ -204,6 +222,12 @@ export default {
         "<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>";
     }
 
+    if (savedContentHighlight) {
+      this.editorHighlight.root.innerHTML = savedContentHighlight;
+    } else {
+      this.editorHighlight.root.innerHTML = "";
+    }
+
     const savedTime = localStorage.getItem("lastSavedTime");
     if (savedTime) {
       this.lastSaved = savedTime;
@@ -215,11 +239,13 @@ export default {
       const contentBlock1 = this.editorBlock1.root.innerHTML;
       const contentBlock2 = this.editorBlock2.root.innerHTML;
       const contentBlock3 = this.editorBlock3.root.innerHTML;
+      const contentHighlight = this.editorHighlight.root.innerHTML;
 
       // Sla de inhoud op in localStorage
       localStorage.setItem("editorContentBlock1", contentBlock1);
       localStorage.setItem("editorContentBlock2", contentBlock2);
       localStorage.setItem("editorContentBlock3", contentBlock3);
+      localStorage.setItem("editorContentHighlight", contentHighlight);
 
       // Stel de huidige datum en tijd in
       const now = new Date();
@@ -248,6 +274,10 @@ export default {
       const block1 = this.editorBlock1.root.innerHTML;
       const block2 = this.editorBlock2.root.innerHTML;
       const block3 = this.editorBlock3.root.innerHTML;
+      const highlight = this.editorHighlight.root.innerHTML;
+      const highlightIsEmpty =
+        !highlight ||
+        highlight.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, "").trim() === "";
       const now = new Date();
       const timestamp = now.toLocaleString("nl-BE", {
         day: "2-digit",
@@ -257,6 +287,14 @@ export default {
         minute: "2-digit",
       });
       const docTitle = "Backup menukaart";
+      const highlightSection = highlightIsEmpty
+        ? ""
+        : `
+            <div class="section">
+              <h2>Highlight (onder blok 1)</h2>
+              <div class="content">${highlight}</div>
+            </div>
+          `;
       const htmlContent = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
           <head>
@@ -284,6 +322,7 @@ export default {
               <h2>Tekst links onder</h2>
               <div class="content">${block1}</div>
             </div>
+            ${highlightSection}
             <div class="section">
               <h2>Tekst rechts</h2>
               <div class="content">${block2}</div>
