@@ -14,7 +14,10 @@
       .print-page { page-break-after: always; }
       .print-page:last-child { page-break-after: auto; }
       h2 { font-family: 'Playfair Display', serif; letter-spacing: 0.4px; }
-      .block1 p, .block2 p, .block3 p { font-size: 0.9rem; margin-bottom: 0.35rem; }
+      .block1 p,
+      .block2 p,
+      .block3 p,
+      .highlight p { font-size: 0.9rem; margin-bottom: 0.35rem; }
       .ql-size-small { font-size: 12px; }
       .ql-size-normal { font-size: 16px; }
       .ql-size-large { font-size: 20px; }
@@ -49,6 +52,7 @@
         <div class="border border-gray-200 rounded-lg p-4 bg-white">
           <h3 class="text-base font-semibold text-gray-900 mb-2">Suggesties & tapas</h3>
           <div class="block1 text-sm text-gray-800 border border-gray-600 p-4">{{block1}}</div>
+          {{highlight}}
         </div>
         <div class="border border-gray-200 rounded-lg p-4 bg-white">
           <h3 class="text-base font-semibold text-gray-900 mb-2">Gerechten</h3>
