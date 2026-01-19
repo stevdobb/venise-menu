@@ -81,11 +81,11 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
             >
               <option value="menukaart.html">Standaard Menu</option>
+              <option value="menukaart-boxes.html">Standaard menu met box</option>
               <option value="menukaart-vintage.html">Classic Vintage</option>
               <option value="menukaart-vintage-boxes.html">Classic Vintage (box)</option>
               <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
               <option value="menukaart-twee-paginas-boxes.html">📑 2 pagina's (box)</option>
-              <option value="menukaart-boxes.html">🔲 Met een box</option>
               <option value="menukaart-kerst.html">🎄 Kerst</option>
               <option value="menukaart-kerst-boxes.html">🎄 Kerst (box)</option>
               <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
