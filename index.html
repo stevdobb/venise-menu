@@ -5,6 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Venise Menu Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Decode GitHub Pages SPA fallback URL (/?/route) back to /route.
+      (function (location) {
+        if (location.search[1] === "/") {
+          var decoded = location.search
+            .slice(1)
+            .split("&")
+            .map(function (segment) {
+              return segment.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            "",
+            location.pathname.slice(0, -1) + decoded + location.hash
+          );
+        }
+      })(window.location);
+    </script>
 
 
     <!-- Google tag (gtag.js) -->
