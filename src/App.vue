@@ -11,10 +11,10 @@
             <li v-for="item in navItems" :key="item.path">
               <router-link
                 :to="item.path"
-                class="inline-flex items-center rounded-md border px-3 py-2 transition-colors"
+                class="inline-flex items-center rounded-md border px-3 py-2 transition-all"
                 :class="
-                  $route.path === item.path
-                    ? 'border-primary bg-primary text-primary-foreground'
+                  isActiveRoute(item.path)
+                    ? 'border-blue-600 bg-blue-600 text-white'
                     : 'border-border bg-background hover:bg-accent hover:text-accent-foreground'
                 "
               >
@@ -36,7 +36,13 @@
             <button
               @click="toggleMenu"
               type="button"
-              class="inline-flex items-center justify-center rounded-md border bg-background p-2 text-foreground hover:bg-accent lg:hidden"
+              class="inline-flex items-center justify-center rounded-md border p-2 transition-colors lg:hidden"
+              :class="
+                mobileMenuOpen
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-background text-foreground hover:bg-accent'
+              "
+              :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
             >
               <span class="sr-only">Open main menu</span>
               <svg
@@ -107,8 +113,8 @@
                     :to="item.path"
                     class="block px-3 py-3 text-base font-medium"
                     :class="
-                      $route.path === item.path
-                        ? 'bg-primary text-primary-foreground'
+                      isActiveRoute(item.path)
+                        ? 'bg-blue-600 text-white'
                         : 'bg-white text-slate-900 hover:bg-slate-100'
                     "
                     @click="closeMenu"
@@ -164,6 +170,13 @@ function toggleMenu() {
 
 function closeMenu() {
   mobileMenuOpen.value = false;
+}
+
+function isActiveRoute(path) {
+  if (path === "/") {
+    return route.path === "/";
+  }
+  return route.path === path || route.path.startsWith(`${path}/`);
 }
 
 async function installPwa() {
