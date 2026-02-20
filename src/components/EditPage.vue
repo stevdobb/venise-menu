@@ -1,27 +1,27 @@
 <template>
-  <div class="py-6 space-y-6">
-    <div class="bg-gradient-to-r from-gray-50 via-white to-gray-100 border border-gray-200 rounded-xl p-6 shadow-sm">
+  <div class="space-y-6 py-6">
+    <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
       <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div class="space-y-1">
-          <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Wijzig menu</p>
-          <h1 class="text-3xl font-bold text-gray-900">Bewerk menukaart</h1>
-          <p class="text-sm text-gray-700">
+          <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Wijzig menu</p>
+          <h1 class="text-3xl font-bold tracking-tight">Bewerk menukaart</h1>
+          <p class="text-sm text-muted-foreground">
             Pas de standaardteksten aan, sla lokaal op en exporteer desgewenst een backup voor Word.
           </p>
         </div>
         <div class="grid gap-2 w-full sm:w-auto">
-          <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800">
+          <div class="rounded-lg border bg-muted/40 px-4 py-2 text-sm">
             Laatst opgeslagen:
             <span class="font-semibold" v-if="lastSaved">{{ lastSaved }}</span>
-            <span class="font-semibold text-gray-500" v-else>Nog niet opgeslagen</span>
+            <span class="font-semibold text-muted-foreground" v-else>Nog niet opgeslagen</span>
           </div>
-          <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-800">
+          <div class="rounded-lg border bg-muted/40 px-4 py-2 text-sm">
             Tekstblokken: <span class="font-semibold">3</span>
           </div>
         </div>
       </div>
       <div
-        class="mt-4 flex items-center gap-2 px-4 py-3 text-sm text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-lg"
+        class="mt-4 flex items-center gap-2 rounded-lg border border-amber-300/70 bg-amber-50/80 px-4 py-3 text-sm text-amber-900"
         role="alert"
         v-if="!lastSaved"
       >
@@ -40,17 +40,17 @@
       </div>
     </div>
 
-    <div class="bg-white border border-gray-100 rounded-xl shadow-sm p-5 space-y-5">
+    <div class="space-y-5 rounded-xl border bg-card p-5 text-card-foreground shadow-sm">
       <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Tekstblokken</p>
-          <h2 class="text-xl font-bold text-gray-900">Werk de menu-inhoud bij</h2>
-          <p class="text-sm text-gray-600">Aanpassingen worden lokaal opgeslagen in je browser.</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Tekstblokken</p>
+          <h2 class="text-xl font-bold tracking-tight">Werk de menu-inhoud bij</h2>
+          <p class="text-sm text-muted-foreground">Aanpassingen worden lokaal opgeslagen in je browser.</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button
             @click="saveContent"
-            class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition-colors"
+            class="inline-flex items-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
@@ -59,7 +59,7 @@
           </button>
           <button
             @click="exportToWord"
-            class="flex items-center gap-2 bg-gray-900 text-white px-4 py-2 rounded-lg shadow hover:bg-gray-800 transition-colors"
+            class="inline-flex items-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2m-4 9v3m-4 0h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm8-13H9v4h6V6Z" />
@@ -68,7 +68,7 @@
           </button>
           <button
             @click="resetReservations"
-            class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 transition-colors"
+            class="inline-flex items-center gap-2 rounded-md border border-destructive bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors hover:opacity-90"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
@@ -79,30 +79,30 @@
       </div>
 
       <div class="space-y-4">
-        <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+        <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
           <div>
-            <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 3</p>
-            <h3 class="text-lg font-semibold text-gray-900">Tekst links boven</h3>
-            <p class="text-sm text-gray-600">Korte introductie bovenaan de menukaart.</p>
+            <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 3</p>
+            <h3 class="text-lg font-semibold tracking-tight">Tekst links boven</h3>
+            <p class="text-sm text-muted-foreground">Korte introductie bovenaan de menukaart.</p>
           </div>
           <div id="editorBlock3" class="editor-small"></div>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2">
-          <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+          <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
             <div>
-              <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 1</p>
-              <h3 class="text-lg font-semibold text-gray-900">Tekst links onder</h3>
-              <p class="text-sm text-gray-600">Tapas of bijgerechten die naast het menu staan.</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 1</p>
+              <h3 class="text-lg font-semibold tracking-tight">Tekst links onder</h3>
+              <p class="text-sm text-muted-foreground">Tapas of bijgerechten die naast het menu staan.</p>
             </div>
             <div id="editorBlock1" class="editor"></div>
           </div>
 
-          <div class="p-4 bg-slate-50 border border-gray-200 rounded-lg shadow-sm space-y-2">
+          <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
             <div>
-              <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Blok 2</p>
-              <h3 class="text-lg font-semibold text-gray-900">Tekst rechts</h3>
-              <p class="text-sm text-gray-600">Hoofdgerechten, suggesties en extra info.</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 2</p>
+              <h3 class="text-lg font-semibold tracking-tight">Tekst rechts</h3>
+              <p class="text-sm text-muted-foreground">Hoofdgerechten, suggesties en extra info.</p>
             </div>
             <div id="editorBlock2" class="editor"></div>
           </div>
@@ -112,13 +112,13 @@
 
     <div
       v-if="showNotification"
-      class="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
+      class="fixed right-5 top-5 rounded-md border border-emerald-500/30 bg-emerald-500 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300"
     >
       Inhoud opgeslagen!
     </div>
     <div
       v-if="showResetNotification"
-      class="fixed top-5 right-5 bg-red-600 text-white px-6 py-3 rounded shadow-lg transition-opacity duration-300"
+      class="fixed right-5 top-5 rounded-md border border-destructive/20 bg-destructive px-6 py-3 text-sm font-medium text-destructive-foreground shadow-lg transition-opacity duration-300"
     >
       Reservaties verwijderd.
     </div>
@@ -312,12 +312,12 @@ export default {
 .editor,
 .editor-small {
   width: 100%;
-  background: #fff;
+  background: #ffffff;
   color: #111827;
-  border: 1px solid #e5e7eb;
+  border: 1px solid hsl(var(--border));
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: inset 0 1px 0 #f3f4f6;
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.08);
 }
 .editor {
   height: 800px;
@@ -325,4 +325,28 @@ export default {
 .editor-small {
   height: 280px;
 }
+
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+  border-color: hsl(var(--border));
+  background: #ffffff;
+  color: #111827;
+}
+
+.ql-toolbar.ql-snow {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: hsl(var(--muted) / 0.45);
+}
+
+.ql-container.ql-snow {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.ql-editor {
+  background: #ffffff;
+  color: #111827;
+}
+
 </style>

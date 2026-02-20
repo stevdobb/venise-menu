@@ -1,113 +1,240 @@
 <template>
-  <div id="app" class="min-h-screen bg-gray-50">
-    <header class="shadow-sm bg-gradient-to-r from-white via-slate-50 to-white">
-      <nav class="border-b border-gray-200/80 px-4 lg:px-6 py-3 relative">
-        <div class="flex items-center max-w-screen-xl mx-auto gap-4">
-          <!-- Logo -->
-          <router-link to="/" class="flex items-center">
-            <img src="/logo-venise-white.png" class="w-28 mr-4" alt="Venise Logo" />
+  <div id="app" class="min-h-screen bg-background text-foreground">
+    <header class="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
+      <nav class="px-4 py-3 lg:px-6">
+        <div class="mx-auto flex max-w-screen-xl items-center gap-3">
+          <router-link to="/" class="flex items-center rounded-md p-1 transition hover:bg-accent">
+            <img src="/logo-venise-white.png" class="w-28" alt="Venise Logo" />
           </router-link>
 
-          <!-- Desktop Menu -->
-          <ul class="hidden lg:flex space-x-2 font-medium text-gray-700">
+          <ul class="hidden lg:flex items-center gap-2 text-sm font-medium">
             <li v-for="item in navItems" :key="item.path">
               <router-link
                 :to="item.path"
-                class="px-4 py-2 rounded-full border border-transparent hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition flex items-center gap-2 shadow-sm/50"
-                :class="{ 'bg-blue-600 text-white shadow-md border-blue-600': $route.path === item.path }"
-              >
-                <span>{{ item.label }}</span>
-              </router-link>
-            </li>
-          </ul>
-
-          <div class="ml-auto flex items-center gap-2">
-            <!-- <span class="hidden md:inline-block text-xs px-3 py-1 rounded-full bg-blue-50 text-blue-700 font-semibold">
-              Venise tools
-            </span> -->
-            <!-- Mobile Hamburger -->
-            <button
-              @click="toggleMenu"
-              type="button"
-              class="lg:hidden inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 text-black"
-            >
-              <span class="sr-only">Open main menu</span>
-              <svg v-if="!mobileMenuOpen" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M3 5h14M3 10h14M3 15h14" clip-rule="evenodd" />
-              </svg>
-              <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.293 4.293l11.414 11.414M4.293 15.707L15.707 4.293" clip-rule="evenodd" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Mobile Menu -->
-        <transition name="fade">
-          <div
-            v-if="mobileMenuOpen"
-            class="lg:hidden fixed inset-0 bg-black/40"
-            @click="toggleMenu"
-          ></div>
-        </transition>
-        <transition name="slide-down">
-          <ul
-            v-if="mobileMenuOpen"
-            class="lg:hidden fixed top-16 inset-x-0 mx-4 rounded-2xl bg-white shadow-2xl border border-gray-100 text-gray-800 font-medium overflow-hidden"
-          >
-            <li v-for="item in navItems" :key="item.path" class="border-b last:border-0 border-gray-100">
-              <router-link
-                @click="toggleMenu"
-                :to="item.path"
-                class="block py-3 px-4 hover:bg-blue-50 hover:text-blue-700"
-                :class="{ 'bg-blue-600 text-white': $route.path === item.path }"
+                class="inline-flex items-center rounded-md border px-3 py-2 transition-colors"
+                :class="
+                  $route.path === item.path
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border bg-background hover:bg-accent hover:text-accent-foreground'
+                "
               >
                 {{ item.label }}
               </router-link>
             </li>
           </ul>
+
+          <div class="ml-auto flex items-center gap-2">
+            <button
+              v-if="canInstallPwa || isIos"
+              type="button"
+              class="hidden sm:inline-flex items-center rounded-md border bg-background px-3 py-2 text-xs font-semibold transition-colors hover:bg-accent"
+              @click="installPwa"
+            >
+              Installeer app
+            </button>
+
+            <button
+              @click="toggleMenu"
+              type="button"
+              class="inline-flex items-center justify-center rounded-md border bg-background p-2 text-foreground hover:bg-accent lg:hidden"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                v-if="!mobileMenuOpen"
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <svg
+                v-else
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <transition name="fade">
+          <div v-if="mobileMenuOpen" class="fixed inset-0 z-[90] bg-black/50 lg:hidden" @click="closeMenu"></div>
+        </transition>
+        <transition name="slide-right">
+          <aside
+            v-if="mobileMenuOpen"
+            class="fixed inset-y-0 right-0 z-[100] w-[84vw] max-w-sm border-l border-border bg-white text-slate-900 shadow-2xl lg:hidden"
+            @click.stop
+          >
+            <div class="flex items-center justify-between border-b border-border bg-white px-4 py-3">
+              <p class="text-sm font-semibold">Menu</p>
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md border bg-white p-2 text-slate-900 hover:bg-slate-100"
+                @click="closeMenu"
+              >
+                <span class="sr-only">Sluit menu</span>
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18L18 6" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="space-y-3 bg-white p-4">
+              <button
+                v-if="canInstallPwa || isIos"
+                type="button"
+                class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-slate-100"
+                @click="installPwa"
+              >
+                Installeer app
+              </button>
+              <ul class="overflow-hidden rounded-lg border border-slate-200 bg-white">
+                <li v-for="item in navItems" :key="`mobile-${item.path}`" class="border-b border-slate-200 last:border-b-0">
+                  <router-link
+                    :to="item.path"
+                    class="block px-3 py-3 text-base font-medium"
+                    :class="
+                      $route.path === item.path
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-white text-slate-900 hover:bg-slate-100'
+                    "
+                    @click="closeMenu"
+                  >
+                    {{ item.label }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </aside>
         </transition>
       </nav>
     </header>
 
-    <main class="px-2 max-w-screen-xl mx-auto">
+    <main class="mx-auto max-w-screen-xl px-2 pb-8">
       <router-view></router-view>
     </main>
+
+    <div
+      v-if="showIosInstallHint"
+      class="fixed bottom-4 left-1/2 z-[120] w-[92vw] max-w-md -translate-x-1/2 rounded-lg border border-border bg-card px-4 py-3 text-sm text-card-foreground shadow-lg"
+    >
+      Op iPhone/iPad: tik op Deel en kies Zet op beginscherm.
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
-const mobileMenuOpen = ref(false)
+const mobileMenuOpen = ref(false);
+const canInstallPwa = ref(false);
+const deferredPwaPrompt = ref(null);
+const showIosInstallHint = ref(false);
+const route = useRoute();
 const navItems = [
-  { path: '/', label: 'Home' },
-  { path: '/edit', label: 'Wijzig menu' },
-  { path: '/schoolvakanties', label: 'Schoolvakanties' },
-  { path: '/vertalingen', label: 'Vertalingen' },
-]
+  { path: "/", label: "Home" },
+  { path: "/edit", label: "Wijzig menu" },
+  { path: "/schoolvakanties", label: "Schoolvakanties" },
+  { path: "/vertalingen", label: "Vertalingen" },
+];
+let pwaPromptHandler = null;
+let pwaInstalledHandler = null;
+const isIos =
+  typeof window !== "undefined" &&
+  /iphone|ipad|ipod/i.test(window.navigator.userAgent || "") &&
+  !window.matchMedia("(display-mode: standalone)").matches;
 
 function toggleMenu() {
-  mobileMenuOpen.value = !mobileMenuOpen.value
+  mobileMenuOpen.value = !mobileMenuOpen.value;
 }
+
+function closeMenu() {
+  mobileMenuOpen.value = false;
+}
+
+async function installPwa() {
+  if (deferredPwaPrompt.value) {
+    deferredPwaPrompt.value.prompt();
+    const result = await deferredPwaPrompt.value.userChoice;
+    if (result.outcome === "accepted") {
+      canInstallPwa.value = false;
+    }
+    deferredPwaPrompt.value = null;
+    return;
+  }
+
+  if (isIos) {
+    showIosInstallHint.value = true;
+    setTimeout(() => {
+      showIosInstallHint.value = false;
+    }, 3500);
+    return;
+  }
+}
+
+watch(mobileMenuOpen, (open) => {
+  document.body.classList.toggle("overflow-hidden", open);
+});
+
+watch(
+  () => route.path,
+  () => {
+    closeMenu();
+  }
+);
+
+onMounted(() => {
+  canInstallPwa.value = false;
+
+  pwaPromptHandler = (event) => {
+    event.preventDefault();
+    deferredPwaPrompt.value = event;
+    canInstallPwa.value = true;
+  };
+
+  pwaInstalledHandler = () => {
+    canInstallPwa.value = false;
+    deferredPwaPrompt.value = null;
+  };
+
+  window.addEventListener("beforeinstallprompt", pwaPromptHandler);
+  window.addEventListener("appinstalled", pwaInstalledHandler);
+  window.addEventListener("keydown", onKeyDown);
+});
+
+function onKeyDown(event) {
+  if (event.key === "Escape") {
+    closeMenu();
+  }
+}
+
+onBeforeUnmount(() => {
+  document.body.classList.remove("overflow-hidden");
+  if (pwaPromptHandler) {
+    window.removeEventListener("beforeinstallprompt", pwaPromptHandler);
+  }
+  if (pwaInstalledHandler) {
+    window.removeEventListener("appinstalled", pwaInstalledHandler);
+  }
+  window.removeEventListener("keydown", onKeyDown);
+});
 </script>
 
 <style>
-body {
-  font-family: 'Arial', sans-serif;
-}
-
-/* Animatie voor mobiele menu */
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
@@ -116,13 +243,13 @@ body {
 .fade-leave-to {
   opacity: 0;
 }
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: all 0.25s ease;
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.22s ease, opacity 0.22s ease;
 }
-.slide-down-enter-from,
-.slide-down-leave-to {
+.slide-right-enter-from,
+.slide-right-leave-to {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateX(24px);
 }
 </style>
