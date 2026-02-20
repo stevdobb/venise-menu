@@ -1,5 +1,5 @@
 <template>
-  <div class="py-6 bg-gray-50 min-h-screen">
+  <div class="pt-6 pb-16 bg-gray-50 min-h-screen">
     <div class="max-w-screen-xl mx-auto space-y-6">
       <!-- Header / Upload & Template -->
       <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md space-y-6">
@@ -21,31 +21,50 @@
           <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
             <div class="flex items-center gap-2">
               <span class="text-xs px-2 py-1 rounded-md bg-blue-100 text-blue-800 font-semibold">Stap 1</span>
-              <p class="text-sm font-semibold text-gray-800">Upload CSV</p>
+              <p class="text-sm font-semibold text-gray-800">Toevoegen reservaties</p>
             </div>
-            
-            <label
-              for="file-upload"
-              class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 cursor-pointer transition-colors text-sm font-medium"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
+            <div class="space-y-3">
+              <button
+                type="button"
+                @click="triggerCsvUpload"
+                class="flex w-full items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors text-sm font-medium"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
-              </svg>
-              Kies CSV bestand
-            </label>
-            <input id="file-upload" type="file" accept=".csv" @change="handleFileUpload" class="hidden" />
-            <div class="text-xs text-gray-700 bg-white border border-dashed border-gray-200 rounded p-2">
-              <p class="font-semibold">Bestand:</p>
-              <p>{{ selectedFileName || 'Nog geen bestand gekozen' }}</p>
-              <p v-if="uploadMessage" :class="uploadStatusClass" class="mt-2">
-                {{ uploadMessage }}
-              </p>
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
+                </svg>
+                CSV inladen
+              </button>
+              <input
+                ref="fileUpload"
+                id="file-upload"
+                type="file"
+                accept=".csv"
+                @change="handleFileUpload"
+                class="hidden"
+              />
+              <div class="text-xs text-gray-700 bg-white border border-dashed border-gray-200 rounded p-2">
+                <p class="font-semibold">Bestand:</p>
+                <p>{{ selectedFileName || 'Nog geen bestand gekozen' }}</p>
+                <p v-if="uploadMessage" :class="uploadStatusClass" class="mt-2">
+                  {{ uploadMessage }}
+                </p>
+              </div>
+              <button
+                type="button"
+                @click="openAddModal"
+                class="flex w-full items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow hover:bg-black transition text-sm font-semibold"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Nieuwe reservatie
+              </button>
             </div>
           </div>
 
@@ -62,15 +81,23 @@
               class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
             >
               <option value="menukaart.html">Standaard Menu</option>
+              <option value="menukaart-boxes.html">Standaard menu met box</option>
               <option value="menukaart-vintage.html">Classic Vintage</option>
+              <option value="menukaart-vintage-boxes.html">Classic Vintage (box)</option>
               <option value="menukaart-twee-paginas.html">📑 2 pagina's</option>
-              <option value="menukaart-boxes.html">🔲 Met een box</option>
+              <option value="menukaart-twee-paginas-boxes.html">📑 2 pagina's (box)</option>
               <option value="menukaart-kerst.html">🎄 Kerst</option>
+              <option value="menukaart-kerst-boxes.html">🎄 Kerst (box)</option>
               <option value="menukaart-nieuwjaar.html">🥂 Nieuwjaar</option>
+              <option value="menukaart-nieuwjaar-boxes.html">🥂 Nieuwjaar (box)</option>
               <option value="menukaart-verjaardag.html">🎈 Verjaardag</option>
+              <option value="menukaart-verjaardag-boxes.html">🎈 Verjaardag (box)</option>
               <option value="menukaart-valentijn.html">♥️ Valentijn</option>
+              <option value="menukaart-valentijn-boxes.html">♥️ Valentijn (box)</option>
               <option value="menukaart-pasen.html">🐣 Pasen</option>
+              <option value="menukaart-pasen-boxes.html">🐣 Pasen (box)</option>
               <option value="menukaart-sans-serif.html">Sans-serif font</option>
+              <option value="menukaart-sans-serif-boxes.html">Sans-serif font (box)</option>
             </select>
             <button
               @click="openTemplatePreview"
@@ -205,8 +232,8 @@
                     aria-label="Verwijder reservering"
                     class="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
                   >
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 7H5m3 0V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-1 4v5a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-5m3-3v8" />
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M6 18 18 6" />
                     </svg>
                   </button>
                 </div>
@@ -217,28 +244,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-
-      <!-- Add Reservation Form -->
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
-        <h3 class="text-lg font-semibold mb-4">Manueel nieuwe reservering toevoegen</h3>
-        <form @submit.prevent="addReservation" class="space-y-4">
-          <div class="flex flex-wrap gap-4">
-            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="flex-1 px-4 py-2 border rounded-lg" required />
-            <input v-model="newReservation.name" type="text" placeholder="Naam" class="flex-1 px-4 py-2 border rounded-lg" required />
-            <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="flex-1 px-4 py-2 border rounded-lg" />
-            <input v-model="newReservation.table" type="text" placeholder="Tafel" class="flex-1 px-4 py-2 border rounded-lg" />
-          </div>
-
-          <div>
-            <h2 class="text-sm font-bold mb-2">Persoonlijke notitie</h2>
-            <div id="editorBlock1" class="editor-small border rounded-lg h-32"></div>
-          </div>
-
-          <button type="submit" class="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-            Voeg toe
-          </button>
-        </form>
       </div>
     </div>
     <div
@@ -297,6 +302,50 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="showAddModal"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+    >
+      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 space-y-4">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900">Manueel nieuwe reservering toevoegen</h3>
+            <p class="text-sm text-gray-600">Vul de gegevens in en sla op.</p>
+          </div>
+          <button
+            @click="closeAddModal"
+            class="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800 transition"
+            aria-label="Sluit toevoegen"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M6 18 18 6" />
+            </svg>
+          </button>
+        </div>
+        <form @submit.prevent="addReservation" class="space-y-4">
+          <div class="flex flex-wrap gap-4">
+            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.name" type="text" placeholder="Naam" class="flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="flex-1 px-4 py-2 border rounded-lg" />
+            <input v-model="newReservation.table" type="text" placeholder="Tafel" class="flex-1 px-4 py-2 border rounded-lg" />
+          </div>
+
+          <div>
+            <h2 class="text-sm font-bold mb-2">Persoonlijke notitie</h2>
+            <div id="editorBlock1" class="editor-small border rounded-lg h-32"></div>
+          </div>
+
+          <div class="flex justify-end gap-2">
+            <button type="button" @click="closeAddModal" class="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100">
+              Annuleer
+            </button>
+            <button type="submit" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              Voeg toe
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -328,6 +377,8 @@ export default {
       showTemplatePreview: false,
       templatePreviewHtml: "",
       previewLoading: false,
+      showAddModal: false,
+      editorBlock1: null,
     };
   },
   mounted() {
@@ -335,27 +386,6 @@ export default {
     const savedDate = localStorage.getItem("date");
     const savedTotalGuests = localStorage.getItem("totalGuests");
     const savedReservations = localStorage.getItem("reservations");
-
-    const toolbarOptions = [
-    [{ header: [false, 1, 2, 3, 4, 5] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ size: ['small', 'normal', 'large', 'huge'] }],
-      ["bold", "italic", "underline", "strike"],
-      ["link"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["blockquote"],
-      ["clean"],
-      [{ align: [] }],
-      [{ color: [] }],
-    ];
-
-    this.editorBlock1 = new Quill("#editorBlock1", {
-      theme: "snow",
-      placeholder: "",
-      modules: {
-        toolbar: toolbarOptions,
-      },
-    });
 
     // Als er gegevens zijn, laad deze dan
     if (savedDate && savedTotalGuests && savedReservations) {
@@ -408,6 +438,58 @@ export default {
     // },
   },
   methods: {
+    triggerCsvUpload() {
+      const uploadEl = this.$refs.fileUpload;
+      if (uploadEl) {
+        uploadEl.click();
+      }
+    },
+    openAddModal() {
+      this.showAddModal = true;
+      this.$nextTick(() => {
+        this.initEditor();
+        if (this.editorBlock1) {
+          this.editorBlock1.focus();
+        }
+      });
+    },
+    closeAddModal() {
+      this.showAddModal = false;
+      this.editorBlock1 = null;
+      this.newReservation = {
+        time: "",
+        name: "",
+        people: "",
+        table: "",
+      };
+    },
+    initEditor() {
+      if (this.editorBlock1) return;
+
+      const editorEl = document.getElementById("editorBlock1");
+      if (!editorEl) return;
+
+      const toolbarOptions = [
+        [{ header: [false, 1, 2, 3, 4, 5] }],
+        [{ color: [] }, { background: [] }],
+        [{ size: ["small", "normal", "large", "huge"] }],
+        ["bold", "italic", "underline", "strike"],
+        ["link"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["blockquote"],
+        ["clean"],
+        [{ align: [] }],
+        [{ color: [] }],
+      ];
+
+      this.editorBlock1 = new Quill(editorEl, {
+        theme: "snow",
+        placeholder: "",
+        modules: {
+          toolbar: toolbarOptions,
+        },
+      });
+    },
     getBesteKlantReservation() {
       const match = this.reservations.find(
         (entry) => entry.name && entry.name.toLowerCase().includes("beste klant"),
@@ -444,11 +526,13 @@ export default {
       const defaultBlock3 = `<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>`;
       const defaultBlock1 = `<h2>Tapas (à 1 à 2 pers)</h2><p>kaasballetjes gefrituurd (10st. €8,90) </p><p>bloemkoolroosjes (€6,20) </p><p>kippeboutjes gefrituurd (6st. €12,90) </p><p>Kaasstengels Oude Kaas (6st. €12,90) </p><p>Camembert WARM (€17,90)</p><p>Crevettes Royal 6 st. (€18,20)</p><p>Garnaalkroketjes mini (8st. €27,80)</p><p>1/2 pot mosselen natuur (€21,90)</p><p>met wijn | met look | v/h huis (€23,90) </p><p>Potje paté 100gr. (€11,90)</p><p>Scampi in pankojasje (4st. €19,40) </p><p>Spaanse ham gedroogd (€20,90)</p><p>Duo van olijven &amp; Tapenade (€11,90) </p><p>Vleeskroketjes 'Royal' mini 10st. (€17,90) </p><p>Witte worst gegrild (€12,90)</p><p>Zalm gerookt 'PREMIUM' (€25,90)</p>`;
       const defaultBlock2 = `<h2>Dagsuggesties - Voorgerechten</h2><p>Vitello Tonnato (€18,90)</p><p>Carpaccio gemarineerd rund (€23,90)</p><p>Ganzeleverpastei (€23,40)</p><p>Jacobsnootjes 3st. duroc-ham butternutzalf (€27,40)</p><p><br></p><h2>Hoofdgerechten</h2><p>Gehaktballetjes in tomatensaus (€17,90)</p><p>Karnemelksmeus &amp; garnalen (€26,90)</p><p><br></p><h2>Pasta's en rijst</h2><p>Pasta Carbonara (€19,80)</p><p><br></p><h2>Salades</h2><p>Slaatje burrata (€19,50)</p><p>Tomaat garnalen (€33,90)</p><p>Garnalensalade (€34,90)</p><p>Slaatje geitenkaas (spekjes) (€23,40)</p><p><br></p><h2>Vlees en wild</h2><p>Rundsbrochette GEGRILD (€32,90)</p><p>Herteragout (€32,90)</p><p>Hazerug met wildsausje (€37,60)</p><p><br></p><h2>Vis en mosselen</h2><p>garnaalkroketten 2st. €25,90 | 3st. €30,90</p><p>Jacobsnootjes 5st., duroc-ham butternutzalf (€34,90)</p><p>Verse tonijn pepersaus licht gebakken (€34,90)</p><p>Zeebaars Mousseline (€31,90)</p><p>Zeetong gebakken (€42,80) baktijd 25 min.</p><p>Zeeuwse mosselen Natuur (€33,90)</p><p>Witte wijn | Look | v/h huis (€36,90)</p>`;
+      const defaultHighlight = "";
 
       // Get the stored data
       let block1 = localStorage.getItem("editorContentBlock1");
       let block2 = localStorage.getItem("editorContentBlock2");
       let block3 = localStorage.getItem("editorContentBlock3");
+      let highlight = localStorage.getItem("editorContentHighlight");
 
       // Check if block1 is empty and set default data if needed
       if (!block1) {
@@ -465,32 +549,48 @@ export default {
         block3 = defaultBlock3;
         localStorage.setItem("editorContentBlock3", block3);
       }
+      if (!highlight) {
+        highlight = defaultHighlight;
+      }
 
       // Vervang de placeholders in de template
       const capitalizeName = (name) => {
-    return name
-        .toLowerCase() // Maak alles eerst kleine letters
-        .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
-};
+        return name
+          .toLowerCase() // Maak alles eerst kleine letters
+          .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize de eerste letter van elk woord
+      };
 
-    const replacements = {
-      "{{name}}": capitalizeName(reservation.name),
-      "{{date}}": this.date,
-      "{{table}}": reservation.table,
-      "{{time}}": reservation.time.replace(/\"/g, ""),
-      "{{people}}": reservation.people,
-      "{{note}}": reservation.note || " ",
-      "{{block1}}": block1,
-      "{{block2}}": block2,
-      "{{block3}}": block3,
-      "{{currentDate}}": formatDate(),
-    };
+      const isRichTextEmpty = (html) => {
+        if (!html) return true;
+        const stripped = html
+          .replace(/<[^>]*>/g, "")
+          .replace(/&nbsp;/g, "")
+          .trim();
+        return stripped.length === 0;
+      };
 
-    let filledTemplate = template;
-    Object.entries(replacements).forEach(([token, value]) => {
-      filledTemplate = filledTemplate.replace(new RegExp(token, "g"), value);
-    });
+      const highlightMarkup = isRichTextEmpty(highlight)
+        ? ""
+        : `<div class="highlight mt-3 bg-gray-50 border border-gray-200 p-3 rounded-md">${highlight}</div>`;
 
+      const replacements = {
+        "{{name}}": capitalizeName(reservation.name),
+        "{{date}}": this.date,
+        "{{table}}": reservation.table,
+        "{{time}}": reservation.time.replace(/\"/g, ""),
+        "{{people}}": reservation.people,
+        "{{note}}": reservation.note || " ",
+        "{{block1}}": block1,
+        "{{block2}}": block2,
+        "{{block3}}": block3,
+        "{{highlight}}": highlightMarkup,
+        "{{currentDate}}": formatDate(),
+      };
+
+      let filledTemplate = template;
+      Object.entries(replacements).forEach(([token, value]) => {
+        filledTemplate = filledTemplate.replace(new RegExp(token, "g"), value);
+      });
 
       return filledTemplate;
     },
@@ -519,13 +619,15 @@ export default {
       // Voeg een nieuwe record toe aan reservations
       const newRecord = {
         ...this.newReservation,
-        note: this.editorBlock1.root.innerHTML,
+        note: this.editorBlock1 ? this.editorBlock1.root.innerHTML : "",
       }; // Voeg een lege opmerking toe
       this.reservations.push(newRecord);
 
       // Sla nieuwe data op in localStorage
       localStorage.setItem("reservations", JSON.stringify(this.reservations));
-      this.editorBlock1.root.innerHTML = "";
+      if (this.editorBlock1) {
+        this.editorBlock1.root.innerHTML = "";
+      }
       // Reset formulier
       this.newReservation = {
         time: "",
@@ -533,6 +635,8 @@ export default {
         people: "",
         table: "",
       };
+      this.showAddModal = false;
+      this.editorBlock1 = null;
     },
     resetSearch() {
       this.searchQuery = "";
