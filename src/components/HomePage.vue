@@ -1,13 +1,13 @@
 <template>
-  <div class="pt-6 pb-16 bg-gray-50 min-h-screen">
-    <div class="max-w-screen-xl mx-auto space-y-6">
+  <div class="dw-page pt-6 pb-16 min-h-screen">
+    <div class="dw-content max-w-screen-xl mx-auto space-y-6">
       <!-- Header / Upload & Template -->
-      <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-md space-y-6">
+      <div class="dw-card p-6 rounded-xl border space-y-6">
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
           <div class="space-y-1">
-            <p class="text-xs uppercase tracking-widest font-semibold text-blue-500">Zenchef upload</p>
-            <h2 class="text-xl font-bold text-gray-800">Laad reserveringen en kies je menutemplate</h2>
-            <p class="text-sm text-gray-600">Vorige reservaties worden vervangen zodra je een nieuw CSV-bestand laadt.</p>
+            <p class="text-xs uppercase tracking-widest font-semibold text-sky-200">Zenchef upload</p>
+            <h2 class="text-xl font-bold text-white">Laad reserveringen en kies je menutemplate</h2>
+            <p class="text-sm text-sky-100/90">Vorige reservaties worden vervangen zodra je een nieuw CSV-bestand laadt.</p>
           </div>
           <!-- <div class="flex flex-wrap gap-2">
             <span class="px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">Templates: 9</span>
@@ -18,16 +18,16 @@
 
         <div class="grid gap-4 md:grid-cols-3">
           <!-- Upload CSV -->
-          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+          <div class="dw-mini-card p-4 rounded-xl border space-y-3">
             <div class="flex items-center gap-2">
-              <span class="text-xs px-2 py-1 rounded-md bg-blue-100 text-blue-800 font-semibold">Stap 1</span>
-              <p class="text-sm font-semibold text-gray-800">Toevoegen reservaties</p>
+              <span class="dw-chip text-xs px-2 py-1 rounded-md font-semibold">Stap 1</span>
+              <p class="text-sm font-semibold text-white">Toevoegen reservaties</p>
             </div>
             <div class="space-y-3">
               <button
                 type="button"
                 @click="triggerCsvUpload"
-                class="flex w-full items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors text-sm font-medium"
+                class="dw-btn-primary flex w-full items-center justify-center gap-2 px-4 py-2 rounded-lg shadow transition-colors text-sm font-medium"
               >
                 <svg
                   class="w-5 h-5"
@@ -48,7 +48,7 @@
                 @change="handleFileUpload"
                 class="hidden"
               />
-              <div class="text-xs text-gray-700 bg-white border border-dashed border-gray-200 rounded p-2">
+              <div class="dw-info-box text-xs rounded p-2">
                 <p class="font-semibold">Bestand:</p>
                 <p>{{ selectedFileName || 'Nog geen bestand gekozen' }}</p>
                 <p v-if="uploadMessage" :class="uploadStatusClass" class="mt-2">
@@ -58,7 +58,7 @@
               <button
                 type="button"
                 @click="openAddModal"
-                class="flex w-full items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg shadow hover:bg-black transition text-sm font-semibold"
+                class="dw-btn-secondary flex w-full items-center justify-center gap-2 px-4 py-2 rounded-lg shadow transition text-sm font-semibold"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -69,16 +69,16 @@
           </div>
 
           <!-- Template Dropdown -->
-          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+          <div class="dw-mini-card p-4 rounded-xl border space-y-3">
             <div class="flex items-center gap-2">
-              <span class="text-xs px-2 py-1 rounded bg-emerald-100 text-emerald-800 font-semibold">Stap 2</span>
-              <p class="text-sm font-semibold text-gray-800">Kies template</p>
+              <span class="dw-chip text-xs px-2 py-1 rounded font-semibold">Stap 2</span>
+              <p class="text-sm font-semibold text-white">Kies template</p>
             </div>
             <!-- <label for="template-select" class="block text-xs font-medium text-gray-700">Menukaart</label> -->
             <select
               id="template-select"
               v-model="selectedTemplate"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+              class="dw-select w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 text-sm"
             >
               <option value="menukaart.html">Standaard Menu</option>
               <option value="menukaart-boxes.html">Standaard menu met box</option>
@@ -101,7 +101,7 @@
             </select>
             <button
               @click="openTemplatePreview"
-              class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-gray-800 text-white text-sm font-semibold rounded-md shadow hover:bg-gray-900 transition-colors"
+              class="dw-btn-secondary w-full inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-md shadow transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5V6a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h4.5M9 18l2.25 2.25L18 9" />
@@ -111,19 +111,19 @@
           </div>
 
           <!-- Print Info -->
-          <div class="p-4 bg-slate-50 border border-slate-100 rounded-lg shadow-sm space-y-3">
+          <div class="dw-mini-card p-4 rounded-xl border space-y-3">
             <div class="flex items-center gap-2">
-              <span class="text-xs px-2 py-1 rounded bg-purple-100 text-purple-800 font-semibold">Stap 3</span>
-              <p class="text-sm font-semibold text-gray-800">Import info</p>
+              <span class="dw-chip text-xs px-2 py-1 rounded font-semibold">Stap 3</span>
+              <p class="text-sm font-semibold text-white">Import info</p>
             </div>
-            <div class="text-gray-700 text-sm space-y-1">
+            <div class="text-sky-50 text-sm space-y-1">
               <p class="font-semibold" v-if="date">Datum: {{ date }}</p>
               <p>Reservaties: {{ reservations.length ? reservations.length - 1 : 0 }}</p>
               <p v-if="totalGuests">Totaal gasten: {{ totalGuests }}</p>
             </div>
             <button
               @click="printAll(reservations)"
-              class="flex items-center justify-center gap-2 w-full bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-colors"
+              class="dw-btn-primary flex items-center justify-center gap-2 w-full px-4 py-2 rounded-md shadow transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
@@ -132,7 +132,7 @@
             </button>
             <button
               @click="openClearModal"
-              class="flex items-center justify-center gap-2 w-full bg-red-600 text-white px-4 py-2 rounded-md shadow hover:bg-red-700 transition-colors"
+              class="dw-btn-danger flex items-center justify-center gap-2 w-full px-4 py-2 rounded-md shadow transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
@@ -145,20 +145,20 @@
       </div>
 
       <!-- Tabel + Zoek -->
-      <div class="overflow-x-auto bg-white rounded-lg shadow">
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between px-4 py-3 text-sm text-gray-700 border-b bg-gray-50">
+      <div class="dw-table-shell overflow-x-auto rounded-xl border shadow-lg">
+        <div class="dw-table-toolbar flex flex-col gap-3 md:flex-row md:items-center md:justify-between px-4 py-3 text-sm border-b">
           <div class="flex items-center gap-3 flex-wrap">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-900 text-white text-xs font-semibold shadow-sm">
+            <span class="dw-count-badge inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold shadow-sm">
               {{ filteredReservations.length }} zichtbare rijen
             </span>
-            <span class="text-gray-600 text-xs">
+            <span class="text-sky-100 text-xs">
               {{ reservations.length ? reservations.length - 1 : 0 }} totaal
             </span>
-            <p v-if="selectedFileName" class="text-xs text-gray-500 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
+            <p v-if="selectedFileName" class="text-xs text-sky-200/80 truncate max-w-xs">Bron: {{ selectedFileName }}</p>
           </div>
           <div class="flex items-center gap-2 w-full md:w-auto">
             <div class="relative w-full md:w-64">
-              <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <span class="absolute inset-y-0 left-3 flex items-center text-sky-100/70">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                 </svg>
@@ -167,27 +167,27 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="Zoek op naam..."
-                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none text-sm"
+                class="dw-search-input w-full pl-9 pr-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:outline-none text-sm"
               />
             </div>
             <button
               v-if="searchQuery"
               @click="resetSearch"
-              class="px-3 py-2 text-xs font-semibold bg-gray-900 text-white rounded-lg shadow hover:bg-black transition"
+              class="dw-btn-secondary px-3 py-2 text-xs font-semibold rounded-lg shadow transition"
             >
               Reset
             </button>
           </div>
         </div>
-        <div class="px-4 pt-3 pb-4 text-xs text-gray-700 flex flex-wrap items-center gap-3 border-b border-gray-100">
-          <span class="font-semibold text-gray-800">Legenda:</span>
+        <div class="dw-legend px-4 pt-3 pb-4 text-xs flex flex-wrap items-center gap-3 border-b">
+          <span class="font-semibold text-white">Legenda:</span>
           <div v-for="item in timeColorLegend" :key="item.label" class="flex items-center gap-2">
-            <span :class="['w-4 h-4 rounded border border-gray-200 shrink-0', item.class]"></span>
-            <span class="text-gray-600">{{ item.label }}</span>
+            <span :class="['w-4 h-4 rounded border border-white/30 shrink-0', item.class]"></span>
+            <span class="text-sky-100">{{ item.label }}</span>
           </div>
         </div>
-        <table class="min-w-full table-auto">
-          <thead class="bg-gray-100 text-gray-700 text-xs uppercase tracking-wide">
+        <table class="dw-table min-w-full table-auto">
+          <thead class="dw-thead text-xs uppercase tracking-wide">
             <tr>
               <th class="px-4 py-2 text-left">Tijd</th>
               <th class="px-4 py-2 text-left">Personen</th>
@@ -205,13 +205,13 @@
             >
               <td class="px-4 py-2 font-semibold text-gray-900">{{ entry.time.replace(/"/g, "") }}</td>
               <td class="px-4 py-2">
-                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-900 text-white">
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-700 text-white">
                   {{ entry.people || '-' }}
                 </span>
               </td>
               <td class="px-4 py-2 text-gray-900 font-medium">{{ entry.name }}</td>
               <td class="px-4 py-2">
-                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-gray-900 text-white">
+                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-blue-700 text-white">
                   {{ entry.table }}
                 </span>
               </td>
@@ -220,7 +220,7 @@
                 <div class="flex justify-end gap-2">
                   <button
                     @click="printMenu(entry)"
-                    class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-white bg-gray-800 rounded-md shadow hover:bg-gray-900 active:scale-95 transition"
+                    class="dw-btn-secondary flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-md shadow active:scale-95 transition"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M16.444 18H19a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2.556M17 11V5a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v6h10ZM7 15h10v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1v-4Z"/>
@@ -230,7 +230,7 @@
                   <button
                     @click="deleteReservation(index)"
                     aria-label="Verwijder reservering"
-                    class="px-3 py-1.5 text-xs font-semibold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
+                    class="dw-btn-danger px-3 py-1.5 text-xs font-semibold rounded-md shadow transition"
                   >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m6 6 12 12M6 18 18 6" />
@@ -240,7 +240,7 @@
               </td>
             </tr>
             <tr v-if="reservations.length === 0">
-              <td colspan="7" class="text-center py-4 text-gray-500">Nog geen reservaties</td>
+              <td colspan="7" class="text-center py-4 text-sky-100">Nog geen reservaties</td>
             </tr>
           </tbody>
         </table>
@@ -250,21 +250,21 @@
       v-if="showClearModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
     >
-      <div class="bg-white rounded-lg shadow-xl max-w-md w-full p-6 space-y-4">
-        <h3 class="text-lg font-semibold text-gray-900">Reservaties wissen</h3>
-        <p class="text-sm text-gray-700">
+      <div class="dw-modal-panel rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+        <h3 class="text-lg font-semibold text-white">Reservaties wissen</h3>
+        <p class="text-sm text-sky-100">
           Weet je zeker dat je alle opgeslagen reservaties wilt verwijderen? Dit kan niet ongedaan worden gemaakt.
         </p>
         <div class="flex justify-end gap-2">
           <button
             @click="closeClearModal"
-            class="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100"
+            class="dw-btn-ghost px-4 py-2 rounded border"
           >
             Annuleer
           </button>
           <button
             @click="confirmClearReservations"
-            class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+            class="dw-btn-danger px-4 py-2 rounded"
           >
             Verwijder
           </button>
@@ -275,15 +275,15 @@
       v-if="showTemplatePreview"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
     >
-      <div class="bg-white rounded-xl shadow-2xl max-w-5xl w-full p-5 md:p-6 space-y-4 relative">
+      <div class="dw-modal-panel rounded-xl shadow-2xl max-w-5xl w-full p-5 md:p-6 space-y-4 relative">
         <div class="flex items-start justify-between gap-3">
           <div class="space-y-1">
-            <h3 class="text-lg font-semibold text-gray-900">Voorbeeld met "Beste klant"</h3>
-            <p class="text-sm text-gray-600">Template: {{ selectedTemplate }}</p>
+            <h3 class="text-lg font-semibold text-white">Voorbeeld met "Beste klant"</h3>
+            <p class="text-sm text-sky-100">Template: {{ selectedTemplate }}</p>
           </div>
           <button
             @click="closeTemplatePreview"
-            class="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800 transition"
+            class="p-2 rounded-full bg-white/10 text-sky-100 hover:bg-white/20 hover:text-white transition"
             aria-label="Sluit voorbeeld"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -291,8 +291,8 @@
             </svg>
           </button>
         </div>
-        <div class="border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
-          <div v-if="previewLoading" class="p-6 text-center text-gray-700">Voorbeeld laden...</div>
+        <div class="dw-preview-shell border rounded-lg overflow-hidden">
+          <div v-if="previewLoading" class="p-6 text-center text-sky-100">Voorbeeld laden...</div>
           <iframe
             v-else
             class="w-full h-[70vh] bg-white"
@@ -306,15 +306,15 @@
       v-if="showAddModal"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
     >
-      <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full p-6 space-y-4">
+      <div class="dw-modal-panel rounded-xl shadow-xl max-w-2xl w-full p-6 space-y-4">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h3 class="text-lg font-semibold text-gray-900">Manueel nieuwe reservering toevoegen</h3>
-            <p class="text-sm text-gray-600">Vul de gegevens in en sla op.</p>
+            <h3 class="text-lg font-semibold text-white">Manueel nieuwe reservering toevoegen</h3>
+            <p class="text-sm text-sky-100">Vul de gegevens in en sla op.</p>
           </div>
           <button
             @click="closeAddModal"
-            class="p-2 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-800 transition"
+            class="p-2 rounded-full bg-white/10 text-sky-100 hover:bg-white/20 hover:text-white transition"
             aria-label="Sluit toevoegen"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -324,22 +324,22 @@
         </div>
         <form @submit.prevent="addReservation" class="space-y-4">
           <div class="flex flex-wrap gap-4">
-            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="flex-1 px-4 py-2 border rounded-lg" required />
-            <input v-model="newReservation.name" type="text" placeholder="Naam" class="flex-1 px-4 py-2 border rounded-lg" required />
-            <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="flex-1 px-4 py-2 border rounded-lg" />
-            <input v-model="newReservation.table" type="text" placeholder="Tafel" class="flex-1 px-4 py-2 border rounded-lg" />
+            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.name" type="text" placeholder="Naam" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" required />
+            <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" />
+            <input v-model="newReservation.table" type="text" placeholder="Tafel" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" />
           </div>
 
           <div>
-            <h2 class="text-sm font-bold mb-2">Persoonlijke notitie</h2>
-            <div id="editorBlock1" class="editor-small border rounded-lg h-32"></div>
+            <h2 class="text-sm font-bold mb-2 text-white">Persoonlijke notitie</h2>
+            <div id="editorBlock1" class="dw-editor editor-small border rounded-lg h-32"></div>
           </div>
 
           <div class="flex justify-end gap-2">
-            <button type="button" @click="closeAddModal" class="px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-100">
+            <button type="button" @click="closeAddModal" class="dw-btn-ghost px-4 py-2 rounded border">
               Annuleer
             </button>
-            <button type="submit" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <button type="submit" class="dw-btn-primary flex items-center gap-2 px-4 py-2 rounded-lg transition-colors">
               Voeg toe
             </button>
           </div>
@@ -410,17 +410,17 @@ export default {
     },
     timeColorLegend() {
       return [
-        { label: "Voor 12u", class: "bg-gray-50" },
-        { label: "12u", class: "bg-emerald-50" },
-        { label: "13u", class: "bg-emerald-100" },
-        { label: "14u", class: "bg-emerald-200" },
-        { label: "15u", class: "bg-emerald-300/60" },
-        { label: "16-17u", class: "bg-sky-50" },
-        { label: "18u", class: "bg-amber-50" },
-        { label: "19u", class: "bg-amber-100" },
-        { label: "20u", class: "bg-orange-100" },
-        { label: "21u", class: "bg-orange-200" },
-        { label: "Later", class: "bg-slate-100" },
+        { label: "Voor 12u", class: "bg-sky-100/90" },
+        { label: "12u", class: "bg-sky-200/90" },
+        { label: "13u", class: "bg-cyan-100/90" },
+        { label: "14u", class: "bg-cyan-200/90" },
+        { label: "15u", class: "bg-teal-100/90" },
+        { label: "16-17u", class: "bg-blue-100/90" },
+        { label: "18u", class: "bg-indigo-100/90" },
+        { label: "19u", class: "bg-indigo-200/90" },
+        { label: "20u", class: "bg-violet-100/90" },
+        { label: "21u", class: "bg-violet-200/90" },
+        { label: "Later", class: "bg-slate-200/90" },
       ];
     },
     uploadStatusClass() {
@@ -651,29 +651,30 @@ export default {
       if (Number.isNaN(hour)) return "";
 
       // Specifieke blokken per uur
-      if (hour < 12) return "bg-gray-50";        // voor 12u
-      if (hour === 12) return "bg-emerald-50";   // 12u
-      if (hour === 13) return "bg-emerald-100";  // 13u
-      if (hour === 14) return "bg-emerald-200";  // 14u
-      if (hour === 15) return "bg-emerald-300/60"; // 15u
-      if (hour < 18) return "bg-sky-50";         // 16-17u
-      if (hour === 18) return "bg-amber-50";     // 18u
-      if (hour === 19) return "bg-amber-100";    // 19u
-      if (hour === 20) return "bg-orange-100";   // 20u (oranje)
-      if (hour === 21) return "bg-orange-200";   // 21u (donkerder oranje)
-      return "bg-slate-100";                     // later
+      if (hour < 12) return "bg-sky-100/90";      // voor 12u
+      if (hour === 12) return "bg-sky-200/90";    // 12u
+      if (hour === 13) return "bg-cyan-100/90";   // 13u
+      if (hour === 14) return "bg-cyan-200/90";   // 14u
+      if (hour === 15) return "bg-teal-100/90";   // 15u
+      if (hour < 18) return "bg-blue-100/90";     // 16-17u
+      if (hour === 18) return "bg-indigo-100/90"; // 18u
+      if (hour === 19) return "bg-indigo-200/90"; // 19u
+      if (hour === 20) return "bg-violet-100/90"; // 20u
+      if (hour === 21) return "bg-violet-200/90"; // 21u
+      return "bg-slate-200/90";                   // later
     },
     getRowClasses(entry, index) {
       const classes = [
         "text-sm",
         "border-b",
+        "border-sky-200/30",
         "last:border-0",
         "transition",
-        "hover:bg-gray-50",
+        "hover:bg-white/70",
       ];
 
       if (entry.name === "beste klant") {
-        classes.push("bg-amber-100");
+        classes.push("bg-cyan-200/90");
         return classes;
       }
 
@@ -681,7 +682,7 @@ export default {
       if (timeClass) {
         classes.push(timeClass);
       } else {
-        classes.push(index % 2 ? "bg-gray-50/50" : "bg-white");
+        classes.push(index % 2 ? "bg-sky-100/80" : "bg-sky-50/90");
       }
       return classes;
     },
@@ -824,3 +825,165 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.dw-page {
+  background:
+    radial-gradient(1000px 520px at 0% -15%, rgba(169, 214, 255, 0.22), transparent 62%),
+    radial-gradient(900px 500px at 100% 110%, rgba(135, 206, 250, 0.16), transparent 64%);
+}
+
+.dw-card {
+  background: rgba(20, 84, 164, 0.72);
+  border-color: rgba(149, 204, 255, 0.38);
+  box-shadow: 0 14px 36px rgba(4, 28, 66, 0.24);
+}
+
+.dw-mini-card {
+  background: rgba(12, 67, 141, 0.64);
+  border-color: rgba(149, 204, 255, 0.34);
+}
+
+.dw-chip {
+  background: rgba(194, 228, 255, 0.2);
+  color: #def2ff;
+  border: 1px solid rgba(214, 236, 255, 0.34);
+}
+
+.dw-info-box {
+  background: rgba(8, 52, 111, 0.48);
+  border: 1px dashed rgba(194, 228, 255, 0.45);
+  color: #eff8ff;
+}
+
+.dw-select {
+  border-color: rgba(172, 221, 255, 0.5);
+  background: rgba(7, 49, 106, 0.54);
+  color: #f6fbff;
+}
+
+.dw-select:focus {
+  border-color: rgba(218, 238, 255, 0.85);
+  --tw-ring-color: rgba(207, 233, 255, 0.45);
+}
+
+.dw-select option {
+  background: #0d4e9e;
+  color: #eff8ff;
+}
+
+.dw-btn-primary {
+  background: linear-gradient(180deg, #57a6ff 0%, #3089ef 100%);
+  color: #ffffff;
+}
+
+.dw-btn-primary:hover {
+  background: linear-gradient(180deg, #71b5ff 0%, #4496f3 100%);
+}
+
+.dw-btn-secondary {
+  background: rgba(8, 44, 97, 0.62);
+  color: #eef7ff;
+  border: 1px solid rgba(174, 220, 255, 0.35);
+}
+
+.dw-btn-secondary:hover {
+  background: rgba(12, 56, 118, 0.84);
+}
+
+.dw-btn-danger {
+  background: linear-gradient(180deg, #ef5b72 0%, #dd3d56 100%);
+  color: #ffffff;
+}
+
+.dw-btn-danger:hover {
+  background: linear-gradient(180deg, #f06d82 0%, #e15268 100%);
+}
+
+.dw-btn-ghost {
+  border-color: rgba(172, 221, 255, 0.48);
+  color: #f2f9ff;
+  background: rgba(6, 45, 96, 0.46);
+}
+
+.dw-btn-ghost:hover {
+  background: rgba(9, 59, 126, 0.62);
+}
+
+.dw-table-shell {
+  background: rgba(18, 80, 158, 0.78);
+  border-color: rgba(172, 221, 255, 0.38);
+}
+
+.dw-table-toolbar {
+  background: rgba(7, 51, 112, 0.6);
+  border-color: rgba(172, 221, 255, 0.28);
+  color: #dff1ff;
+}
+
+.dw-count-badge {
+  background: rgba(184, 224, 255, 0.22);
+  color: #eff8ff;
+  border: 1px solid rgba(214, 236, 255, 0.35);
+}
+
+.dw-search-input {
+  border-color: rgba(172, 221, 255, 0.45);
+  background: rgba(5, 44, 97, 0.5);
+  color: #f6fbff;
+}
+
+.dw-search-input::placeholder {
+  color: rgba(223, 241, 255, 0.62);
+}
+
+.dw-search-input:focus {
+  border-color: rgba(214, 236, 255, 0.85);
+  --tw-ring-color: rgba(210, 234, 255, 0.35);
+}
+
+.dw-legend {
+  background: rgba(6, 45, 96, 0.46);
+  border-color: rgba(172, 221, 255, 0.26);
+}
+
+.dw-thead {
+  background: rgba(5, 40, 88, 0.64);
+  color: #deefff;
+}
+
+.dw-table td {
+  color: #072447;
+}
+
+.dw-modal-panel {
+  background: #0d4c99;
+  border: 1px solid rgba(172, 221, 255, 0.34);
+}
+
+.dw-preview-shell {
+  border-color: rgba(172, 221, 255, 0.42);
+  background: rgba(6, 45, 96, 0.46);
+}
+
+.dw-modal-input {
+  border-color: rgba(172, 221, 255, 0.45);
+  background: rgba(6, 44, 96, 0.5);
+  color: #f8fcff;
+}
+
+.dw-modal-input::placeholder {
+  color: rgba(223, 241, 255, 0.62);
+}
+
+.dw-modal-input:focus {
+  outline: none;
+  border-color: rgba(216, 237, 255, 0.88);
+  box-shadow: 0 0 0 2px rgba(190, 226, 255, 0.24);
+}
+
+.dw-editor {
+  border-color: rgba(172, 221, 255, 0.45);
+  background: rgba(6, 44, 96, 0.52);
+}
+</style>

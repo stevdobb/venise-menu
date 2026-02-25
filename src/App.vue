@@ -1,10 +1,10 @@
 <template>
-  <div id="app" class="min-h-screen bg-background text-foreground">
-    <header class="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
+  <div id="app" class="app-shell min-h-screen text-foreground">
+    <header class="sticky top-0 z-50 border-b border-sky-300/40 bg-[#0d4a98]/95 text-white backdrop-blur">
       <nav class="px-4 py-3 lg:px-6">
         <div class="mx-auto flex max-w-screen-xl items-center gap-3">
-          <router-link to="/" class="flex items-center rounded-md p-1 transition hover:bg-accent">
-            <img src="/logo-venise-white.png" class="w-28" alt="Venise Logo" />
+          <router-link to="/" class="flex items-center rounded-md p-1 transition hover:bg-white/10">
+            <img src="/logo-venise-inverted.png" class="w-28" alt="Venise Logo" />
           </router-link>
 
           <ul class="hidden lg:flex items-center gap-2 text-sm font-medium">
@@ -14,8 +14,8 @@
                 class="inline-flex items-center rounded-md border px-3 py-2 transition-all"
                 :class="
                   isActiveRoute(item.path)
-                    ? 'border-blue-600 bg-blue-600 text-white'
-                    : 'border-border bg-background hover:bg-accent hover:text-accent-foreground'
+                    ? 'border-sky-200 bg-white/20 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.12)]'
+                    : 'border-sky-300/40 bg-white/10 text-sky-100 hover:bg-white/20 hover:text-white'
                 "
               >
                 {{ item.label }}
@@ -27,7 +27,7 @@
             <button
               v-if="canInstallPwa || isIos"
               type="button"
-              class="hidden sm:inline-flex items-center rounded-md border bg-background px-3 py-2 text-xs font-semibold transition-colors hover:bg-accent"
+              class="hidden sm:inline-flex items-center rounded-md border border-sky-200/50 bg-white/15 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-white/25"
               @click="installPwa"
             >
               Installeer app
@@ -39,8 +39,8 @@
               class="inline-flex items-center justify-center rounded-md border p-2 transition-colors lg:hidden"
               :class="
                 mobileMenuOpen
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-border bg-background text-foreground hover:bg-accent'
+                  ? 'border-sky-100/70 bg-white/30 text-white'
+                  : 'border-sky-200/50 bg-white/10 text-white hover:bg-white/20'
               "
               :aria-expanded="mobileMenuOpen ? 'true' : 'false'"
             >
@@ -75,14 +75,14 @@
         <transition name="slide-right">
           <aside
             v-if="mobileMenuOpen"
-            class="fixed inset-y-0 right-0 z-[100] w-[84vw] max-w-sm border-l border-border bg-white text-slate-900 shadow-2xl lg:hidden"
+            class="fixed inset-y-0 right-0 z-[100] w-[84vw] max-w-sm border-l border-sky-200/40 bg-[#1a5fb2] text-white shadow-2xl lg:hidden"
             @click.stop
           >
-            <div class="flex items-center justify-between border-b border-border bg-white px-4 py-3">
+            <div class="flex items-center justify-between border-b border-sky-200/40 bg-[#1658a7] px-4 py-3">
               <p class="text-sm font-semibold">Menu</p>
               <button
                 type="button"
-                class="inline-flex items-center justify-center rounded-md border bg-white p-2 text-slate-900 hover:bg-slate-100"
+                class="inline-flex items-center justify-center rounded-md border border-sky-200/50 bg-white/10 p-2 text-white hover:bg-white/20"
                 @click="closeMenu"
               >
                 <span class="sr-only">Sluit menu</span>
@@ -98,24 +98,24 @@
               </button>
             </div>
 
-            <div class="space-y-3 bg-white p-4">
+            <div class="space-y-3 bg-[#1a5fb2] p-4">
               <button
                 v-if="canInstallPwa || isIos"
                 type="button"
-                class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold transition-colors hover:bg-slate-100"
+                class="w-full rounded-lg border border-sky-200/50 bg-white/10 px-3 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/20"
                 @click="installPwa"
               >
                 Installeer app
               </button>
-              <ul class="overflow-hidden rounded-lg border border-slate-200 bg-white">
-                <li v-for="item in navItems" :key="`mobile-${item.path}`" class="border-b border-slate-200 last:border-b-0">
+              <ul class="overflow-hidden rounded-lg border border-sky-200/40 bg-[#14539f]">
+                <li v-for="item in navItems" :key="`mobile-${item.path}`" class="border-b border-sky-200/30 last:border-b-0">
                   <router-link
                     :to="item.path"
                     class="block px-3 py-3 text-base font-medium"
                     :class="
                       isActiveRoute(item.path)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-slate-900 hover:bg-slate-100'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#14539f] text-sky-100 hover:bg-white/15'
                     "
                     @click="closeMenu"
                   >
@@ -135,7 +135,7 @@
 
     <div
       v-if="showIosInstallHint"
-      class="fixed bottom-4 left-1/2 z-[120] w-[92vw] max-w-md -translate-x-1/2 rounded-lg border border-border bg-card px-4 py-3 text-sm text-card-foreground shadow-lg"
+      class="fixed bottom-4 left-1/2 z-[120] w-[92vw] max-w-md -translate-x-1/2 rounded-lg border border-sky-200/50 bg-[#1d67bd] px-4 py-3 text-sm text-white shadow-lg"
     >
       Op iPhone/iPad: tik op Deel en kies Zet op beginscherm.
     </div>
@@ -264,5 +264,11 @@ onBeforeUnmount(() => {
 .slide-right-leave-to {
   opacity: 0;
   transform: translateX(24px);
+}
+
+.app-shell {
+  background:
+    radial-gradient(1200px 600px at 20% -20%, rgba(173, 216, 255, 0.25), transparent 60%),
+    linear-gradient(180deg, #0b4a9a 0%, #0f5eb6 45%, #0b4a9a 100%);
 }
 </style>

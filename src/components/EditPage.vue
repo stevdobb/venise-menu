@@ -1,27 +1,27 @@
 <template>
-  <div class="space-y-6 py-6">
-    <div class="rounded-xl border bg-card p-6 text-card-foreground shadow-sm">
+  <div class="edit-dw-page space-y-6 py-6">
+    <div class="edit-dw-card rounded-xl border p-6 shadow-sm">
       <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div class="space-y-1">
-          <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Wijzig menu</p>
-          <h1 class="text-3xl font-bold tracking-tight">Bewerk menukaart</h1>
-          <p class="text-sm text-muted-foreground">
+          <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Wijzig menu</p>
+          <h1 class="text-3xl font-bold tracking-tight text-white">Bewerk menukaart</h1>
+          <p class="text-sm text-sky-100">
             Pas de standaardteksten aan, sla lokaal op en exporteer desgewenst een backup voor Word.
           </p>
         </div>
         <div class="grid gap-2 w-full sm:w-auto">
-          <div class="rounded-lg border bg-muted/40 px-4 py-2 text-sm">
+          <div class="edit-dw-stat rounded-lg border px-4 py-2 text-sm">
             Laatst opgeslagen:
             <span class="font-semibold" v-if="lastSaved">{{ lastSaved }}</span>
-            <span class="font-semibold text-muted-foreground" v-else>Nog niet opgeslagen</span>
+            <span class="font-semibold text-sky-200/80" v-else>Nog niet opgeslagen</span>
           </div>
-          <div class="rounded-lg border bg-muted/40 px-4 py-2 text-sm">
+          <div class="edit-dw-stat rounded-lg border px-4 py-2 text-sm">
             Tekstblokken: <span class="font-semibold">3</span>
           </div>
         </div>
       </div>
       <div
-        class="mt-4 flex items-center gap-2 rounded-lg border border-amber-300/70 bg-amber-50/80 px-4 py-3 text-sm text-amber-900"
+        class="mt-4 flex items-center gap-2 rounded-lg border border-amber-200/60 bg-amber-100/90 px-4 py-3 text-sm text-amber-950"
         role="alert"
         v-if="!lastSaved"
       >
@@ -40,17 +40,17 @@
       </div>
     </div>
 
-    <div class="space-y-5 rounded-xl border bg-card p-5 text-card-foreground shadow-sm">
+    <div class="edit-dw-card space-y-5 rounded-xl border p-5 shadow-sm">
       <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Tekstblokken</p>
-          <h2 class="text-xl font-bold tracking-tight">Werk de menu-inhoud bij</h2>
-          <p class="text-sm text-muted-foreground">Aanpassingen worden lokaal opgeslagen in je browser.</p>
+          <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Tekstblokken</p>
+          <h2 class="text-xl font-bold tracking-tight text-white">Werk de menu-inhoud bij</h2>
+          <p class="text-sm text-sky-100">Aanpassingen worden lokaal opgeslagen in je browser.</p>
         </div>
         <div class="flex flex-wrap gap-2">
           <button
             @click="saveContent"
-            class="inline-flex items-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:opacity-90"
+            class="edit-dw-btn-primary inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1h-2M8 9l4-5 4 5m1 8h.01" />
@@ -59,7 +59,7 @@
           </button>
           <button
             @click="exportToWord"
-            class="inline-flex items-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+            class="edit-dw-btn-secondary inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 7V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2m-4 9v3m-4 0h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2Zm8-13H9v4h6V6Z" />
@@ -68,7 +68,7 @@
           </button>
           <button
             @click="resetReservations"
-            class="inline-flex items-center gap-2 rounded-md border border-destructive bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors hover:opacity-90"
+            class="edit-dw-btn-danger inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6m4-6v6m-6 4h8a2 2 0 0 0 2-2V7H6v12a2 2 0 0 0 2 2Zm1-18h4a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
@@ -79,30 +79,30 @@
       </div>
 
       <div class="space-y-4">
-        <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
+        <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 3</p>
-            <h3 class="text-lg font-semibold tracking-tight">Tekst links boven</h3>
-            <p class="text-sm text-muted-foreground">Korte introductie bovenaan de menukaart.</p>
+            <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Blok 3</p>
+            <h3 class="text-lg font-semibold tracking-tight text-white">Tekst links boven</h3>
+            <p class="text-sm text-sky-100">Korte introductie bovenaan de menukaart.</p>
           </div>
           <div id="editorBlock3" class="editor-small"></div>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2">
-          <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
+          <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 1</p>
-              <h3 class="text-lg font-semibold tracking-tight">Tekst links onder</h3>
-              <p class="text-sm text-muted-foreground">Tapas of bijgerechten die naast het menu staan.</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Blok 1</p>
+              <h3 class="text-lg font-semibold tracking-tight text-white">Tekst links onder</h3>
+              <p class="text-sm text-sky-100">Tapas of bijgerechten die naast het menu staan.</p>
             </div>
             <div id="editorBlock1" class="editor"></div>
           </div>
 
-          <div class="space-y-2 rounded-lg border bg-muted/30 p-4 shadow-sm">
+          <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
             <div>
-              <p class="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Blok 2</p>
-              <h3 class="text-lg font-semibold tracking-tight">Tekst rechts</h3>
-              <p class="text-sm text-muted-foreground">Hoofdgerechten, suggesties en extra info.</p>
+              <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Blok 2</p>
+              <h3 class="text-lg font-semibold tracking-tight text-white">Tekst rechts</h3>
+              <p class="text-sm text-sky-100">Hoofdgerechten, suggesties en extra info.</p>
             </div>
             <div id="editorBlock2" class="editor"></div>
           </div>
@@ -309,6 +309,58 @@ export default {
 };
 </script>
 <style>
+.edit-dw-page {
+  background:
+    radial-gradient(900px 460px at 0% -10%, rgba(169, 214, 255, 0.18), transparent 62%),
+    radial-gradient(800px 420px at 100% 120%, rgba(135, 206, 250, 0.14), transparent 64%);
+}
+
+.edit-dw-card {
+  background: rgba(20, 84, 164, 0.72);
+  border-color: rgba(149, 204, 255, 0.38);
+  color: #f1f8ff;
+}
+
+.edit-dw-stat {
+  background: rgba(8, 52, 111, 0.48);
+  border-color: rgba(194, 228, 255, 0.45);
+}
+
+.edit-dw-editor-panel {
+  background: rgba(9, 56, 118, 0.56);
+  border-color: rgba(172, 221, 255, 0.34);
+}
+
+.edit-dw-btn-primary {
+  background: linear-gradient(180deg, #57a6ff 0%, #3089ef 100%);
+  color: #fff;
+  border-color: rgba(204, 234, 255, 0.45);
+}
+
+.edit-dw-btn-primary:hover {
+  background: linear-gradient(180deg, #71b5ff 0%, #4496f3 100%);
+}
+
+.edit-dw-btn-secondary {
+  background: rgba(8, 44, 97, 0.62);
+  color: #eef7ff;
+  border-color: rgba(174, 220, 255, 0.35);
+}
+
+.edit-dw-btn-secondary:hover {
+  background: rgba(12, 56, 118, 0.84);
+}
+
+.edit-dw-btn-danger {
+  background: linear-gradient(180deg, #ef5b72 0%, #dd3d56 100%);
+  color: #fff;
+  border-color: rgba(255, 210, 216, 0.35);
+}
+
+.edit-dw-btn-danger:hover {
+  background: linear-gradient(180deg, #f06d82 0%, #e15268 100%);
+}
+
 .editor,
 .editor-small {
   width: 100%;

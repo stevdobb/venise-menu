@@ -1,31 +1,31 @@
 <template>
-  <div class="py-6 mx-auto space-y-6">
-    <div class="bg-gradient-to-r from-gray-50 via-white to-gray-100 border border-gray-200 rounded-xl p-6 shadow-sm">
-      <p class="text-xs uppercase font-semibold tracking-widest text-gray-600">Taalhulp in de zaal</p>
-      <h1 class="text-3xl font-bold text-gray-900">Handige restaurantvertalingen</h1>
-      <p class="text-sm text-gray-700">
+  <div class="dw-page py-6 mx-auto space-y-6">
+    <div class="dw-card rounded-xl p-6 shadow-sm">
+      <p class="text-xs uppercase font-semibold tracking-widest text-sky-200">Taalhulp in de zaal</p>
+      <h1 class="text-3xl font-bold text-white">Handige restaurantvertalingen</h1>
+      <p class="text-sm text-sky-100">
         Vind snel hoe je veelgebruikte woorden zegt in het Engels, Frans en Duits. Ideaal voor zaal, bar en keuken.
       </p>
       <div class="mt-4 grid gap-3 md:grid-cols-3">
-        <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="dw-stat p-3 rounded-lg shadow-sm text-sm">
           <span class="font-semibold">Totaal termen:</span> {{ translations.length }}
         </div>
-        <div class="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="dw-stat p-3 rounded-lg shadow-sm text-sm">
           <span class="font-semibold">Categorieën:</span> {{ categories.length }}
         </div>
-        <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
+        <div class="dw-stat p-3 rounded-lg shadow-sm text-sm">
           Tip: filter op bv. "glutenvrij", "rekening", "mild".
         </div>
       </div>
     </div>
 
-    <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm space-y-4">
+    <div class="dw-card rounded-xl p-5 shadow-sm space-y-4">
       <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <input
           v-model="search"
           type="text"
           placeholder="Zoek op NL/EN/FR/DE of onderdeel..."
-          class="w-full md:w-2/3 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          class="dw-search-input w-full md:w-2/3 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2"
         />
         <div class="flex flex-wrap gap-2">
           <button
@@ -40,9 +40,9 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto rounded-lg border border-gray-100 shadow-sm">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-slate-100 text-slate-700">
+      <div class="dw-table-shell overflow-x-auto rounded-lg border shadow-sm">
+        <table class="min-w-full divide-y divide-sky-200/30">
+          <thead class="dw-thead">
             <tr>
               <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Nederlands</th>
               <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Engels</th>
@@ -51,24 +51,24 @@
               <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Categorie</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-100">
+          <tbody class="bg-white divide-y divide-sky-200/30">
             <tr
               v-for="(row, index) in filteredTranslations"
               :key="index"
-              class="hover:bg-indigo-50 transition"
+              class="hover:bg-white/80 transition"
             >
               <td class="px-4 py-3 text-sm text-gray-900 font-semibold">{{ row.nl }}</td>
               <td class="px-4 py-3 text-sm text-gray-800">{{ row.en }}</td>
               <td class="px-4 py-3 text-sm text-gray-800">{{ row.fr }}</td>
               <td class="px-4 py-3 text-sm text-gray-800">{{ row.de }}</td>
               <td class="px-4 py-3 text-xs text-gray-700">
-                <span class="inline-block px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 font-semibold">
+                <span class="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-semibold">
                   {{ row.category }}
                 </span>
               </td>
             </tr>
             <tr v-if="filteredTranslations.length === 0">
-              <td colspan="5" class="px-4 py-4 text-center text-gray-500">Geen resultaten voor deze zoekopdracht.</td>
+              <td colspan="5" class="px-4 py-4 text-center text-sky-100 bg-[#0f5aad]">Geen resultaten voor deze zoekopdracht.</td>
             </tr>
           </tbody>
         </table>
@@ -240,9 +240,53 @@ const setCategory = (cat) => {
 
 const getButtonClasses = (cat) => {
   const isActive = activeCategory.value === cat;
-  let base = 'border-gray-200 bg-white text-gray-800 hover:bg-indigo-50';
-  if (cat === 'all') base = 'border-blue-200 bg-blue-50 text-blue-800 hover:bg-blue-100';
-  if (isActive) base = 'border-indigo-500 bg-indigo-600 text-white shadow';
+  let base = 'border-sky-200/40 bg-white/10 text-sky-100 hover:bg-white/20';
+  if (cat === 'all') base = 'border-sky-200/45 bg-white/15 text-white hover:bg-white/25';
+  if (isActive) base = 'border-sky-100/70 bg-white/30 text-white shadow';
   return base;
 };
 </script>
+
+<style scoped>
+.dw-page {
+  background:
+    radial-gradient(1000px 520px at 0% -15%, rgba(169, 214, 255, 0.22), transparent 62%),
+    radial-gradient(900px 500px at 100% 110%, rgba(135, 206, 250, 0.16), transparent 64%);
+}
+
+.dw-card {
+  background: rgba(20, 84, 164, 0.72);
+  border: 1px solid rgba(149, 204, 255, 0.38);
+}
+
+.dw-stat {
+  background: rgba(8, 52, 111, 0.48);
+  border: 1px solid rgba(194, 228, 255, 0.45);
+  color: #eff8ff;
+}
+
+.dw-search-input {
+  border-color: rgba(172, 221, 255, 0.45);
+  background: rgba(5, 44, 97, 0.5);
+  color: #f6fbff;
+}
+
+.dw-search-input::placeholder {
+  color: rgba(223, 241, 255, 0.62);
+}
+
+.dw-search-input:focus {
+  border-color: rgba(214, 236, 255, 0.85);
+  --tw-ring-color: rgba(210, 234, 255, 0.35);
+}
+
+.dw-table-shell {
+  background: rgba(18, 80, 158, 0.78);
+  border-color: rgba(172, 221, 255, 0.38);
+}
+
+.dw-thead {
+  background: rgba(5, 40, 88, 0.64);
+  color: #deefff;
+}
+</style>

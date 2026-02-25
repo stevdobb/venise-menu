@@ -1,22 +1,22 @@
 <template>
-  <div class="mx-auto max-w-screen-xl py-6 ">
-    <div class="container bg-white rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
-      <div class="bg-gradient-to-r from-gray-50 via-white to-gray-100 border border-gray-200 rounded-xl p-5 md:p-6">
+  <div class="dw-page mx-auto max-w-screen-xl py-6 ">
+    <div class="container dw-container rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+      <div class="dw-card rounded-xl p-5 md:p-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div class="space-y-1">
-            <p class="text-xs font-semibold uppercase tracking-widest text-gray-600">Schooljaar 2025-2026</p>
-            <h1 class="text-3xl font-bold text-gray-800">
+            <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Schooljaar 2025-2026</p>
+            <h1 class="text-3xl font-bold text-white">
               Schoolvakanties België, Nederland, Duitsland, Frankrijk & Luxemburg
             </h1>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-sky-100">
               Alle regio's en onderwijszones in één overzicht. Klik op een filter om snel de juiste periode te vinden.
             </p>
           </div>
           <div class="grid gap-2 w-full sm:w-auto">
-            <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
+            <div class="dw-stat px-4 py-2 rounded-lg shadow-sm text-sm">
               Regio's / zones: <span class="font-semibold">{{ regios.length }}</span>
             </div>
-            <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm text-sm text-gray-700">
+            <div class="dw-stat px-4 py-2 rounded-lg shadow-sm text-sm">
               In dit overzicht: <span class="font-semibold">{{ filteredVakanties.length }}</span> / {{ vakantieData.length }} regels
             </div>
             <!-- <div class="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-xs text-gray-600">
@@ -26,16 +26,16 @@
         </div>
       </div>
 
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 md:p-5 shadow-sm space-y-3">
+      <div class="dw-card rounded-xl p-4 md:p-5 shadow-sm space-y-3">
         <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <div>
-            <p class="text-xs uppercase tracking-widest font-semibold text-gray-600">Vandaag</p>
-            <p class="text-lg font-semibold text-gray-900">{{ todayDisplay }}</p>
-            <p class="text-sm text-gray-700">
+            <p class="text-xs uppercase tracking-widest font-semibold text-sky-200">Vandaag</p>
+            <p class="text-lg font-semibold text-white">{{ todayDisplay }}</p>
+            <p class="text-sm text-sky-100">
               {{ currentVakantieRegios.length > 0 ? 'Deze regio’s hebben nu vakantie:' : 'Geen actieve schoolvakanties vandaag.' }}
             </p>
           </div>
-          <div class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-800 text-sm font-semibold shadow">
+          <div class="dw-stat px-4 py-2 rounded-lg text-sm font-semibold shadow">
             Actief: {{ currentVakantieRegios.length }}
           </div>
         </div>
@@ -43,17 +43,17 @@
           <div
             v-for="(item, idx) in currentVakantieRegios"
             :key="idx"
-            class="bg-white border border-gray-200 rounded-lg p-3 shadow-sm flex flex-col gap-1"
+            class="dw-mini-card rounded-lg p-3 shadow-sm flex flex-col gap-1"
           >
-            <p class="text-sm font-semibold text-gray-900">{{ item.land }} — {{ item.regio }}</p>
-            <p class="text-sm text-gray-700">{{ normalizeType(item.type) }} · {{ item.start }} – {{ item.end }}</p>
+            <p class="text-sm font-semibold text-white">{{ item.land }} — {{ item.regio }}</p>
+            <p class="text-sm text-sky-100">{{ normalizeType(item.type) }} · {{ item.start }} – {{ item.end }}</p>
           </div>
         </div>
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm space-y-2">
-          <h2 class="text-base font-semibold text-gray-900">Filter op schooljaar</h2>
+        <div class="dw-mini-card p-4 rounded-lg border shadow-sm space-y-2">
+          <h2 class="text-base font-semibold text-white">Filter op schooljaar</h2>
           <div class="flex flex-wrap gap-2">
             <button
               data-filter-type="schooljaar"
@@ -76,8 +76,8 @@
           </div>
         </div>
 
-        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm space-y-2">
-          <h2 class="text-base font-semibold text-gray-900">Filter op land</h2>
+        <div class="dw-mini-card p-4 rounded-lg border shadow-sm space-y-2">
+          <h2 class="text-base font-semibold text-white">Filter op land</h2>
           <div class="flex flex-wrap gap-2">
             <button
               data-filter-type="land"
@@ -100,8 +100,8 @@
           </div>
         </div>
 
-        <div class="p-4 bg-slate-50 rounded-lg border border-gray-200 shadow-sm space-y-2">
-          <h2 class="text-base font-semibold text-gray-900">Filter op regio / zone</h2>
+        <div class="dw-mini-card p-4 rounded-lg border shadow-sm space-y-2">
+          <h2 class="text-base font-semibold text-white">Filter op regio / zone</h2>
           <div class="flex flex-wrap gap-2 max-h-40 overflow-y-auto pr-1">
             <button
               data-filter-type="regio"
@@ -124,8 +124,8 @@
           </div>
         </div>
 
-        <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm space-y-2">
-          <h2 class="text-base font-semibold text-gray-900">Filter op vakantietype</h2>
+        <div class="dw-mini-card p-4 rounded-lg border shadow-sm space-y-2">
+          <h2 class="text-base font-semibold text-white">Filter op vakantietype</h2>
           <div class="flex flex-wrap gap-2">
             <button
               data-filter-type="vakantie"
@@ -149,9 +149,9 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto shadow-lg rounded-lg border border-gray-100">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-800 text-white">
+      <div class="dw-table-shell overflow-x-auto shadow-lg rounded-lg border">
+        <table class="min-w-full divide-y divide-sky-200/30">
+          <thead class="dw-thead">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Land</th>
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Regio / Zone</th>
@@ -160,11 +160,11 @@
               <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Schooljaar</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white divide-y divide-sky-200/30">
             <tr
               v-for="(item, index) in filteredVakanties"
               :key="index"
-              class="hover:bg-gray-50 transition duration-150"
+              class="hover:bg-white/80 transition duration-150"
               :class="getRowClasses(item.land)"
             >
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.land }}</td>
@@ -176,7 +176,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.schooljaar }}</td>
             </tr>
             <tr v-if="filteredVakanties.length === 0">
-              <td colspan="5" class="px-6 py-4 text-center text-gray-500 bg-gray-50">
+              <td colspan="5" class="px-6 py-4 text-center text-sky-100 bg-[#0f5aad]">
                 Geen vakanties gevonden voor deze selectie.
               </td>
             </tr>
@@ -471,7 +471,7 @@ const getButtonClasses = (filterType, value, activeClass) => {
   if (isActive) {
     classes += ` ${activeClass}`; // Active Class komt uit de <style>
   } else {
-    classes += ' bg-white text-gray-800 border border-gray-300 hover:bg-gray-100';
+    classes += ' border border-sky-200/40 bg-white/10 text-sky-100 hover:bg-white/20';
   }
   return classes;
 };
@@ -481,11 +481,11 @@ const getButtonClasses = (filterType, value, activeClass) => {
  * Geeft de Tailwind klassen terug voor de tabelrijen (achtergrondkleur).
  */
 const getRowClasses = (land) => {
-  if (land === 'België') return 'bg-indigo-50/60';
-  if (land === 'Nederland') return 'bg-orange-50';
-  if (land === 'Duitsland') return 'bg-amber-50';
-  if (land === 'Frankrijk') return 'bg-emerald-50';
-  if (land === 'Luxemburg') return 'bg-sky-50';
+  if (land === 'België') return 'bg-sky-100/90';
+  if (land === 'Nederland') return 'bg-cyan-100/90';
+  if (land === 'Duitsland') return 'bg-blue-100/90';
+  if (land === 'Frankrijk') return 'bg-indigo-100/90';
+  if (land === 'Luxemburg') return 'bg-violet-100/90';
   return 'bg-white';
 };
 
@@ -582,27 +582,59 @@ const todayDisplay = new Intl.DateTimeFormat('nl-NL', {
 </script>
 
 <style scoped>
-/* Scoped styles voor de actieve knoppen, afgeleid van de eerdere HTML/CSS */
+.dw-page {
+  background:
+    radial-gradient(1000px 520px at 0% -15%, rgba(169, 214, 255, 0.22), transparent 62%),
+    radial-gradient(900px 500px at 100% 110%, rgba(135, 206, 250, 0.16), transparent 64%);
+}
 
-/* Stijl voor de actieve knoppen - Jaar */
+.dw-container {
+  background: rgba(20, 84, 164, 0.72);
+  border: 1px solid rgba(149, 204, 255, 0.38);
+}
+
+.dw-card {
+  background: rgba(12, 67, 141, 0.64);
+  border: 1px solid rgba(149, 204, 255, 0.34);
+}
+
+.dw-mini-card {
+  background: rgba(9, 56, 118, 0.56);
+  border-color: rgba(172, 221, 255, 0.34);
+}
+
+.dw-stat {
+  background: rgba(8, 52, 111, 0.48);
+  border: 1px solid rgba(194, 228, 255, 0.45);
+  color: #eff8ff;
+}
+
+.dw-table-shell {
+  background: rgba(18, 80, 158, 0.78);
+  border-color: rgba(172, 221, 255, 0.38);
+}
+
+.dw-thead {
+  background: rgba(5, 40, 88, 0.8);
+  color: #deefff;
+}
+
 .btn.active-jaar {
-    background-color: #4b5563; /* gray-700 */
-    color: white;
-    border-color: #4b5563;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: rgba(227, 243, 255, 0.2);
+    color: #fff;
+    border-color: rgba(214, 236, 255, 0.45);
+    box-shadow: 0 4px 10px -2px rgba(4, 28, 66, 0.35);
 }
-/* Stijl voor de actieve knoppen - Regio */
 .btn.active-regio {
-    background-color: #4b5563; /* gray-700 */
-    color: white;
-    border-color: #4b5563;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: rgba(227, 243, 255, 0.2);
+    color: #fff;
+    border-color: rgba(214, 236, 255, 0.45);
+    box-shadow: 0 4px 10px -2px rgba(4, 28, 66, 0.35);
 }
-/* Stijl voor de actieve knoppen - Vakantie Type */
 .btn.active-vakantie {
-    background-color: #4b5563; /* gray-700 */
-    color: white;
-    border-color: #4b5563;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    background-color: rgba(227, 243, 255, 0.2);
+    color: #fff;
+    border-color: rgba(214, 236, 255, 0.45);
+    box-shadow: 0 4px 10px -2px rgba(4, 28, 66, 0.35);
 }
 </style>
