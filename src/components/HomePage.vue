@@ -828,9 +828,7 @@ export default {
 
 <style scoped>
 .dw-page {
-  background:
-    radial-gradient(1000px 520px at 0% -15%, rgba(169, 214, 255, 0.22), transparent 62%),
-    radial-gradient(900px 500px at 100% 110%, rgba(135, 206, 250, 0.16), transparent 64%);
+  background: none;
 }
 
 .dw-card {

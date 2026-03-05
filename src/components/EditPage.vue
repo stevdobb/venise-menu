@@ -16,7 +16,7 @@
             <span class="font-semibold text-sky-200/80" v-else>Nog niet opgeslagen</span>
           </div>
           <div class="edit-dw-stat rounded-lg border px-4 py-2 text-sm">
-            Tekstblokken: <span class="font-semibold">3</span>
+            Tekstblokken: <span class="font-semibold">4</span>
           </div>
         </div>
       </div>
@@ -88,6 +88,15 @@
           <div id="editorBlock3" class="editor-small"></div>
         </div>
 
+        <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Blok 4</p>
+            <h3 class="text-lg font-semibold tracking-tight text-white">Highlight tekst</h3>
+            <p class="text-sm text-sky-100">Korte opvallende tekst die in een kader op de menukaart komt.</p>
+          </div>
+          <div id="editorHighlight" class="editor-small"></div>
+        </div>
+
         <div class="grid gap-4 md:grid-cols-2">
           <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
             <div>
@@ -134,7 +143,8 @@ export default {
     return {
       editorBlock1: null, // Quill editor voor block-1
       editorBlock2: null, // Quill editor voor block-2
-      editorBlock3: null, // Quill editor voor block-2
+      editorBlock3: null, // Quill editor voor block-3
+      editorHighlight: null, // Quill editor voor highlighttekst
       showNotification: false,
       lastSaved: null,
       showResetNotification: false,
@@ -177,11 +187,19 @@ export default {
         toolbar: toolbarOptions,
       },
     });
+    this.editorHighlight = new Quill("#editorHighlight", {
+      theme: "snow",
+      placeholder: "Pas de highlight tekst aan...",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
 
     // Laad de opgeslagen inhoud uit localStorage (indien aanwezig)
     const savedContentBlock1 = localStorage.getItem("editorContentBlock1");
     const savedContentBlock2 = localStorage.getItem("editorContentBlock2");
     const savedContentBlock3 = localStorage.getItem("editorContentBlock3");
+    const savedContentHighlight = localStorage.getItem("editorContentHighlight");
 
     if (savedContentBlock1) {
       this.editorBlock1.root.innerHTML = savedContentBlock1;
@@ -203,6 +221,11 @@ export default {
       this.editorBlock3.root.innerHTML =
         "<p>Laat ons beginnen met het belangrijkste: </p><p><strong>We wensen jullie een aangename dag en een smakelijke maaltijd toe!</strong></p><p>Geniet nu van je gezelschap, de omgeving en het eten. </p><p>Jullie zijn natuurlijk niet naar hier gekomen om onze krant te lezen maar vooral om culinair te genieten en daar gaan we met plezier voor zorgen.</p>";
     }
+    if (savedContentHighlight) {
+      this.editorHighlight.root.innerHTML = savedContentHighlight;
+    } else {
+      this.editorHighlight.root.innerHTML = "<p><br></p>";
+    }
 
     const savedTime = localStorage.getItem("lastSavedTime");
     if (savedTime) {
@@ -215,11 +238,13 @@ export default {
       const contentBlock1 = this.editorBlock1.root.innerHTML;
       const contentBlock2 = this.editorBlock2.root.innerHTML;
       const contentBlock3 = this.editorBlock3.root.innerHTML;
+      const contentHighlight = this.editorHighlight.root.innerHTML;
 
       // Sla de inhoud op in localStorage
       localStorage.setItem("editorContentBlock1", contentBlock1);
       localStorage.setItem("editorContentBlock2", contentBlock2);
       localStorage.setItem("editorContentBlock3", contentBlock3);
+      localStorage.setItem("editorContentHighlight", contentHighlight);
 
       // Stel de huidige datum en tijd in
       const now = new Date();
@@ -248,6 +273,15 @@ export default {
       const block1 = this.editorBlock1.root.innerHTML;
       const block2 = this.editorBlock2.root.innerHTML;
       const block3 = this.editorBlock3.root.innerHTML;
+      const highlight = this.editorHighlight.root.innerHTML;
+      const highlightSection = this.isRichTextEmpty(highlight)
+        ? ""
+        : `
+            <div class="section">
+              <h2>Highlight tekst</h2>
+              <div class="content">${highlight}</div>
+            </div>
+          `;
       const now = new Date();
       const timestamp = now.toLocaleString("nl-BE", {
         day: "2-digit",
@@ -288,6 +322,7 @@ export default {
               <h2>Tekst rechts</h2>
               <div class="content">${block2}</div>
             </div>
+            ${highlightSection}
           </body>
         </html>
       `;
@@ -305,14 +340,20 @@ export default {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     },
+    isRichTextEmpty(html) {
+      if (!html) return true;
+      const stripped = html
+        .replace(/<[^>]*>/g, "")
+        .replace(/&nbsp;/g, "")
+        .trim();
+      return stripped.length === 0;
+    },
   },
 };
 </script>
 <style>
 .edit-dw-page {
-  background:
-    radial-gradient(900px 460px at 0% -10%, rgba(169, 214, 255, 0.18), transparent 62%),
-    radial-gradient(800px 420px at 100% 120%, rgba(135, 206, 250, 0.14), transparent 64%);
+  background: none;
 }
 
 .edit-dw-card {
