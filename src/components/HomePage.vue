@@ -228,6 +228,15 @@
                     Print
                   </button>
                   <button
+                    @click="openEditModal(entry)"
+                    aria-label="Bewerk reservering"
+                    class="dw-btn-secondary px-3 py-1.5 text-xs font-semibold rounded-md shadow transition"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                    </svg>
+                  </button>
+                  <button
                     @click="deleteReservation(index)"
                     aria-label="Verwijder reservering"
                     class="dw-btn-danger px-3 py-1.5 text-xs font-semibold rounded-md shadow transition"
@@ -309,7 +318,7 @@
       <div class="dw-modal-panel rounded-xl shadow-xl max-w-2xl w-full p-6 space-y-4">
         <div class="flex items-start justify-between gap-3">
           <div>
-            <h3 class="text-lg font-semibold text-white">Manueel nieuwe reservering toevoegen</h3>
+            <h3 class="text-lg font-semibold text-white">{{ editingIndex !== null ? 'Reservering bewerken' : 'Manueel nieuwe reservering toevoegen' }}</h3>
             <p class="text-sm text-sky-100">Vul de gegevens in en sla op.</p>
           </div>
           <button
@@ -340,7 +349,7 @@
               Annuleer
             </button>
             <button type="submit" class="dw-btn-primary flex items-center gap-2 px-4 py-2 rounded-lg transition-colors">
-              Voeg toe
+              {{ editingIndex !== null ? 'Opslaan' : 'Voeg toe' }}
             </button>
           </div>
         </form>
@@ -378,6 +387,7 @@ export default {
       templatePreviewHtml: "",
       previewLoading: false,
       showAddModal: false,
+      editingIndex: null,
       editorBlock1: null,
     };
   },
@@ -445,6 +455,7 @@ export default {
       }
     },
     openAddModal() {
+      this.editingIndex = null;
       this.showAddModal = true;
       this.$nextTick(() => {
         this.initEditor();
@@ -453,8 +464,25 @@ export default {
         }
       });
     },
+    openEditModal(entry) {
+      this.editingIndex = this.reservations.indexOf(entry);
+      this.newReservation = {
+        time: entry.time ? entry.time.replace(/"/g, "") : "",
+        name: entry.name,
+        people: entry.people,
+        table: entry.table,
+      };
+      this.showAddModal = true;
+      this.$nextTick(() => {
+        this.initEditor();
+        if (this.editorBlock1 && entry.note) {
+          this.editorBlock1.root.innerHTML = entry.note;
+        }
+      });
+    },
     closeAddModal() {
       this.showAddModal = false;
+      this.editingIndex = null;
       this.editorBlock1 = null;
       this.newReservation = {
         time: "",
@@ -616,27 +644,22 @@ export default {
     },
 
     addReservation() {
-      // Voeg een nieuwe record toe aan reservations
-      const newRecord = {
+      const record = {
         ...this.newReservation,
         note: this.editorBlock1 ? this.editorBlock1.root.innerHTML : "",
-      }; // Voeg een lege opmerking toe
-      this.reservations.push(newRecord);
-
-      // Sla nieuwe data op in localStorage
-      localStorage.setItem("reservations", JSON.stringify(this.reservations));
-      if (this.editorBlock1) {
-        this.editorBlock1.root.innerHTML = "";
-      }
-      // Reset formulier
-      this.newReservation = {
-        time: "",
-        name: "",
-        people: "",
-        table: "",
       };
+
+      if (this.editingIndex !== null) {
+        this.reservations.splice(this.editingIndex, 1, record);
+      } else {
+        this.reservations.push(record);
+      }
+
+      localStorage.setItem("reservations", JSON.stringify(this.reservations));
       this.showAddModal = false;
+      this.editingIndex = null;
       this.editorBlock1 = null;
+      this.newReservation = { time: "", name: "", people: "", table: "" };
     },
     resetSearch() {
       this.searchQuery = "";
@@ -871,41 +894,59 @@ export default {
 }
 
 .dw-btn-primary {
-  background: linear-gradient(180deg, #57a6ff 0%, #3089ef 100%);
+  background: #2d7de0;
   color: #ffffff;
+  letter-spacing: 0.01em;
 }
 
 .dw-btn-primary:hover {
-  background: linear-gradient(180deg, #71b5ff 0%, #4496f3 100%);
+  background: #3a8aeb;
+}
+
+.dw-btn-primary:active {
+  background: #2470cf;
 }
 
 .dw-btn-secondary {
-  background: rgba(8, 44, 97, 0.62);
-  color: #eef7ff;
-  border: 1px solid rgba(174, 220, 255, 0.35);
+  background: #2a3a4a;
+  color: #dff2ff;
+  border: 1px solid rgba(174, 220, 255, 0.2);
+  letter-spacing: 0.01em;
 }
 
 .dw-btn-secondary:hover {
-  background: rgba(12, 56, 118, 0.84);
+  background: #344555;
+  border-color: rgba(174, 220, 255, 0.4);
+}
+
+.dw-btn-secondary:active {
+  background: #233040;
 }
 
 .dw-btn-danger {
-  background: linear-gradient(180deg, #ef5b72 0%, #dd3d56 100%);
+  background: #c0334a;
   color: #ffffff;
+  letter-spacing: 0.01em;
 }
 
 .dw-btn-danger:hover {
-  background: linear-gradient(180deg, #f06d82 0%, #e15268 100%);
+  background: #d03d56;
+}
+
+.dw-btn-danger:active {
+  background: #ae2c42;
 }
 
 .dw-btn-ghost {
-  border-color: rgba(172, 221, 255, 0.48);
-  color: #f2f9ff;
-  background: rgba(6, 45, 96, 0.46);
+  border-color: rgba(172, 221, 255, 0.32);
+  color: #cce8ff;
+  background: transparent;
+  letter-spacing: 0.01em;
 }
 
 .dw-btn-ghost:hover {
-  background: rgba(9, 59, 126, 0.62);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(172, 221, 255, 0.5);
 }
 
 .dw-table-shell {
