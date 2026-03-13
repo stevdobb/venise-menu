@@ -119,10 +119,24 @@
       </div>
     </div>
 
+    <div class="edit-dw-card space-y-5 rounded-xl border p-5 shadow-sm">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Notities</p>
+        <h2 class="text-xl font-bold tracking-tight text-white">Interne notities</h2>
+        <p class="text-sm text-sky-100">Deze notities worden enkel lokaal opgeslagen en nergens getoond.</p>
+      </div>
+      <div class="edit-dw-editor-panel space-y-2 rounded-lg border p-4 shadow-sm">
+        <div id="editorNotes" class="editor-small"></div>
+      </div>
+    </div>
+
     <div
       v-if="showNotification"
-      class="fixed right-5 top-5 rounded-md border border-emerald-500/30 bg-emerald-500 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300"
+      class="fixed right-5 top-5 z-50 flex items-center gap-2 rounded-md border border-emerald-500/30 bg-emerald-500 px-6 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300"
     >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
       Inhoud opgeslagen!
     </div>
     <div
@@ -145,6 +159,7 @@ export default {
       editorBlock2: null, // Quill editor voor block-2
       editorBlock3: null, // Quill editor voor block-3
       editorHighlight: null, // Quill editor voor highlighttekst
+      editorNotes: null, // Quill editor voor notities
       showNotification: false,
       lastSaved: null,
       showResetNotification: false,
@@ -194,6 +209,13 @@ export default {
         toolbar: toolbarOptions,
       },
     });
+    this.editorNotes = new Quill("#editorNotes", {
+      theme: "snow",
+      placeholder: "Schrijf hier je interne notities...",
+      modules: {
+        toolbar: toolbarOptions,
+      },
+    });
 
     // Laad de opgeslagen inhoud uit localStorage (indien aanwezig)
     const savedContentBlock1 = localStorage.getItem("editorContentBlock1");
@@ -227,6 +249,11 @@ export default {
       this.editorHighlight.root.innerHTML = "<p><br></p>";
     }
 
+    const savedNotes = localStorage.getItem("editorContentNotes");
+    if (savedNotes) {
+      this.editorNotes.root.innerHTML = savedNotes;
+    }
+
     const savedTime = localStorage.getItem("lastSavedTime");
     if (savedTime) {
       this.lastSaved = savedTime;
@@ -245,6 +272,7 @@ export default {
       localStorage.setItem("editorContentBlock2", contentBlock2);
       localStorage.setItem("editorContentBlock3", contentBlock3);
       localStorage.setItem("editorContentHighlight", contentHighlight);
+      localStorage.setItem("editorContentNotes", this.editorNotes.root.innerHTML);
 
       // Stel de huidige datum en tijd in
       const now = new Date();
@@ -441,5 +469,6 @@ export default {
   background: #ffffff;
   color: #111827;
 }
+
 
 </style>

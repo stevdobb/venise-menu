@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls /Applications/MAMP/htdocs/venise-menu/public/menukaart*.html)"
+      "Bash(ls /Applications/MAMP/htdocs/venise-menu/public/menukaart*.html)",
+      "Bash(npm run:*)",
+      "Bash(/usr/local/bin/npm run:*)",
+      "Read(//usr/local/bin/**)",
+      "Read(//Users/streamovations/.nvm/versions/node/**)",
+      "Bash(/usr/local/bin/node /usr/local/bin/npm run build)",
+      "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/npm run build)",
+      "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/vite build)",
+      "Bash(~/.nvm/versions/node/v22.19.0/bin/node /Applications/MAMP/htdocs/venise-menu/node_modules/.bin/vite build)"
     ]
   }
 }
