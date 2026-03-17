@@ -203,19 +203,19 @@
               :key="index"
               :class="getRowClasses(entry, index)"
             >
-              <td class="px-4 py-2 font-semibold text-gray-900">{{ entry.time.replace(/"/g, "") }}</td>
+              <td class="px-4 py-2 font-semibold">{{ entry.time.replace(/"/g, "") }}</td>
               <td class="px-4 py-2">
                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-700 text-white">
                   {{ entry.people || '-' }}
                 </span>
               </td>
-              <td class="px-4 py-2 text-gray-900 font-medium">{{ entry.name }}</td>
+              <td class="px-4 py-2 font-medium">{{ entry.name }}</td>
               <td class="px-4 py-2">
                 <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-blue-700 text-white">
                   {{ entry.table }}
                 </span>
               </td>
-              <td class="px-4 py-2 max-w-xs text-gray-700 text-sm" v-html="entry.note || '<span class=&quot;text-gray-400&quot;>—</span>'"></td>
+              <td class="px-4 py-2 max-w-xs text-sm" v-html="entry.note || '<span class=&quot;opacity-40&quot;>—</span>'"></td>
               <td class="px-4 py-2 text-right">
                 <div class="flex justify-end gap-2">
                   <button
@@ -420,17 +420,17 @@ export default {
     },
     timeColorLegend() {
       return [
-        { label: "Voor 12u", class: "bg-sky-100/90" },
-        { label: "12u", class: "bg-sky-200/90" },
-        { label: "13u", class: "bg-cyan-100/90" },
-        { label: "14u", class: "bg-cyan-200/90" },
-        { label: "15u", class: "bg-teal-100/90" },
-        { label: "16-17u", class: "bg-blue-100/90" },
-        { label: "18u", class: "bg-indigo-100/90" },
-        { label: "19u", class: "bg-indigo-200/90" },
-        { label: "20u", class: "bg-violet-100/90" },
-        { label: "21u", class: "bg-violet-200/90" },
-        { label: "Later", class: "bg-slate-200/90" },
+        { label: "Voor 12u", class: "dw-row-pre12" },
+        { label: "12u", class: "dw-row-12" },
+        { label: "13u", class: "dw-row-13" },
+        { label: "14u", class: "dw-row-14" },
+        { label: "15u", class: "dw-row-15" },
+        { label: "16-17u", class: "dw-row-1617" },
+        { label: "18u", class: "dw-row-18" },
+        { label: "19u", class: "dw-row-19" },
+        { label: "20u", class: "dw-row-20" },
+        { label: "21u", class: "dw-row-21" },
+        { label: "Later", class: "dw-row-later" },
       ];
     },
     uploadStatusClass() {
@@ -665,48 +665,42 @@ export default {
       this.searchQuery = "";
     },
     getTimeColor(timeStr) {
-      if (!timeStr) return "bg-white";
+      if (!timeStr) return "dw-row-default";
       const cleaned = timeStr.replace(/"/g, "").trim();
-      if (!cleaned || cleaned === "-") return "bg-white";
+      if (!cleaned || cleaned === "-") return "dw-row-default";
       const match = cleaned.match(/^(\d{1,2})/);
-      if (!match) return "bg-white";
+      if (!match) return "dw-row-default";
       const hour = parseInt(match[1], 10);
-      if (Number.isNaN(hour)) return "";
+      if (Number.isNaN(hour)) return "dw-row-default";
 
-      // Specifieke blokken per uur
-      if (hour < 12) return "bg-sky-100/90";      // voor 12u
-      if (hour === 12) return "bg-sky-200/90";    // 12u
-      if (hour === 13) return "bg-cyan-100/90";   // 13u
-      if (hour === 14) return "bg-cyan-200/90";   // 14u
-      if (hour === 15) return "bg-teal-100/90";   // 15u
-      if (hour < 18) return "bg-blue-100/90";     // 16-17u
-      if (hour === 18) return "bg-indigo-100/90"; // 18u
-      if (hour === 19) return "bg-indigo-200/90"; // 19u
-      if (hour === 20) return "bg-violet-100/90"; // 20u
-      if (hour === 21) return "bg-violet-200/90"; // 21u
-      return "bg-slate-200/90";                   // later
+      if (hour < 12) return "dw-row-pre12";
+      if (hour === 12) return "dw-row-12";
+      if (hour === 13) return "dw-row-13";
+      if (hour === 14) return "dw-row-14";
+      if (hour === 15) return "dw-row-15";
+      if (hour < 18) return "dw-row-1617";
+      if (hour === 18) return "dw-row-18";
+      if (hour === 19) return "dw-row-19";
+      if (hour === 20) return "dw-row-20";
+      if (hour === 21) return "dw-row-21";
+      return "dw-row-later";
     },
     getRowClasses(entry, index) {
       const classes = [
         "text-sm",
         "border-b",
-        "border-sky-200/30",
+        "dw-row-border",
         "last:border-0",
         "transition",
-        "hover:bg-white/70",
+        "dw-row-hover",
       ];
 
       if (entry.name === "beste klant") {
-        classes.push("bg-cyan-200/90");
+        classes.push("dw-row-beste-klant");
         return classes;
       }
 
-      const timeClass = this.getTimeColor(entry.time);
-      if (timeClass) {
-        classes.push(timeClass);
-      } else {
-        classes.push(index % 2 ? "bg-sky-100/80" : "bg-sky-50/90");
-      }
+      classes.push(this.getTimeColor(entry.time));
       return classes;
     },
     deleteReservation(index) {
@@ -992,8 +986,26 @@ export default {
 }
 
 .dw-table td {
-  color: #072447;
+  color: #dff1ff;
 }
+
+/* Rij achtergronden - passend bij marineblauw template, duidelijk onderscheid per uur */
+.dw-row-pre12       { background: rgba(100, 185, 255, 0.48); }  /* lichtblauw   */
+.dw-row-12          { background: rgba(50,  160, 250, 0.52); }  /* hemelsblauw  */
+.dw-row-13          { background: rgba(10,  210, 235, 0.46); }  /* cyaan        */
+.dw-row-14          { background: rgba(0,   190, 215, 0.52); }  /* diep cyaan   */
+.dw-row-15          { background: rgba(0,   175, 170, 0.48); }  /* teal         */
+.dw-row-1617        { background: rgba(55,  130, 245, 0.48); }  /* middenblauw  */
+.dw-row-18          { background: rgba(70,  105, 240, 0.50); }  /* indigo-blauw */
+.dw-row-19          { background: rgba(120, 60,  230, 0.60); }  /* indigo       */
+.dw-row-20          { background: rgba(145, 55,  222, 0.48); }  /* violet       */
+.dw-row-21          { background: rgba(170, 35,  220, 0.54); }  /* diep violet  */
+.dw-row-later       { background: rgba(78,  108, 148, 0.52); }  /* leisteenblauw*/
+.dw-row-default     { background: rgba(20,  75,  148, 0.40); }  /* marine       */
+.dw-row-beste-klant { background: rgba(20,  210, 200, 0.40); }  /* teal accent  */
+
+.dw-row-border      { border-color: rgba(172, 221, 255, 0.18); }
+.dw-table tbody tr.dw-row-hover:hover { background: rgba(255, 255, 255, 0.10); }
 
 .dw-modal-panel {
   background: #0d4c99;
