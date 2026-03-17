@@ -9,7 +9,8 @@
       "Bash(/usr/local/bin/node /usr/local/bin/npm run build)",
       "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/npm run build)",
       "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/vite build)",
-      "Bash(~/.nvm/versions/node/v22.19.0/bin/node /Applications/MAMP/htdocs/venise-menu/node_modules/.bin/vite build)"
+      "Bash(~/.nvm/versions/node/v22.19.0/bin/node /Applications/MAMP/htdocs/venise-menu/node_modules/.bin/vite build)",
+      "Bash(find /Applications/MAMP/htdocs/venise-menu/src -type f -name *.json -o -name *.js -o -name *.ts)"
     ]
   }
 }

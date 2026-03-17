@@ -369,6 +369,184 @@ const vakantieData = [
   { land: 'Luxemburg', regio: 'Nationaal', type: 'Paasvakantie', start: '5 apr 2026', end: '20 apr 2026', schooljaar: '2025-2026' },
   { land: 'Luxemburg', regio: 'Nationaal', type: 'Pinkstervakantie', start: '30 mei 2026', end: '8 jun 2026', schooljaar: '2025-2026' },
   { land: 'Luxemburg', regio: 'Nationaal', type: 'Zomervakantie', start: '16 jul 2026', end: '15 sep 2026', schooljaar: '2025-2026' },
+
+  // ===== 2026-2027 =====
+
+  // België 2026-2027
+  { land: 'België', regio: 'Vlaamse Gemeenschap', type: 'Herfstvakantie', start: '26 okt 2026', end: '1 nov 2026', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Vlaamse Gemeenschap', type: 'Kerstvakantie', start: '22 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Vlaamse Gemeenschap', type: 'Voorjaarsvakantie', start: '22 feb 2027', end: '28 feb 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Vlaamse Gemeenschap', type: 'Paasvakantie', start: '30 mrt 2027', end: '13 apr 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Vlaamse Gemeenschap', type: 'Zomervakantie', start: '1 jul 2027', end: '31 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'België', regio: 'Fédération Wallonie-Bruxelles', type: 'Herfstvakantie', start: '26 okt 2026', end: '1 nov 2026', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Fédération Wallonie-Bruxelles', type: 'Kerstvakantie', start: '22 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Fédération Wallonie-Bruxelles', type: 'Voorjaarsvakantie', start: '15 feb 2027', end: '28 feb 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Fédération Wallonie-Bruxelles', type: 'Paasvakantie', start: '6 apr 2027', end: '19 apr 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Fédération Wallonie-Bruxelles', type: 'Zomervakantie', start: '1 jul 2027', end: '24 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'België', regio: 'Duitstalige Gemeenschap', type: 'Herfstvakantie', start: '26 okt 2026', end: '1 nov 2026', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Duitstalige Gemeenschap', type: 'Kerstvakantie', start: '22 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Duitstalige Gemeenschap', type: 'Voorjaarsvakantie', start: '22 feb 2027', end: '28 feb 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Duitstalige Gemeenschap', type: 'Paasvakantie', start: '30 mrt 2027', end: '13 apr 2027', schooljaar: '2026-2027' },
+  { land: 'België', regio: 'Duitstalige Gemeenschap', type: 'Zomervakantie', start: '1 jul 2027', end: '31 aug 2027', schooljaar: '2026-2027' },
+
+  // Nederland 2026-2027
+  { land: 'Nederland', regio: 'Regio Noord', type: 'Herfstvakantie', start: '18 okt 2026', end: '26 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Midden', type: 'Herfstvakantie', start: '25 okt 2026', end: '2 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Zuid', type: 'Herfstvakantie', start: '11 okt 2026', end: '19 okt 2026', schooljaar: '2026-2027' },
+
+  { land: 'Nederland', regio: 'Alle regio\'s', type: 'Kerstvakantie', start: '20 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+
+  { land: 'Nederland', regio: 'Regio Noord', type: 'Voorjaarsvakantie', start: '21 feb 2027', end: '1 mrt 2027', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Midden', type: 'Voorjaarsvakantie', start: '28 feb 2027', end: '8 mrt 2027', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Zuid', type: 'Voorjaarsvakantie', start: '7 mrt 2027', end: '15 mrt 2027', schooljaar: '2026-2027' },
+
+  { land: 'Nederland', regio: 'Alle regio\'s', type: 'Meivakantie', start: '25 apr 2027', end: '3 mei 2027', schooljaar: '2026-2027' },
+
+  { land: 'Nederland', regio: 'Regio Noord', type: 'Zomervakantie', start: '18 jul 2027', end: '30 aug 2027', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Midden', type: 'Zomervakantie', start: '25 jul 2027', end: '6 sep 2027', schooljaar: '2026-2027' },
+  { land: 'Nederland', regio: 'Regio Zuid', type: 'Zomervakantie', start: '11 jul 2027', end: '23 aug 2027', schooljaar: '2026-2027' },
+
+  // Duitsland 2026-2027
+  { land: 'Duitsland', regio: 'Baden-Württemberg', type: 'Herbstferien', start: '26 okt 2026', end: '31 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Baden-Württemberg', type: 'Weihnachtsferien', start: '22 dec 2026', end: '8 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Baden-Württemberg', type: 'Osterferien', start: '25 mrt 2027', end: '9 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Baden-Württemberg', type: 'Pfingstferien', start: '25 mei 2027', end: '5 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Baden-Württemberg', type: 'Sommerferien', start: '29 jul 2027', end: '11 sep 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Bayern', type: 'Herbstferien', start: '26 okt 2026', end: '30 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bayern', type: 'Weihnachtsferien', start: '22 dec 2026', end: '8 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bayern', type: 'Winterferien', start: '8 feb 2027', end: '12 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bayern', type: 'Osterferien', start: '1 apr 2027', end: '14 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bayern', type: 'Pfingstferien', start: '25 mei 2027', end: '5 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bayern', type: 'Sommerferien', start: '5 aug 2027', end: '14 sep 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Berlin', type: 'Herbstferien', start: '26 okt 2026', end: '7 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Berlin', type: 'Weihnachtsferien', start: '22 dec 2026', end: '5 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Berlin', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Berlin', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Berlin', type: 'Pfingstferien', start: '23 mei 2027', end: '1 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Berlin', type: 'Sommerferien', start: '22 jul 2027', end: '4 sep 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Herbstferien', start: '26 okt 2026', end: '7 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Weihnachtsferien', start: '22 dec 2026', end: '5 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Pfingstferien', start: '23 mei 2027', end: '1 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Brandenburg', type: 'Sommerferien', start: '22 jul 2027', end: '4 sep 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Bremen', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bremen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '6 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bremen', type: 'Winterferien', start: '1 feb 2027', end: '2 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bremen', type: 'Osterferien', start: '25 mrt 2027', end: '9 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bremen', type: 'Pfingstferien', start: '23 mei 2027', end: '24 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Bremen', type: 'Sommerferien', start: '8 jul 2027', end: '18 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Weihnachtsferien', start: '22 dec 2026', end: '6 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Winterferien', start: '1 feb 2027', end: '2 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Osterferien', start: '25 mrt 2027', end: '9 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Pfingstferien', start: '23 mei 2027', end: '2 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hamburg', type: 'Sommerferien', start: '8 jul 2027', end: '18 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Hessen', type: 'Herbstferien', start: '19 okt 2026', end: '31 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hessen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '8 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hessen', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hessen', type: 'Osterferien', start: '25 mrt 2027', end: '6 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hessen', type: 'Pfingstferien', start: '23 mei 2027', end: '25 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Hessen', type: 'Sommerferien', start: '8 jul 2027', end: '16 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Herbstferien', start: '5 okt 2026', end: '17 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Weihnachtsferien', start: '22 dec 2026', end: '5 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Pfingstferien', start: '23 mei 2027', end: '27 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Mecklenburg-Vorpommern', type: 'Sommerferien', start: '24 jul 2027', end: '1 sep 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '6 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Winterferien', start: '1 feb 2027', end: '2 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Osterferien', start: '25 mrt 2027', end: '9 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Pfingstferien', start: '23 mei 2027', end: '24 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Niedersachsen', type: 'Sommerferien', start: '8 jul 2027', end: '18 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Herbstferien', start: '19 okt 2026', end: '31 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '8 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Winterferien', start: '1 feb 2027', end: '1 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Osterferien', start: '25 mrt 2027', end: '10 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Pfingstferien', start: '24 mei 2027', end: '24 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Noordrijn-Westfalen', type: 'Sommerferien', start: '15 jul 2027', end: '26 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Herbstferien', start: '19 okt 2026', end: '30 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Weihnachtsferien', start: '22 dec 2026', end: '7 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Winterferien', start: '15 feb 2027', end: '19 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Pfingstferien', start: '27 mei 2027', end: '4 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Rheinland-Pfalz', type: 'Sommerferien', start: '8 jul 2027', end: '16 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Saarland', type: 'Herbstferien', start: '19 okt 2026', end: '30 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Saarland', type: 'Weihnachtsferien', start: '22 dec 2026', end: '6 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Saarland', type: 'Winterferien', start: '15 feb 2027', end: '19 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Saarland', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Saarland', type: 'Pfingstferien', start: '27 mei 2027', end: '4 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Saarland', type: 'Sommerferien', start: '8 jul 2027', end: '16 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '3 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Winterferien', start: '8 feb 2027', end: '20 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Pfingstferien', start: '23 mei 2027', end: '1 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen', type: 'Sommerferien', start: '8 jul 2027', end: '17 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Herbstferien', start: '5 okt 2026', end: '17 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Weihnachtsferien', start: '22 dec 2026', end: '5 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Osterferien', start: '25 mrt 2027', end: '28 mrt 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Pfingstferien', start: '23 mei 2027', end: '23 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Sachsen-Anhalt', type: 'Sommerferien', start: '8 jul 2027', end: '21 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Schleswig-Holstein', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Schleswig-Holstein', type: 'Weihnachtsferien', start: '22 dec 2026', end: '6 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Schleswig-Holstein', type: 'Osterferien', start: '25 mrt 2027', end: '9 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Schleswig-Holstein', type: 'Pfingstferien', start: '23 mei 2027', end: '23 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Schleswig-Holstein', type: 'Sommerferien', start: '15 jul 2027', end: '24 aug 2027', schooljaar: '2026-2027' },
+
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Herbstferien', start: '12 okt 2026', end: '24 okt 2026', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Weihnachtsferien', start: '22 dec 2026', end: '5 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Winterferien', start: '1 feb 2027', end: '6 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Osterferien', start: '25 mrt 2027', end: '7 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Pfingstferien', start: '25 mei 2027', end: '25 mei 2027', schooljaar: '2026-2027' },
+  { land: 'Duitsland', regio: 'Thüringen', type: 'Sommerferien', start: '8 jul 2027', end: '17 aug 2027', schooljaar: '2026-2027' },
+
+  // Frankrijk 2026-2027
+  { land: 'Frankrijk', regio: 'Zone A', type: 'Herfstvakantie', start: '17 okt 2026', end: '2 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone B', type: 'Herfstvakantie', start: '17 okt 2026', end: '2 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone C', type: 'Herfstvakantie', start: '17 okt 2026', end: '2 nov 2026', schooljaar: '2026-2027' },
+
+  { land: 'Frankrijk', regio: 'Zone A', type: 'Kerstvakantie', start: '19 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone B', type: 'Kerstvakantie', start: '19 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone C', type: 'Kerstvakantie', start: '19 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+
+  { land: 'Frankrijk', regio: 'Zone A', type: 'Hiver / Voorjaarsvakantie', start: '13 feb 2027', end: '1 mrt 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone B', type: 'Hiver / Voorjaarsvakantie', start: '6 feb 2027', end: '22 feb 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone C', type: 'Hiver / Voorjaarsvakantie', start: '20 feb 2027', end: '8 mrt 2027', schooljaar: '2026-2027' },
+
+  { land: 'Frankrijk', regio: 'Zone A', type: 'Printemps / Paasvakantie', start: '11 apr 2027', end: '27 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone B', type: 'Printemps / Paasvakantie', start: '4 apr 2027', end: '20 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone C', type: 'Printemps / Paasvakantie', start: '18 apr 2027', end: '4 mei 2027', schooljaar: '2026-2027' },
+
+  { land: 'Frankrijk', regio: 'Zone A', type: 'Zomervakantie', start: '4 jul 2027', end: '1 sep 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone B', type: 'Zomervakantie', start: '4 jul 2027', end: '1 sep 2027', schooljaar: '2026-2027' },
+  { land: 'Frankrijk', regio: 'Zone C', type: 'Zomervakantie', start: '4 jul 2027', end: '1 sep 2027', schooljaar: '2026-2027' },
+
+  // Luxemburg 2026-2027
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Herfstvakantie', start: '25 okt 2026', end: '2 nov 2026', schooljaar: '2026-2027' },
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Kerstvakantie', start: '22 dec 2026', end: '4 jan 2027', schooljaar: '2026-2027' },
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Voorjaarsvakantie', start: '22 feb 2027', end: '1 mrt 2027', schooljaar: '2026-2027' },
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Paasvakantie', start: '5 apr 2027', end: '19 apr 2027', schooljaar: '2026-2027' },
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Pinkstervakantie', start: '29 mei 2027', end: '7 jun 2027', schooljaar: '2026-2027' },
+  { land: 'Luxemburg', regio: 'Nationaal', type: 'Zomervakantie', start: '15 jul 2027', end: '14 sep 2027', schooljaar: '2026-2027' },
 ];
 
 // Lijsten voor V-FOR in de template
