@@ -73,9 +73,9 @@ export default defineConfig({
           workbox: {
             clientsClaim: true,
             skipWaiting: true,
-            cleanupOutdatedCaches: true
+            cleanupOutdatedCaches: true,
+            globPatterns: ["**/*.{js,css,html,ico,png,jpg,jpeg,svg,webmanifest,pdf}"]
           },
-          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         }),
       ],
   base: "/venise-menu/",
