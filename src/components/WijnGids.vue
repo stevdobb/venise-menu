@@ -1,0 +1,717 @@
+<template>
+  <div class="dw-page mx-auto max-w-screen-xl py-6">
+    <div class="container dw-container rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+
+      <!-- Header -->
+      <div class="dw-card rounded-xl p-5 md:p-6">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div class="space-y-1">
+            <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Bistro Venise</p>
+            <h1 class="text-3xl font-bold text-white">Wijngids</h1>
+            <p class="text-sm text-sky-100">
+              Ontdek onze volledige wijnselectie met smaakprofielen, druivenrassen en spijsadviezen.
+            </p>
+          </div>
+          <div class="grid gap-2 w-full sm:w-auto">
+            <div class="dw-stat px-4 py-2 rounded-lg shadow-sm text-sm">
+              Getoond: <span class="font-semibold">{{ filteredWijnen.length }}</span> / {{ wijnen.length }} wijnen
+            </div>
+            <button @click="print()" class="no-print flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold border border-sky-200/50 bg-white/10 text-sky-100 hover:bg-white/20 transition">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+              </svg>
+              Afdrukken
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters + Search -->
+      <div class="dw-card rounded-xl p-4 md:p-5 space-y-4">
+        <!-- Type filter tabs -->
+        <div class="flex flex-wrap gap-2">
+          <button
+            v-for="tab in filterTabs"
+            :key="tab.value"
+            class="btn px-4 py-1.5 rounded-full transition-all duration-200 text-sm font-medium"
+            :class="activeFilter === tab.value
+              ? 'active-type border border-sky-200/60 bg-white/20 text-white shadow'
+              : 'border border-sky-200/40 bg-white/10 text-sky-100 hover:bg-white/20'"
+            @click="activeFilter = tab.value"
+          >
+            {{ tab.label }}
+          </button>
+        </div>
+
+        <!-- Search -->
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sky-300 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input
+            v-model="searchQuery"
+            type="search"
+            placeholder="Zoek op naam, druif, regio..."
+            class="w-full rounded-lg border border-sky-200/40 bg-white/10 py-2.5 pl-9 pr-4 text-sm text-white placeholder-sky-300/70 focus:border-sky-200/70 focus:outline-none focus:ring-1 focus:ring-sky-300/40"
+          />
+        </div>
+      </div>
+
+      <!-- Wine Grid -->
+      <div v-if="filteredWijnen.length > 0" class="print-area grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          v-for="wijn in filteredWijnen"
+          :key="wijn.naam"
+          class="dw-card rounded-xl overflow-hidden flex flex-col border-t-2"
+          :class="getTypeBorderClass(wijn.type)"
+        >
+          <!-- Card top type label -->
+          <div class="px-4 pt-3 pb-0 flex items-center gap-2">
+            <span
+              class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold"
+              :class="getTypeTagClass(wijn.type)"
+            >{{ wijn.type }}</span>
+          </div>
+
+          <div class="p-4 flex flex-col gap-3 flex-1">
+            <!-- Name + origin -->
+            <div>
+              <h3 class="text-base font-bold text-white leading-tight">{{ wijn.naam }}</h3>
+              <p class="text-xs text-sky-200 mt-0.5">{{ wijn.land }} — {{ wijn.regio }}</p>
+              <p class="text-xs italic text-sky-100/80 mt-0.5">{{ wijn.druif }}</p>
+            </div>
+
+            <!-- Description -->
+            <p class="text-sm text-sky-100 leading-relaxed">{{ wijn.beschrijving }}</p>
+
+            <!-- Taste profile bars -->
+            <div class="space-y-1.5">
+              <p class="text-xs font-semibold uppercase tracking-wider text-sky-300">Smaakprofiel</p>
+              <div
+                v-for="(profiel, idx) in getSmaakprofiel(wijn)"
+                :key="idx"
+                class="flex items-center gap-2"
+              >
+                <span class="text-xs text-sky-200 w-16 shrink-0">{{ profiel.label }}</span>
+                <div class="flex gap-0.5">
+                  <span
+                    v-for="dot in 5"
+                    :key="dot"
+                    class="text-sm leading-none"
+                    :class="dot <= profiel.waarde ? getFilledDotClass(wijn.type) : 'text-sky-200/20'"
+                  >●</span>
+                </div>
+                <span class="text-xs text-sky-300/60 ml-auto">{{ profiel.labelHoog }}</span>
+              </div>
+            </div>
+
+            <!-- Food pairing tags -->
+            <div class="mt-auto pt-1">
+              <p class="text-xs font-semibold uppercase tracking-wider text-sky-300 mb-1.5">Past bij</p>
+              <div class="flex flex-wrap gap-1">
+                <span
+                  v-for="(item, idx) in wijn.bijGerechten"
+                  :key="idx"
+                  class="inline-block px-2 py-0.5 rounded-full text-xs bg-white/10 text-sky-100 border border-sky-200/30"
+                >{{ item }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div v-else class="dw-card rounded-xl p-10 text-center">
+        <p class="text-sky-200 text-sm">Geen wijnen gevonden voor deze zoekopdracht.</p>
+        <button
+          class="mt-3 text-xs text-sky-300 underline hover:text-white"
+          @click="resetFilters"
+        >Filters wissen</button>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed } from 'vue';
+
+const activeFilter = ref('alle');
+const searchQuery = ref('');
+
+const filterTabs = [
+  { value: 'alle', label: 'Alle' },
+  { value: 'Rood', label: 'Rood' },
+  { value: 'Wit', label: 'Wit' },
+  { value: 'Rosé', label: 'Rosé' },
+  { value: 'Bubbels', label: 'Bubbels' },
+];
+
+const wijnen = [
+  // === ROOD ===
+  {
+    type: 'Rood',
+    naam: 'Château La Grâce Dieu',
+    land: 'Frankrijk',
+    regio: 'Saint-Emilion Grand Cru, Bordeaux',
+    druif: 'Merlot, Cabernet Franc',
+    beschrijving: 'Elegant en complex met rijpe pruimen, kersen en licht eiken. Fluweelzachte tannines en een lange, warme afdronk.',
+    smaak: { body: 4, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['eendenborst', 'lamsvlees', 'rijpe kazen'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Painted Wolf The Den',
+    land: 'Zuid-Afrika',
+    regio: 'Western Cape',
+    druif: 'Pinotage, Shiraz',
+    beschrijving: 'Karaktervolle Zuid-Afrikaanse blend met rode bessen, lichte rooknuances en kruiden. Levendig en toegankelijk met een frisse finish.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 2 },
+    bijGerechten: ['gegrild vlees', 'burger', 'pasta bolognese'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Rube Montepulciano d\'Abruzzo',
+    land: 'Italië',
+    regio: 'Abruzzo',
+    druif: 'Montepulciano',
+    beschrijving: 'Frisse, fruitige Italiaanse rode wijn met kersen, aardbeien en zachte, aangenaam gekruide tannines. Soepel en drinkbaar.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 2 },
+    bijGerechten: ['pizza', 'pasta', 'antipasti'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Waterkloof Circle of Life',
+    land: 'Zuid-Afrika',
+    regio: 'Stellenbosch',
+    druif: 'Merlot, Cabernet Sauvignon, Petit Verdot, Cabernet Franc',
+    beschrijving: 'Biodynamische blend met donker fruit, cederhout en een subtiele kruidigheid. Gestructureerd met elegante tannines.',
+    smaak: { body: 4, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['ribeye', 'wild', 'harde kazen'],
+  },
+  {
+    type: 'Rood',
+    naam: 'De Stefani Venezia',
+    land: 'Italië',
+    regio: 'Venezia DOC',
+    druif: 'Merlot, Cabernet Franc',
+    beschrijving: 'Lichte, vlotte Venetiaanse rode wijn met kersen, viooltjes en een zachte kruidigheid. Gemakkelijk drinkbaar.',
+    smaak: { body: 2, fruit: 3, zuur: 3, tannine: 2 },
+    bijGerechten: ['charcuterie', 'lichte pasta', 'gegrilde groenten'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Château de Puisseguin Curat',
+    land: 'Frankrijk',
+    regio: 'Puisseguin Saint-Emilion, Bordeaux',
+    druif: 'Merlot, Cabernet Franc',
+    beschrijving: 'Rijke Bordeaux-satellite met rode en zwarte bessen, vanille en kruiden. Rond en warm met een aanhoudende afdronk.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['entrecôte', 'gevogelte', 'zachte kazen'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Château Bertin Lussac Saint-Emilion',
+    land: 'Frankrijk',
+    regio: 'Lussac Saint-Emilion, Bordeaux',
+    druif: 'Merlot, Cabernet Franc',
+    beschrijving: 'Sappige, fruitgedreven Bordeaux met pruim, leer en eiken tonen. Goede structuur en balans.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['ossenhaas', 'canard', 'lamskroon'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Château Haut La Grâce Dieu',
+    land: 'Frankrijk',
+    regio: 'Saint-Emilion Grand Cru, Bordeaux',
+    druif: 'Merlot, Cabernet Franc',
+    beschrijving: 'Volmondige Grand Cru met concentratie van zwart fruit, tabak en cederhout. Nobele structuur met een lange afdronk.',
+    smaak: { body: 4, fruit: 4, zuur: 3, tannine: 4 },
+    bijGerechten: ['wild', 'kalfszwezerik', 'truffelgerechten'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Alexis',
+    land: 'Frankrijk',
+    regio: 'Pays d\'Oc',
+    druif: 'Grenache, Syrah',
+    beschrijving: 'Vlotte, vriendelijke zuiderling met rood fruit en zachte kruiden. Licht en aangenaam voor elke gelegenheid.',
+    smaak: { body: 2, fruit: 4, zuur: 2, tannine: 2 },
+    bijGerechten: ['tapas', 'pizza', 'lichte vleesgerechten'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Yali Three Lagoons Gran Reserva',
+    land: 'Chili',
+    regio: 'Colchagua Valley',
+    druif: 'Carmenère',
+    beschrijving: 'Krachtige Chileense Carmenère met donkere bessen, paprika, chocolade en rokerige ondertonen. Volle body met rijpe tannines.',
+    smaak: { body: 4, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['gegrild rund', 'BBQ', 'kruidige stoofschotels'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Morandé Pionero',
+    land: 'Chili',
+    regio: 'Valle Central',
+    druif: 'Carmenère',
+    beschrijving: 'Toegankelijke, fruitrijke Carmenère met rode bessen, pruimen en een zachte, kruidige finish. Ideale dagelijkse rode wijn.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 2 },
+    bijGerechten: ['pasta', 'gegrild vlees', 'hamburger'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Primodo Primitivo',
+    land: 'Italië',
+    regio: 'Puglia',
+    druif: 'Primitivo',
+    beschrijving: 'Weelderige, zongerijpte Apulische wijn met jamachtige bramen, vijgen en een vleugje chocolade. Vol en warm.',
+    smaak: { body: 4, fruit: 5, zuur: 2, tannine: 3 },
+    bijGerechten: ['gegrild varken', 'BBQ', 'pikante gerechten'],
+  },
+  {
+    type: 'Rood',
+    naam: 'The Wedge Rood',
+    land: 'Zuid-Afrika',
+    regio: 'Swartland',
+    druif: 'Shiraz, Mourvèdre, Grenache',
+    beschrijving: 'Dynamische Rhône-stijl blend uit Zuid-Afrika met zwart fruit, peper en kruiden. Levendig met een frisse, droge afdronk.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['lamsvlees', 'gegrilde worstjes', 'kruidenkazen'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Côtes du Rhône Légende du Terroir',
+    land: 'Frankrijk',
+    regio: 'Côtes du Rhône, Rhône',
+    druif: 'Grenache, Syrah, Mourvèdre',
+    beschrijving: 'Klassieke Rhône blend met rijp rood fruit, garrigue en warme kruiden. Ronde, zachte structuur.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 2 },
+    bijGerechten: ['provençaalse gerechten', 'gegrilde kip', 'zachte kazen'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Favor del Demòni',
+    land: 'Italië',
+    regio: 'Sicilië',
+    druif: 'Nero d\'Avola, Syrah',
+    beschrijving: 'Intense Siciliaanse wijn met donkere kersen, lakrits en kruiden. Krachtig karakter met een lange, warme afdronk.',
+    smaak: { body: 4, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['wild', 'gegrild vlees', 'pikante pasta'],
+  },
+  {
+    type: 'Rood',
+    naam: 'Regadas',
+    land: 'Portugal',
+    regio: 'Alentejo',
+    druif: 'Aragonez, Alicante Bouschet',
+    beschrijving: 'Rijke Portugese wijn met pruimen, rode bessen en een vleugje vanille. Warm en soepel met mooie structuur.',
+    smaak: { body: 3, fruit: 4, zuur: 3, tannine: 3 },
+    bijGerechten: ['gegrild vlees', 'kabeljauw', 'zachte kazen'],
+  },
+
+  // === WIT ===
+  {
+    type: 'Wit',
+    naam: 'Caldora Wit',
+    land: 'Italië',
+    regio: 'Abruzzo',
+    druif: 'Pinot Grigio',
+    beschrijving: 'Lichte, frisse Italiaanse wit met groene appel, peer en een zachte bloemigheid. Droog en verfrissend.',
+    smaak: { body: 2, fruit: 3, zuur: 3, frisheid: 4 },
+    bijGerechten: ['zeevruchten', 'salades', 'lichte pasta'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Chablis Premier Cru',
+    land: 'Frankrijk',
+    regio: 'Chablis, Bourgogne',
+    druif: 'Chardonnay',
+    beschrijving: 'Strakke, minerale Chablis met groene appel, citrus en een typisch krijtige mineraliteit. Droog en elegant.',
+    smaak: { body: 3, fruit: 3, zuur: 4, frisheid: 5 },
+    bijGerechten: ['oesters', 'sint-jakobsschelpen', 'zeebaars'],
+  },
+  {
+    type: 'Wit',
+    naam: 'The Wedge Wit',
+    land: 'Zuid-Afrika',
+    regio: 'Swartland',
+    druif: 'Chenin Blanc',
+    beschrijving: 'Veelzijdige Chenin Blanc met kwee, honing, citrus en een subtiele kruidigheid. Fris en complex.',
+    smaak: { body: 3, fruit: 4, zuur: 4, frisheid: 4 },
+    bijGerechten: ['varkenshaas', 'Aziatische keuken', 'geitenkaas'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Crutzberg Barrique',
+    land: 'Duitsland',
+    regio: 'Moezel',
+    druif: 'Chardonnay',
+    beschrijving: 'Rijke, houtgerijpte Chardonnay met botergele appel, vanille en geroosterd brood. Vol en complex.',
+    smaak: { body: 4, fruit: 3, zuur: 3, frisheid: 3 },
+    bijGerechten: ['gevogelte in roomsaus', 'rijpe kazen', 'paddenstoelen'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Crutzberg Chardonnay',
+    land: 'Duitsland',
+    regio: 'Moezel',
+    druif: 'Chardonnay',
+    beschrijving: 'Fris en fruitig met appel, peer en zachte citrusnoten. Evenwichtig en toegankelijk.',
+    smaak: { body: 3, fruit: 4, zuur: 3, frisheid: 3 },
+    bijGerechten: ['gegrilde kip', 'lichte pasta', 'verse kazen'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Genoels-Elderen',
+    land: 'België',
+    regio: 'Haspengouw',
+    druif: 'Chardonnay',
+    beschrijving: 'Trots Belgisch paradepaardje met appel, hazelnoot en een subtiele mineraaltoets. Elegant en verfijnd.',
+    smaak: { body: 3, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['asperges', 'zalm', 'gevogelte'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Pinot Gris (Prova Regia)',
+    land: 'Alsace / Noord-Italië',
+    regio: 'Alsace',
+    druif: 'Pinot Gris',
+    beschrijving: 'Geurig en volmondige wijn met peer, lychee en een vleugje kruiden. Licht zoetig met een rijke textuur.',
+    smaak: { body: 3, fruit: 4, zuur: 3, frisheid: 3 },
+    bijGerechten: ['foie gras', 'Aziatische keuken', 'zachte kazen'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Pouilly-Fumé de Ladoucette',
+    land: 'Frankrijk',
+    regio: 'Pouilly-Fumé, Loire',
+    druif: 'Sauvignon Blanc',
+    beschrijving: 'Iconische Loire klassieker met zwarte bes, citrus, vuur en een karakteristieke rooktoets. Droog en elegant.',
+    smaak: { body: 3, fruit: 4, zuur: 4, frisheid: 5 },
+    bijGerechten: ['geitenkaas', 'zeevruchten', 'asperges'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Pouilly Les Loges',
+    land: 'Frankrijk',
+    regio: 'Pouilly-sur-Loire, Loire',
+    druif: 'Chasselas',
+    beschrijving: 'Delicaat en licht met appel, citrus en een minerale ondertoon. Vlot en drinkbaar.',
+    smaak: { body: 2, fruit: 3, zuur: 3, frisheid: 4 },
+    bijGerechten: ['mosselen', 'vissoep', 'lichte voorgerechten'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Pouilly Fuissé',
+    land: 'Frankrijk',
+    regio: 'Mâconnais, Bourgogne',
+    druif: 'Chardonnay',
+    beschrijving: 'Volle, elegante Bourgondische Chardonnay met rijpe appel, peer, hazelnoot en een subtiele houttoets.',
+    smaak: { body: 3, fruit: 4, zuur: 3, frisheid: 3 },
+    bijGerechten: ['kabeljauw in botersaus', 'gevogelte', 'rijpe kazen'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Sancerre',
+    land: 'Frankrijk',
+    regio: 'Sancerre, Loire',
+    druif: 'Sauvignon Blanc',
+    beschrijving: 'Verfijnde Loire-klassieker met grapefruit, kruisbes, stenen en een typische mineraliteit. Droog en levendig.',
+    smaak: { body: 2, fruit: 4, zuur: 5, frisheid: 5 },
+    bijGerechten: ['geitenkaas', 'asperges', 'zeevruchten'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Bourgogne Chitry (Giraudon)',
+    land: 'Frankrijk',
+    regio: 'Chitry, Bourgogne',
+    druif: 'Chardonnay',
+    beschrijving: 'Frisse, toegankelijke Bourgondische Chardonnay met appel, citrus en een zachte mineraaltoets.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['mosselen', 'gegrilde vis', 'verse kazen'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Lamothe Wit (Elise)',
+    land: 'Frankrijk',
+    regio: 'Bordeaux',
+    druif: 'Sauvignon Blanc, Sémillon',
+    beschrijving: 'Fris en fruitig Bordeaux blanc met citrus, wit fruit en kruiden. Droog en levendig.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['zeevruchten', 'salade', 'lichte vis'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Morandé Wit (Terrarum)',
+    land: 'Chili',
+    regio: 'Valle de Casablanca',
+    druif: 'Chardonnay',
+    beschrijving: 'Frisse Chileense Chardonnay met citrus, groene appel en een subtiele mineraliteit. Elegant en evenwichtig.',
+    smaak: { body: 3, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['ceviche', 'gegrilde vis', 'groentegerechten'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Muscadet',
+    land: 'Frankrijk',
+    regio: 'Muscadet Sèvre et Maine, Loire',
+    druif: 'Melon de Bourgogne',
+    beschrijving: 'Droge, zeer frisse Loire-klassieker met citroen, groene appel en een zilte mineraliteit. Sur lie gerijpt.',
+    smaak: { body: 2, fruit: 2, zuur: 5, frisheid: 5 },
+    bijGerechten: ['oesters', 'mosselen', 'mosselsaus'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Painted Wolf Den Wit',
+    land: 'Zuid-Afrika',
+    regio: 'Western Cape',
+    druif: 'Chenin Blanc',
+    beschrijving: 'Levendige Chenin Blanc met kwee, citrus en een kruidige ondertoon. Droog en fruitig tegelijk.',
+    smaak: { body: 2, fruit: 4, zuur: 4, frisheid: 4 },
+    bijGerechten: ['Aziatische keuken', 'geitenkaas', 'gegrilde kip'],
+  },
+  {
+    type: 'Wit',
+    naam: 'Waterkloof Wit',
+    land: 'Zuid-Afrika',
+    regio: 'Stellenbosch',
+    druif: 'Sauvignon Blanc, Chenin Blanc',
+    beschrijving: 'Verfrissende biodynamische blend met citrusfruit, kruiden en een lange minerale afdronk.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 5 },
+    bijGerechten: ['zeevruchten', 'lichte salades', 'vis'],
+  },
+
+  // === ROSÉ ===
+  {
+    type: 'Rosé',
+    naam: 'Rosé v/h huis',
+    land: 'Frankrijk',
+    regio: 'Provence',
+    druif: 'Grenache, Cinsault',
+    beschrijving: 'Droge, delicate Provençaalse rosé met aardbei, watermeloen en een frisse, elegante finish.',
+    smaak: { body: 2, fruit: 4, zuur: 3, frisheid: 4 },
+    bijGerechten: ['tapas', 'gegrilde vis', 'lichte zomerse gerechten'],
+  },
+  {
+    type: 'Rosé',
+    naam: 'Belle Épine Syrah',
+    land: 'Frankrijk',
+    regio: 'Languedoc',
+    druif: 'Syrah',
+    beschrijving: 'Karaktervolle rosé met rood fruit, kruiden en een lichte peperige toets. Droog met body.',
+    smaak: { body: 3, fruit: 4, zuur: 3, frisheid: 3 },
+    bijGerechten: ['gegrild vlees', 'Mediterraanse keuken', 'kaasplank'],
+  },
+
+  // === BUBBELS ===
+  {
+    type: 'Bubbels',
+    naam: 'Baby Moët (Moët & Chandon)',
+    land: 'Frankrijk',
+    regio: 'Champagne',
+    druif: 'Chardonnay, Pinot Noir, Pinot Meunier',
+    beschrijving: 'Iconische champagne met groene appel, brioche, citrus en fijne, aanhoudende bubbels. Fris en feestelijk.',
+    smaak: { body: 3, fruit: 4, zuur: 4, frisheid: 4 },
+    bijGerechten: ['oesters', 'lichte voorgerechten', 'als aperitief'],
+  },
+  {
+    type: 'Bubbels',
+    naam: 'Cava Segura Viudas',
+    land: 'Spanje',
+    regio: 'Penedès',
+    druif: 'Macabeo, Parellada, Xarel·lo',
+    beschrijving: 'Frisse Cava met groene appel, citrus en zachte nootachtige tonen. Droog en levendig.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['tapas', 'lichte vis', 'als aperitief'],
+  },
+  {
+    type: 'Bubbels',
+    naam: 'Cava Recoda Brut',
+    land: 'Spanje',
+    regio: 'Penedès',
+    druif: 'Macabeo, Xarel·lo, Parellada',
+    beschrijving: 'Elegant droge Cava met peer, citrus en een subtiele gistigheid. Fijne bubbels en een frisse afdronk.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 5 },
+    bijGerechten: ['garnalen', 'mosselen', 'als aperitief'],
+  },
+  {
+    type: 'Bubbels',
+    naam: 'CAVA Mas Kalida',
+    land: 'Spanje',
+    regio: 'Penedès',
+    druif: 'Xarel·lo, Macabeo',
+    beschrijving: 'Karaktervolle Cava met rijpe appel, peer en een vleugje gember. Droog en verfrissend.',
+    smaak: { body: 2, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['als aperitief', 'tapas', 'lichte voorgerechten'],
+  },
+  {
+    type: 'Bubbels',
+    naam: 'Champagne Vollereaux',
+    land: 'Frankrijk',
+    regio: 'Champagne',
+    druif: 'Chardonnay, Pinot Noir',
+    beschrijving: 'Fijnzinnige familiekampagne met wit fruit, toost en een elegant mousse. Evenwichtig en romig.',
+    smaak: { body: 3, fruit: 3, zuur: 4, frisheid: 4 },
+    bijGerechten: ['foie gras', 'oesters', 'als aperitief'],
+  },
+];
+
+const filteredWijnen = computed(() => {
+  let result = wijnen;
+
+  if (activeFilter.value !== 'alle') {
+    result = result.filter(w => w.type === activeFilter.value);
+  }
+
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase();
+    result = result.filter(w =>
+      w.naam.toLowerCase().includes(q) ||
+      w.land.toLowerCase().includes(q) ||
+      w.regio.toLowerCase().includes(q) ||
+      w.druif.toLowerCase().includes(q) ||
+      w.beschrijving.toLowerCase().includes(q)
+    );
+  }
+
+  return result;
+});
+
+function getSmaakprofiel(wijn) {
+  const s = wijn.smaak;
+  const profielen = [
+    { label: 'Body', waarde: s.body, labelHoog: 'Vol' },
+    { label: 'Fruit', waarde: s.fruit, labelHoog: 'Veel' },
+    { label: 'Zuur', waarde: s.zuur, labelHoog: 'Hoog' },
+  ];
+
+  if (s.tannine !== undefined) {
+    profielen.push({ label: 'Tannine', waarde: s.tannine, labelHoog: 'Hoog' });
+  } else if (s.frisheid !== undefined) {
+    profielen.push({ label: 'Frisheid', waarde: s.frisheid, labelHoog: 'Hoog' });
+  }
+
+  return profielen;
+}
+
+function getTypeBorderClass(type) {
+  switch (type) {
+    case 'Rood': return 'border-t-red-400/60';
+    case 'Wit': return 'border-t-yellow-300/60';
+    case 'Rosé': return 'border-t-pink-300/60';
+    case 'Bubbels': return 'border-t-amber-300/60';
+    default: return 'border-t-sky-300/60';
+  }
+}
+
+function getTypeTagClass(type) {
+  switch (type) {
+    case 'Rood': return 'bg-red-400/20 text-red-200 border border-red-300/40';
+    case 'Wit': return 'bg-yellow-300/20 text-yellow-100 border border-yellow-300/40';
+    case 'Rosé': return 'bg-pink-300/20 text-pink-200 border border-pink-300/40';
+    case 'Bubbels': return 'bg-amber-300/20 text-amber-200 border border-amber-300/40';
+    default: return 'bg-sky-300/20 text-sky-200 border border-sky-300/40';
+  }
+}
+
+function getFilledDotClass(type) {
+  switch (type) {
+    case 'Rood': return 'text-red-300';
+    case 'Wit': return 'text-yellow-200';
+    case 'Rosé': return 'text-pink-300';
+    case 'Bubbels': return 'text-amber-200';
+    default: return 'text-sky-300';
+  }
+}
+
+function resetFilters() {
+  activeFilter.value = 'alle';
+  searchQuery.value = '';
+}
+
+function print() {
+  window.print();
+}
+</script>
+
+<style scoped>
+.dw-page {
+  background:
+    radial-gradient(1000px 520px at 0% -15%, rgba(169, 214, 255, 0.22), transparent 62%),
+    radial-gradient(900px 500px at 100% 110%, rgba(135, 206, 250, 0.16), transparent 64%);
+}
+
+.dw-container {
+  background: rgba(20, 84, 164, 0.72);
+  border: 1px solid rgba(149, 204, 255, 0.38);
+}
+
+.dw-card {
+  background: rgba(12, 67, 141, 0.64);
+  border: 1px solid rgba(149, 204, 255, 0.34);
+}
+
+.dw-mini-card {
+  background: rgba(9, 56, 118, 0.56);
+  border-color: rgba(172, 221, 255, 0.34);
+}
+
+.dw-stat {
+  background: rgba(8, 52, 111, 0.48);
+  border: 1px solid rgba(194, 228, 255, 0.45);
+  color: #eff8ff;
+}
+
+.btn.active-type {
+  background-color: rgba(227, 243, 255, 0.2);
+  color: #fff;
+  border-color: rgba(214, 236, 255, 0.45);
+  box-shadow: 0 4px 10px -2px rgba(4, 28, 66, 0.35);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* Hide everything on the page */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the wine grid and its children */
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+
+  /* Position the grid to fill the page */
+  .print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    padding: 0 !important;
+  }
+
+  /* Wine cards: white background, readable text */
+  .print-area .dw-card {
+    background: #fff !important;
+    border: 1px solid #bbb !important;
+    color: #111 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .print-area h3,
+  .print-area p,
+  .print-area span {
+    color: #111 !important;
+  }
+}
+</style>

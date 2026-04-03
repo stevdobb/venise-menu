@@ -155,6 +155,7 @@ const navItems = [
   { path: "/", label: "Home" },
   { path: "/edit", label: "Wijzig menu" },
   { path: "/aanvullen", label: "Aanvullen" },
+  { path: "/wijngids", label: "Wijngids" },
   { path: "/schoolvakanties", label: "Schoolvakanties" },
   { path: "/vertalingen", label: "Vertalingen" },
 ];

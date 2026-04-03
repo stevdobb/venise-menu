@@ -4,6 +4,7 @@ import EditPage from "@/components/EditPage.vue";
 import SchoolvakantiesPage from "@/components/Schoolvakanties.vue";
 import RestaurantTranslationsPage from "@/components/RestaurantTranslations.vue";
 import AanvullenPage from "@/components/Aanvullen.vue";
+import WijnGidsPage from "@/components/WijnGids.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/aanvullen",
     name: "Aanvullen",
     component: AanvullenPage,
+  },
+  {
+    path: "/wijngids",
+    name: "WijnGids",
+    component: WijnGidsPage,
   },
 ];
 

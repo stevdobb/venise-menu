@@ -33,3 +33,9 @@
     font-family: "Inter", "Segoe UI", sans-serif;
   }
 }
+
+@media print {
+  header {
+    display: none !important;
+  }
+}
