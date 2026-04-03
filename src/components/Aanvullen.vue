@@ -126,7 +126,7 @@
             <div class="flex items-center gap-2">
               <span
                 v-if="currentSession?.items[drink.id]"
-                class="text-sky-200 font-bold text-sm bg-sky-800/60 px-2.5 py-0.5 rounded-full"
+                class="font-bold text-sm px-2.5 py-0.5 rounded-full qty-badge"
               >
                 {{ currentSession.items[drink.id] }}×
               </span>
@@ -632,6 +632,7 @@ function closeModal() {
 
 function setQty(n) {
   modalQty.value = n
+  confirmQty()
 }
 
 function clearAndConfirm() {
@@ -718,6 +719,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.qty-badge {
+  background: #0f5eb6;
+  color: #fff;
+  border: 1.5px solid rgba(147, 197, 253, 0.7);
+  min-width: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
 .shelf-divider {
   background: rgba(5, 38, 90, 0.5);
   border-bottom: 1px solid rgba(147, 197, 253, 0.2);
