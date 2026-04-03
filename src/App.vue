@@ -154,6 +154,7 @@ const route = useRoute();
 const navItems = [
   { path: "/", label: "Home" },
   { path: "/edit", label: "Wijzig menu" },
+  { path: "/aanvullen", label: "Aanvullen" },
   { path: "/schoolvakanties", label: "Schoolvakanties" },
   { path: "/vertalingen", label: "Vertalingen" },
 ];

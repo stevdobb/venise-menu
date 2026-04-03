@@ -3,27 +3,33 @@ import HomePage from "@/components/HomePage.vue";
 import EditPage from "@/components/EditPage.vue";
 import SchoolvakantiesPage from "@/components/Schoolvakanties.vue";
 import RestaurantTranslationsPage from "@/components/RestaurantTranslations.vue";
+import AanvullenPage from "@/components/Aanvullen.vue";
 
 const routes = [
   {
     path: "/",
     name: "HomePage",
-    component: HomePage, // Je hoofdpagina
+    component: HomePage,
   },
   {
     path: "/edit",
     name: "EditPage",
-    component: EditPage, // De pagina waar je WYSIWYG-editor komt
+    component: EditPage,
   },
   {
     path: "/schoolvakanties",
     name: "Schoolvakanties",
-    component: SchoolvakantiesPage, // De pagina waar je WYSIWYG-editor komt
+    component: SchoolvakantiesPage,
   },
   {
     path: "/vertalingen",
     name: "RestaurantTranslations",
     component: RestaurantTranslationsPage,
+  },
+  {
+    path: "/aanvullen",
+    name: "Aanvullen",
+    component: AanvullenPage,
   },
 ];
 

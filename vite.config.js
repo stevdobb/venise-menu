@@ -15,7 +15,7 @@ export default defineConfig({
             name: 'Venise',
             short_name: 'Venise',
             description: 'Venise',
-            theme_color: '#212121',
+            theme_color: '#0f5eb6',
             "icons": [
               {
                 "src": "/venise-menu/icons/icon-48x48.png",

@@ -10,7 +10,12 @@
       "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/npm run build)",
       "Bash(~/.nvm/versions/node/v22.19.0/bin/node ~/.nvm/versions/node/v22.19.0/bin/vite build)",
       "Bash(~/.nvm/versions/node/v22.19.0/bin/node /Applications/MAMP/htdocs/venise-menu/node_modules/.bin/vite build)",
-      "Bash(find /Applications/MAMP/htdocs/venise-menu/src -type f -name *.json -o -name *.js -o -name *.ts)"
+      "Bash(find /Applications/MAMP/htdocs/venise-menu/src -type f -name *.json -o -name *.js -o -name *.ts)",
+      "Bash(convert --version)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(node -e \"require\\('sharp'\\)\")",
+      "Bash(node -e \"require\\('canvas'\\)\")",
+      "Bash(node -e ':*)"
     ]
   }
 }
