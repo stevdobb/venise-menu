@@ -410,6 +410,15 @@ const DEFAULT_FRIDGES = [
     ],
   },
   {
+    id: 'frigo-water',
+    name: 'Frigo Water',
+    drinks: [
+      { id: 'chaudfontaine-bruis', name: 'Chaudfontaine 50cl Bruis' },
+      { id: 'chaudfontaine-medium', name: 'Chaudfontaine 50cl Medium' },
+      { id: 'chaudfontaine-plat', name: 'Chaudfontaine 50cl Plat' },
+    ],
+  },
+  {
     id: 'frigo-glas',
     name: 'Frigo Wijn / Glas',
     drinks: [
