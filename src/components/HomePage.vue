@@ -1,6 +1,6 @@
 <template>
-  <div class="dw-page pt-6 pb-16 min-h-screen">
-    <div class="dw-content max-w-screen-xl mx-auto space-y-6">
+  <div class="dw-page mx-auto max-w-screen-xl min-h-screen pt-4 pb-16 md:px-2 md:pt-6">
+    <div class="dw-content space-y-6">
       <!-- Header / Upload & Template -->
       <div class="dw-card p-6 rounded-xl border space-y-6">
         <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">

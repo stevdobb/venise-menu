@@ -1,6 +1,6 @@
 <template>
-  <div class="dw-page mx-auto max-w-screen-xl py-6 ">
-    <div class="container dw-container rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+  <div class="dw-page mx-auto max-w-screen-xl pt-4 md:py-6 md:px-2">
+    <div class="dw-container md:rounded-xl md:shadow-2xl md:p-8 space-y-6">
       <div class="dw-card rounded-xl p-5 md:p-6">
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div class="space-y-1">
@@ -767,8 +767,14 @@ const todayDisplay = new Intl.DateTimeFormat('nl-NL', {
 }
 
 .dw-container {
-  background: rgba(20, 84, 164, 0.72);
-  border: 1px solid rgba(149, 204, 255, 0.38);
+  /* no background/border on mobile */
+}
+
+@media (min-width: 768px) {
+  .dw-container {
+    background: rgba(20, 84, 164, 0.72);
+    border: 1px solid rgba(149, 204, 255, 0.38);
+  }
 }
 
 .dw-card {

@@ -1,6 +1,6 @@
 <template>
-  <div class="dw-page mx-auto max-w-screen-xl py-6">
-    <div class="container dw-container rounded-xl shadow-2xl p-6 md:p-8 space-y-6">
+  <div class="dw-page mx-auto max-w-screen-xl pt-4 md:py-6 md:px-2">
+    <div class="dw-container md:rounded-xl md:shadow-2xl md:p-8 space-y-6">
 
       <!-- Header -->
       <div class="dw-card rounded-xl p-5 md:p-6">
@@ -55,6 +55,84 @@
             class="w-full rounded-lg border border-sky-200/40 bg-white/10 py-2.5 pl-9 pr-4 text-sm text-white placeholder-sky-300/70 focus:border-sky-200/70 focus:outline-none focus:ring-1 focus:ring-sky-300/40"
           />
         </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-semibold uppercase tracking-widest text-sky-300">Land</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="land in landOptions"
+              :key="land"
+              type="button"
+              class="btn px-4 py-1.5 rounded-full transition-all duration-200 text-sm font-medium"
+              :class="activeLand === land
+                ? 'active-type border border-sky-200/60 bg-white/20 text-white shadow'
+                : 'border border-sky-200/40 bg-white/10 text-sky-100 hover:bg-white/20'"
+              @click="activeLand = land"
+            >
+              {{ land === 'alle' ? 'Alle landen' : land }}
+            </button>
+          </div>
+        </div>
+
+        <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <label class="space-y-1">
+            <span class="text-xs font-semibold uppercase tracking-widest text-sky-300">Regio</span>
+            <select v-model="activeRegio" class="dw-select w-full rounded-lg px-3 py-2.5 text-sm">
+              <option v-for="regio in regioOptions" :key="regio" :value="regio">
+                {{ regio === 'alle' ? 'Alle regio’s' : regio }}
+              </option>
+            </select>
+          </label>
+
+          <label class="space-y-1">
+            <span class="text-xs font-semibold uppercase tracking-widest text-sky-300">Druif</span>
+            <select v-model="activeDruif" class="dw-select w-full rounded-lg px-3 py-2.5 text-sm">
+              <option v-for="druif in druifOptions" :key="druif" :value="druif">
+                {{ druif === 'alle' ? 'Alle druiven' : druif }}
+              </option>
+            </select>
+          </label>
+
+          <label class="space-y-1">
+            <span class="text-xs font-semibold uppercase tracking-widest text-sky-300">Past bij</span>
+            <select v-model="activePairing" class="dw-select w-full rounded-lg px-3 py-2.5 text-sm">
+              <option v-for="pairing in pairingOptions" :key="pairing" :value="pairing">
+                {{ pairing === 'alle' ? 'Alle gerechten' : pairing }}
+              </option>
+            </select>
+          </label>
+        </div>
+
+        <div class="space-y-2">
+          <span class="text-xs font-semibold uppercase tracking-widest text-sky-300">Wijnprofiel</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="profiel in profielOptions"
+              :key="profiel"
+              type="button"
+              class="btn px-4 py-1.5 rounded-full transition-all duration-200 text-sm font-medium"
+              :class="activeProfiel === profiel
+                ? 'active-type border border-sky-200/60 bg-white/20 text-white shadow'
+                : 'border border-sky-200/40 bg-white/10 text-sky-100 hover:bg-white/20'"
+              @click="activeProfiel = profiel"
+            >
+              {{ profiel === 'alle' ? 'Alle profielen' : profiel }}
+            </button>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <p class="text-xs text-sky-200/80">
+            Actieve filters: <span class="font-semibold text-white">{{ activeFilterCount }}</span>
+          </p>
+          <button
+            v-if="activeFilterCount > 0"
+            class="text-xs font-semibold text-sky-200 underline underline-offset-2 hover:text-white"
+            @click="resetFilters"
+          >
+            Alles wissen
+          </button>
+        </div>
       </div>
 
       <!-- Wine Grid -->
@@ -97,8 +175,8 @@
                   <span
                     v-for="dot in 5"
                     :key="dot"
-                    class="text-sm leading-none"
-                    :class="dot <= profiel.waarde ? getFilledDotClass(wijn.type) : 'text-sky-200/20'"
+                    class="wine-dot text-sm leading-none"
+                    :class="dot <= profiel.waarde ? ['wine-dot-filled', getFilledDotClass(wijn.type)] : 'wine-dot-empty text-sky-200/20'"
                   >●</span>
                 </div>
                 <span class="text-xs text-sky-300/60 ml-auto">{{ profiel.labelHoog }}</span>
@@ -138,6 +216,11 @@ import { ref, computed } from 'vue';
 
 const activeFilter = ref('alle');
 const searchQuery = ref('');
+const activeLand = ref('alle');
+const activeRegio = ref('alle');
+const activeDruif = ref('alle');
+const activePairing = ref('alle');
+const activeProfiel = ref('alle');
 
 const filterTabs = [
   { value: 'alle', label: 'Alle' },
@@ -557,11 +640,82 @@ const wijnen = [
   },
 ];
 
+const landOptions = computed(() => [
+  'alle',
+  ...Array.from(new Set(wijnen.map(w => w.land))).sort((a, b) => a.localeCompare(b, 'nl')),
+]);
+
+const regioOptions = computed(() => [
+  'alle',
+  ...Array.from(new Set(wijnen.map(w => w.regio))).sort((a, b) => a.localeCompare(b, 'nl')),
+]);
+
+const druifOptions = computed(() => [
+  'alle',
+  ...Array.from(
+    new Set(
+      wijnen.flatMap(w =>
+        w.druif
+          .split(',')
+          .map(d => d.trim())
+          .filter(Boolean)
+      )
+    )
+  ).sort((a, b) => a.localeCompare(b, 'nl')),
+]);
+
+const pairingOptions = computed(() => [
+  'alle',
+  ...Array.from(new Set(wijnen.flatMap(w => w.bijGerechten))).sort((a, b) => a.localeCompare(b, 'nl')),
+]);
+
+const profielOptions = [
+  'alle',
+  'Fris & strak',
+  'Fruitig & soepel',
+  'Vol & krachtig',
+  'Elegant & verfijnd',
+];
+
+const activeFilterCount = computed(() => {
+  return [
+    activeFilter.value !== 'alle',
+    activeLand.value !== 'alle',
+    activeRegio.value !== 'alle',
+    activeDruif.value !== 'alle',
+    activePairing.value !== 'alle',
+    activeProfiel.value !== 'alle',
+    Boolean(searchQuery.value.trim()),
+  ].filter(Boolean).length;
+});
+
 const filteredWijnen = computed(() => {
   let result = wijnen;
 
   if (activeFilter.value !== 'alle') {
     result = result.filter(w => w.type === activeFilter.value);
+  }
+
+  if (activeLand.value !== 'alle') {
+    result = result.filter(w => w.land === activeLand.value);
+  }
+
+  if (activeRegio.value !== 'alle') {
+    result = result.filter(w => w.regio === activeRegio.value);
+  }
+
+  if (activeDruif.value !== 'alle') {
+    const druif = activeDruif.value.toLowerCase();
+    result = result.filter(w => w.druif.toLowerCase().includes(druif));
+  }
+
+  if (activePairing.value !== 'alle') {
+    const pairing = activePairing.value.toLowerCase();
+    result = result.filter(w => w.bijGerechten.some(item => item.toLowerCase() === pairing));
+  }
+
+  if (activeProfiel.value !== 'alle') {
+    result = result.filter(w => getProfielLabel(w) === activeProfiel.value);
   }
 
   if (searchQuery.value.trim()) {
@@ -593,6 +747,24 @@ function getSmaakprofiel(wijn) {
   }
 
   return profielen;
+}
+
+function getProfielLabel(wijn) {
+  const { body = 0, fruit = 0, zuur = 0, tannine = 0, frisheid = 0 } = wijn.smaak;
+
+  if (frisheid >= 4 || zuur >= 5) {
+    return 'Fris & strak';
+  }
+
+  if (body >= 4 || tannine >= 4) {
+    return 'Vol & krachtig';
+  }
+
+  if (fruit >= 4 && body <= 3) {
+    return 'Fruitig & soepel';
+  }
+
+  return 'Elegant & verfijnd';
 }
 
 function getTypeBorderClass(type) {
@@ -628,6 +800,11 @@ function getFilledDotClass(type) {
 function resetFilters() {
   activeFilter.value = 'alle';
   searchQuery.value = '';
+  activeLand.value = 'alle';
+  activeRegio.value = 'alle';
+  activeDruif.value = 'alle';
+  activePairing.value = 'alle';
+  activeProfiel.value = 'alle';
 }
 
 function print() {
@@ -643,8 +820,14 @@ function print() {
 }
 
 .dw-container {
-  background: rgba(20, 84, 164, 0.72);
-  border: 1px solid rgba(149, 204, 255, 0.38);
+  /* no background/border on mobile */
+}
+
+@media (min-width: 768px) {
+  .dw-container {
+    background: rgba(20, 84, 164, 0.72);
+    border: 1px solid rgba(149, 204, 255, 0.38);
+  }
 }
 
 .dw-card {
@@ -663,11 +846,33 @@ function print() {
   color: #eff8ff;
 }
 
-.btn.active-type {
-  background-color: rgba(227, 243, 255, 0.2);
+.dw-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(191, 219, 254, 0.35);
   color: #fff;
-  border-color: rgba(214, 236, 255, 0.45);
-  box-shadow: 0 4px 10px -2px rgba(4, 28, 66, 0.35);
+}
+
+.dw-select:focus {
+  outline: none;
+  border-color: rgba(191, 219, 254, 0.75);
+  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.25);
+}
+
+.dw-select option {
+  background: #0f4f9f;
+  color: #fff;
+}
+
+.btn.active-type {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(191, 219, 254, 0.22));
+  color: #fff;
+  border-color: rgba(239, 248, 255, 0.9);
+  box-shadow:
+    0 0 0 2px rgba(191, 219, 254, 0.28),
+    0 10px 24px -12px rgba(4, 28, 66, 0.8);
+  transform: translateY(-1px);
+  font-weight: 700;
 }
 
 @media print {
@@ -712,6 +917,14 @@ function print() {
   .print-area p,
   .print-area span {
     color: #111 !important;
+  }
+
+  .print-area .wine-dot-filled {
+    color: #111 !important;
+  }
+
+  .print-area .wine-dot-empty {
+    color: #e6e6e6 !important;
   }
 }
 </style>

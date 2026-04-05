@@ -9,7 +9,28 @@
 
           <ul class="hidden lg:flex items-center gap-2 text-sm font-medium">
             <li v-for="item in navItems" :key="item.path">
+              <a
+                v-if="item.external"
+                :href="item.path"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 rounded-md border border-sky-300/40 bg-white/10 px-3 py-2 text-sky-100 transition-all hover:bg-white/20 hover:text-white"
+              >
+                <span>{{ item.label }}</span>
+                <svg
+                  class="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5h5m0 0v5m0-5L10 14" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 14v5H5V5h5" />
+                </svg>
+              </a>
               <router-link
+                v-else
                 :to="item.path"
                 class="inline-flex items-center rounded-md border px-3 py-2 transition-all"
                 :class="
@@ -109,7 +130,29 @@
               </button>
               <ul class="overflow-hidden rounded-lg border border-sky-200/40 bg-[#14539f]">
                 <li v-for="item in navItems" :key="`mobile-${item.path}`" class="border-b border-sky-200/30 last:border-b-0">
+                  <a
+                    v-if="item.external"
+                    :href="item.path"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex items-center justify-between bg-[#14539f] px-3 py-3 text-base font-medium text-sky-100 hover:bg-white/15"
+                    @click="closeMenu"
+                  >
+                    <span>{{ item.label }}</span>
+                    <svg
+                      class="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14 5h5m0 0v5m0-5L10 14" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 14v5H5V5h5" />
+                    </svg>
+                  </a>
                   <router-link
+                    v-else
                     :to="item.path"
                     class="block px-3 py-3 text-base font-medium"
                     :class="
@@ -158,6 +201,7 @@ const navItems = [
   { path: "/wijngids", label: "Wijngids" },
   { path: "/schoolvakanties", label: "Schoolvakanties" },
   { path: "/vertalingen", label: "Vertalingen" },
+  { path: "https://detailweather.pages.dev/location/Oostduinkerke/now", label: "Weer", external: true },
 ];
 let pwaPromptHandler = null;
 let pwaInstalledHandler = null;

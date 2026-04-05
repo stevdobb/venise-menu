@@ -63,6 +63,12 @@
         </div>
       </div>
 
+      <div class="flex justify-end">
+        <button @click="view = 'overview'" class="btn-secondary px-4 py-2 rounded-xl text-sm font-semibold">
+          Terug naar overzicht
+        </button>
+      </div>
+
       <div v-if="totalItems(selectedSession) === 0" class="dw-mini-card rounded-lg p-5 text-center text-sky-200 text-sm">
         Geen flesjes ingegeven in deze sessie.
       </div>
@@ -107,6 +113,28 @@
             :style="`width: ${(currentFridgeIndex / fridges.length) * 100}%`"
           ></div>
         </div>
+      </div>
+
+      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+        <button
+          v-for="(fridge, index) in fridges"
+          :key="fridge.id"
+          @click="goToFridge(index)"
+          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition"
+          :class="index === currentFridgeIndex ? 'fridge-tab-active' : 'fridge-tab-idle'"
+        >
+          <span>{{ getFridgeButtonLabel(fridge.name) }}</span>
+          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none bg-black/15">
+            {{ fridgeBottleCount(fridge, currentSession) }}
+          </span>
+        </button>
+        <button
+          type="button"
+          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition fridge-tab-overview"
+          @click="showSummary"
+        >
+          Naar overzicht
+        </button>
       </div>
 
       <div class="dw-mini-card rounded-lg overflow-hidden">
@@ -182,20 +210,86 @@
         </div>
       </div>
 
+      <div class="flex gap-3">
+        <button
+          @click="view = 'session'; currentFridgeIndex = fridges.length - 1"
+          class="btn-secondary flex-1 py-3 rounded-xl font-semibold"
+        >
+          ← Terug naar frigo's
+        </button>
+        <button
+          @click="saveAndFinish"
+          class="btn-primary flex-1 py-3 rounded-xl font-bold"
+        >
+          Opslaan & Afsluiten
+        </button>
+      </div>
+
+      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+        <button
+          v-for="(fridge, index) in fridges"
+          :key="`summary-${fridge.id}`"
+          @click="goToSummaryFridge(fridge.id)"
+          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition"
+          :class="index === currentFridgeIndex ? 'fridge-tab-active' : 'fridge-tab-idle'"
+        >
+          <span>{{ getFridgeButtonLabel(fridge.name) }}</span>
+          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none bg-black/15">
+            {{ fridgeBottleCount(fridge, currentSession) }}
+          </span>
+        </button>
+        <button
+          type="button"
+          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition fridge-tab-overview"
+          @click="scrollToSummaryTop"
+        >
+          Overzicht
+        </button>
+      </div>
+
       <div v-if="totalItems(currentSession) === 0" class="dw-mini-card rounded-lg p-6 text-center text-sky-200 text-sm">
         Geen flesjes ingegeven. Ga terug om aantallen in te voeren.
       </div>
 
-      <div v-for="fridge in fridgesWithItems(currentSession)" :key="fridge.id" class="space-y-1.5">
+      <div
+        v-for="fridge in fridgesWithItems(currentSession)"
+        :key="fridge.id"
+        :id="`summary-${fridge.id}`"
+        class="space-y-1.5"
+      >
         <p class="text-xs font-semibold uppercase tracking-widest text-sky-300 px-1">{{ fridge.name }}</p>
         <div class="dw-mini-card rounded-lg overflow-hidden">
           <div
             v-for="item in fridge.items"
             :key="item.id"
-            class="flex items-center justify-between px-4 py-2.5 border-b border-white/10 last:border-b-0"
+            class="flex items-center gap-3 px-4 py-2.5 border-b border-white/10 last:border-b-0"
           >
-            <span class="text-white text-sm">{{ item.name }}</span>
-            <span class="text-sky-200 font-bold">{{ item.qty }}×</span>
+            <button
+              type="button"
+              class="check-toggle flex h-5 w-5 shrink-0 items-center justify-center rounded border transition"
+              :class="isItemChecked(item.id) ? 'check-toggle-active' : 'check-toggle-idle'"
+              @click="toggleSummaryItem(item.id)"
+            >
+              <svg
+                v-if="isItemChecked(item.id)"
+                class="h-3.5 w-3.5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                viewBox="0 0 24 24"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="flex-1 text-left text-sm transition"
+              :class="isItemChecked(item.id) ? 'text-sky-100/55 line-through' : 'text-white hover:text-sky-100'"
+              @click="toggleSummaryItem(item.id)"
+            >
+              {{ item.name }}
+            </button>
+            <span class="font-bold" :class="isItemChecked(item.id) ? 'text-sky-200/55' : 'text-sky-200'">{{ item.qty }}×</span>
           </div>
         </div>
       </div>
@@ -219,6 +313,15 @@
           <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Beheer</p>
           <h2 class="text-xl font-bold text-white">Dranken beheren</h2>
         </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <button @click="view = 'overview'" class="btn-secondary flex-1 py-3 rounded-xl font-semibold">
+          ← Terug naar overzicht
+        </button>
+        <button @click="resetToDefault" class="btn-danger flex-1 py-3 rounded-xl font-semibold">
+          Herstel standaardlijst
+        </button>
       </div>
 
       <div v-for="(fridge, fi) in fridges" :key="fridge.id" class="space-y-1.5">
@@ -267,12 +370,6 @@
         </div>
       </div>
 
-      <button
-        @click="resetToDefault"
-        class="w-full text-xs text-red-400 hover:text-red-300 py-2 transition text-center"
-      >
-        Herstel naar standaard drankenlijst
-      </button>
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════
@@ -360,7 +457,7 @@ import { ref, computed, onMounted, nextTick } from 'vue'
 const DEFAULT_FRIDGES = [
   {
     id: 'frigo-frisdranken',
-    name: 'Frigo 0% & Frisdranken',
+    name: 'Frisdranken',
     drinks: [
       { shelf: true, id: 's-fris-1', label: 'Schap 1 — 0% bieren' },
       { id: 'carlsberg-0', name: 'Carlsberg 0%' },
@@ -579,6 +676,14 @@ function fridgeItemCount(fridge) {
   return fridge.drinks.filter(d => !d.shelf && currentSession.value.items[d.id] > 0).length
 }
 
+function fridgeBottleCount(fridge, session = currentSession.value) {
+  if (!fridge || !session) return 0
+  return fridge.drinks.reduce((sum, drink) => {
+    if (drink.shelf) return sum
+    return sum + (Number(session.items?.[drink.id]) || 0)
+  }, 0)
+}
+
 function formatDate(iso) {
   if (!iso) return ''
   const d = new Date(iso)
@@ -593,7 +698,7 @@ function formatDate(iso) {
 // ──────────────────────────────────────────────
 function startNewSession() {
   currentFridgeIndex.value = 0
-  currentSession.value = { id: Date.now(), date: new Date().toISOString(), items: {} }
+  currentSession.value = { id: Date.now(), date: new Date().toISOString(), items: {}, checkedItems: {} }
   view.value = 'session'
 }
 
@@ -615,6 +720,10 @@ function prevFridge() {
 
 function nextFridge() {
   if (currentFridgeIndex.value < fridges.value.length - 1) currentFridgeIndex.value++
+}
+
+function goToFridge(index) {
+  currentFridgeIndex.value = index
 }
 
 function showSummary() {
@@ -652,6 +761,7 @@ function clearAndConfirm() {
   modalQty.value = 0
   if (currentSession.value && modalDrink.value) {
     delete currentSession.value.items[modalDrink.value.id]
+    delete currentSession.value.checkedItems?.[modalDrink.value.id]
   }
   closeModal()
 }
@@ -663,9 +773,49 @@ function confirmQty() {
       currentSession.value.items[modalDrink.value.id] = qty
     } else {
       delete currentSession.value.items[modalDrink.value.id]
+      delete currentSession.value.checkedItems?.[modalDrink.value.id]
     }
   }
   closeModal()
+}
+
+function isItemChecked(itemId) {
+  return Boolean(currentSession.value?.checkedItems?.[itemId])
+}
+
+function toggleSummaryItem(itemId) {
+  if (!currentSession.value) return
+
+  if (!currentSession.value.checkedItems) {
+    currentSession.value.checkedItems = {}
+  }
+
+  if (currentSession.value.checkedItems[itemId]) {
+    delete currentSession.value.checkedItems[itemId]
+    return
+  }
+
+  currentSession.value.checkedItems[itemId] = true
+}
+
+function scrollToSummaryFridge(fridgeId) {
+  const target = document.getElementById(`summary-${fridgeId}`)
+  target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function goToSummaryFridge(fridgeId) {
+  const index = fridges.value.findIndex(fridge => fridge.id === fridgeId)
+  if (index === -1) return
+  currentFridgeIndex.value = index
+  view.value = 'session'
+}
+
+function scrollToSummaryTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+function getFridgeButtonLabel(name) {
+  return name.replace(/^Frigo\s+/i, '')
 }
 
 // ──────────────────────────────────────────────
@@ -766,6 +916,39 @@ onMounted(() => {
   border: 1px solid rgba(194, 228, 255, 0.45);
   color: #eff8ff;
 }
+.fridge-tabs::-webkit-scrollbar {
+  height: 6px;
+}
+.fridge-tabs::-webkit-scrollbar-thumb {
+  background: rgba(147, 197, 253, 0.35);
+  border-radius: 999px;
+}
+.fridge-tab-idle {
+  background: rgba(30, 80, 150, 0.42);
+  border: 1px solid rgba(147, 197, 253, 0.3);
+  color: #bfdbfe;
+}
+.fridge-tab-active {
+  background: rgba(37, 99, 235, 0.82);
+  border: 1px solid rgba(191, 219, 254, 0.6);
+  color: #fff;
+  box-shadow: 0 8px 20px -10px rgba(8, 47, 116, 0.75);
+}
+.fridge-tab-overview {
+  background: rgba(22, 163, 74, 0.82);
+  border: 1px solid rgba(134, 239, 172, 0.45);
+  color: #fff;
+}
+.check-toggle-idle {
+  background: rgba(5, 38, 89, 0.45);
+  border-color: rgba(147, 197, 253, 0.35);
+  color: transparent;
+}
+.check-toggle-active {
+  background: rgba(22, 163, 74, 0.9);
+  border-color: rgba(134, 239, 172, 0.6);
+  color: #fff;
+}
 .modal-panel {
   background: rgba(10, 55, 120, 0.97);
   border: 1px solid rgba(149, 204, 255, 0.4);
@@ -797,6 +980,15 @@ onMounted(() => {
 }
 .btn-success:hover {
   background: rgba(34, 197, 94, 0.9);
+}
+.btn-danger {
+  background: rgba(185, 28, 28, 0.78);
+  color: #fff;
+  border: 1px solid rgba(252, 165, 165, 0.35);
+  transition: background 0.15s;
+}
+.btn-danger:hover {
+  background: rgba(220, 38, 38, 0.88);
 }
 .qty-btn {
   background: rgba(9, 56, 118, 0.7);
