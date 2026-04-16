@@ -27,7 +27,7 @@
       </div>
 
       <!-- Filters + Search -->
-      <div class="dw-card rounded-xl p-4 md:p-5 space-y-4">
+      <div class="dw-card rounded-xl p-4 md:p-5 space-y-4 no-print">
         <!-- Type filter tabs -->
         <div class="flex flex-wrap gap-2">
           <button

@@ -18,9 +18,27 @@
         </div>
       </div>
 
-      <button @click="startNewSession" class="w-full text-base py-4 rounded-xl font-bold btn-primary">
-        + Nieuwe aanvulling
+      <button @click="startNewSession" class="w-full flex items-center justify-center gap-3 text-lg py-5 px-6 rounded-2xl font-bold btn-primary shadow-lg hover:shadow-xl transition-shadow">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Nieuwe aanvulling
       </button>
+
+      <div class="hidden md:flex gap-3 md:gap-4 flex-col sm:flex-row">
+        <button @click="startPrintList" class="flex-1 flex items-center justify-center gap-3 text-lg py-5 px-6 rounded-2xl font-bold btn-secondary shadow-lg hover:shadow-xl transition-shadow">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+          </svg>
+          Printlijst
+        </button>
+        <button @click="exportToExcel" class="flex-1 flex items-center justify-center gap-3 text-lg py-5 px-6 rounded-2xl font-bold btn-secondary shadow-lg hover:shadow-xl transition-shadow">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          Excel Export
+        </button>
+      </div>
 
       <div class="space-y-3">
         <p class="text-xs font-semibold uppercase tracking-widest text-sky-200 px-1">Vorige aanvullingen</p>
@@ -63,9 +81,9 @@
         </div>
       </div>
 
-      <div class="flex justify-end">
-        <button @click="view = 'overview'" class="btn-secondary px-4 py-2 rounded-xl text-sm font-semibold">
-          Terug naar overzicht
+      <div class="flex justify-center">
+        <button @click="view = 'overview'" class="btn-secondary px-8 py-4 rounded-2xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+          ← Terug naar overzicht
         </button>
       </div>
 
@@ -115,25 +133,25 @@
         </div>
       </div>
 
-      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-2 md:overflow-visible md:justify-center md:flex-wrap">
         <button
           v-for="(fridge, index) in fridges"
           :key="fridge.id"
           @click="goToFridge(index)"
-          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition"
+          class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg whitespace-nowrap"
           :class="index === currentFridgeIndex ? 'fridge-tab-active' : 'fridge-tab-idle'"
         >
           <span>{{ getFridgeButtonLabel(fridge.name) }}</span>
-          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none bg-black/15">
+          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-xs font-bold leading-none bg-black/25">
             {{ fridgeBottleCount(fridge, currentSession) }}
           </span>
         </button>
         <button
           type="button"
-          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition fridge-tab-overview"
+          class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg fridge-tab-overview whitespace-nowrap"
           @click="showSummary"
         >
-          Naar overzicht
+          📋 Overzicht
         </button>
       </div>
 
@@ -166,27 +184,27 @@
         </template>
       </div>
 
-      <div class="flex gap-3">
+      <div class="flex gap-3 flex-col sm:flex-row sm:justify-center">
         <button
           v-if="currentFridgeIndex > 0"
           @click="prevFridge"
-          class="btn-secondary flex-1 py-3 rounded-xl font-semibold"
+          class="btn-secondary px-8 py-4 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
         >
           ← Vorige
         </button>
         <button
           v-if="currentFridgeIndex < fridges.length - 1"
           @click="nextFridge"
-          class="btn-primary flex-1 py-3 rounded-xl font-semibold"
+          class="btn-primary px-8 py-4 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
         >
-          Volgende frigo →
+          Volgende →
         </button>
         <button
           v-else
           @click="showSummary"
-          class="btn-success flex-1 py-3 rounded-xl font-bold"
+          class="btn-success px-8 py-4 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all"
         >
-          Klaar → Overzicht
+          ✓ Klaar
         </button>
       </div>
     </div>
@@ -195,55 +213,48 @@
          SUMMARY
     ═══════════════════════════════════════════════════════════ -->
     <div v-else-if="view === 'summary'" class="dw-container md:rounded-xl md:shadow-2xl md:p-8 space-y-5">
-      <div class="dw-card rounded-xl p-4 flex items-center gap-3">
-        <button @click="view = 'session'; currentFridgeIndex = fridges.length - 1" class="p-2 text-sky-200 hover:text-white transition">
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-        <div class="flex-1">
-          <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Aanvullijst</p>
-          <h2 class="text-xl font-bold text-white">Overzicht</h2>
+      <div class="dw-card rounded-xl p-4">
+        <div class="flex items-center gap-3 mb-3">
+          <button @click="view = 'session'; currentFridgeIndex = fridges.length - 1" class="p-2 text-sky-200 hover:text-white transition">
+            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <div class="flex-1">
+            <p class="text-xs font-semibold uppercase tracking-widest text-sky-200">Aanvullijst</p>
+            <h2 class="text-xl font-bold text-white">Overzicht</h2>
+          </div>
+          <div class="dw-stat px-3 py-1 rounded-lg text-sm font-bold shrink-0">
+            {{ totalItems(currentSession) }} flesjes
+          </div>
         </div>
-        <div class="dw-stat px-3 py-1 rounded-lg text-sm font-bold shrink-0">
-          {{ totalItems(currentSession) }} flesjes
+        <div class="h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div
+            class="h-full bg-sky-400 rounded-full transition-all duration-500"
+            :style="`width: 100%`"
+          ></div>
         </div>
       </div>
 
-      <div class="flex gap-3">
-        <button
-          @click="view = 'session'; currentFridgeIndex = fridges.length - 1"
-          class="btn-secondary flex-1 py-3 rounded-xl font-semibold"
-        >
-          ← Terug naar frigo's
-        </button>
-        <button
-          @click="saveAndFinish"
-          class="btn-primary flex-1 py-3 rounded-xl font-bold"
-        >
-          Opslaan & Afsluiten
-        </button>
-      </div>
-
-      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible">
+      <div class="fridge-tabs flex gap-2 overflow-x-auto pb-2 md:overflow-visible md:justify-center md:flex-wrap">
         <button
           v-for="(fridge, index) in fridges"
           :key="`summary-${fridge.id}`"
           @click="goToSummaryFridge(fridge.id)"
-          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition"
+          class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg whitespace-nowrap"
           :class="index === currentFridgeIndex ? 'fridge-tab-active' : 'fridge-tab-idle'"
         >
           <span>{{ getFridgeButtonLabel(fridge.name) }}</span>
-          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-[11px] font-bold leading-none bg-black/15">
+          <span class="ml-1.5 rounded-full px-1.5 py-0.5 text-xs font-bold leading-none bg-black/25">
             {{ fridgeBottleCount(fridge, currentSession) }}
           </span>
         </button>
         <button
           type="button"
-          class="fridge-tab shrink-0 rounded-full px-3 py-2 text-xs font-semibold transition fridge-tab-overview"
+          class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg fridge-tab-overview whitespace-nowrap"
           @click="scrollToSummaryTop"
         >
-          Overzicht
+          📋 Overzicht
         </button>
       </div>
 
@@ -300,6 +311,56 @@
     </div>
 
     <!-- ═══════════════════════════════════════════════════════════
+         PRINT LIST
+    ═══════════════════════════════════════════════════════════ -->
+    <div v-else-if="view === 'printlist'" class="printlist-container max-w-4xl mx-auto py-4">
+      <div class="printlist-header px-4 md:px-8 py-4 mb-6">
+        <div class="flex items-center justify-between mb-4 no-print">
+          <div class="flex-1">
+            <h2 class="text-2xl font-bold text-gray-900">Dranken Aanvullijst</h2>
+            <p class="text-sm text-gray-600 mt-1">{{ new Date().toLocaleDateString('nl-BE', { year: 'numeric', month: 'long', day: 'numeric' }) }}</p>
+          </div>
+          <div class="flex gap-3 flex-col sm:flex-row sm:justify-center">
+            <button @click="printNow" class="btn-primary flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all no-print">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z"/>
+              </svg>
+              Afdrukken
+            </button>
+            <button @click="view = 'overview'" class="btn-secondary flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all no-print">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+              Terug
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="printlist-content px-4 md:px-8">
+        <div v-for="fridge in fridges" :key="fridge.id" class="mb-8 page-break-inside-avoid">
+          <h3 class="text-lg font-bold text-gray-900 mb-3 pb-2 border-b-2 border-gray-300">{{ fridge.name }}</h3>
+          
+          <div class="space-y-0">
+            <template v-for="drink in fridge.drinks" :key="drink.id">
+              <!-- Shelf divider -->
+              <div v-if="drink.shelf" class="mt-3 mb-2 pt-2">
+                <p class="text-xs font-semibold uppercase tracking-wider text-gray-600">{{ drink.label }}</p>
+              </div>
+              <!-- Drink row -->
+              <div v-else class="flex items-center gap-3 py-1.5 border-b border-gray-200">
+                <div class="flex-1 text-sm text-gray-900 font-medium">{{ drink.name }}</div>
+                <div class="flex items-center gap-2">
+                  <div class="print-box"></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
          MANAGE
     ═══════════════════════════════════════════════════════════ -->
     <div v-else-if="view === 'manage'" class="dw-container md:rounded-xl md:shadow-2xl md:p-8 space-y-5">
@@ -315,12 +376,12 @@
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-3">
-        <button @click="view = 'overview'" class="btn-secondary flex-1 py-3 rounded-xl font-semibold">
+      <div class="flex gap-3 flex-col sm:flex-row sm:justify-center">
+        <button @click="view = 'overview'" class="btn-secondary px-8 py-4 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all">
           ← Terug naar overzicht
         </button>
-        <button @click="resetToDefault" class="btn-danger flex-1 py-3 rounded-xl font-semibold">
-          Herstel standaardlijst
+        <button @click="resetToDefault" class="btn-danger px-8 py-4 rounded-2xl font-bold text-base shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+          ⚠️ Herstel standaard
         </button>
       </div>
 
@@ -484,7 +545,7 @@ const DEFAULT_FRIDGES = [
   },
   {
     id: 'frigo-speciaalbieren',
-    name: 'Frigo Speciaalbieren',
+    name: 'Bieren',
     drinks: [
       { shelf: true, id: 's-spec-1', label: 'Schap 1' },
       { id: 'chimay', name: 'Chimay' },
@@ -521,7 +582,7 @@ const DEFAULT_FRIDGES = [
   },
   {
     id: 'frigo-glas',
-    name: 'Frigo Wijn / Glas',
+    name: 'Wijnen',
     drinks: [
       { shelf: true, id: 's-glas-1', label: 'Schap 1 — Wijn per glas' },
       { id: 'rube-glas', name: 'Rube (wijn/glas)' },
@@ -559,7 +620,7 @@ const DEFAULT_FRIDGES = [
   },
   {
     id: 'frigo-cava',
-    name: 'Frigo Cava & Champagne',
+    name: 'Schuimwijnen',
     drinks: [
       { shelf: true, id: 's-cava-1', label: 'Schap 1' },
       { id: 'cava-0', name: 'Cava 0% (Laurent Truffer)' },
@@ -572,7 +633,7 @@ const DEFAULT_FRIDGES = [
   },
   {
     id: 'frigo-tonic',
-    name: 'Frigo Tonic & Soft Drinks',
+    name: 'Soft drinks',
     drinks: [
       { shelf: true, id: 's-tonic-1', label: 'Schap 1 — Tonics' },
       { id: 'fevertree-med', name: 'Fever-Tree Mediterranean' },
@@ -814,6 +875,43 @@ function scrollToSummaryTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// ──────────────────────────────────────────────
+// Print List
+// ──────────────────────────────────────────────
+function startPrintList() {
+  view.value = 'printlist'
+}
+
+function printNow() {
+  window.print()
+}
+
+function exportToExcel() {
+  // Build CSV content
+  let csvContent = "Frigo,Drankje\n"
+  
+  fridges.value.forEach(fridge => {
+    fridge.drinks.forEach(drink => {
+      if (!drink.shelf) {
+        // Escape quotes and wrap in quotes if needed
+        const drinkName = drink.name.replace(/"/g, '""')
+        csvContent += `"${fridge.name}","${drinkName}"\n`
+      }
+    })
+  })
+
+  // Create blob and download
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `drankenlijst_${new Date().toISOString().split('T')[0]}.csv`
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
 function getFridgeButtonLabel(name) {
   return name.replace(/^Frigo\s+/i, '')
 }
@@ -1039,5 +1137,123 @@ onMounted(() => {
 }
 .qty-input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* Print List Styles */
+.printlist-container {
+  background: white;
+  color: #000;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.printlist-header {
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.printlist-content {
+  background: white;
+}
+
+.print-box {
+  width: 3rem;
+  height: 1.5rem;
+  border: 2px solid #333;
+  border-radius: 2px;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .printlist-container {
+    max-width: 100% !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html, body {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    padding: 0.3cm;
+  }
+
+  .printlist-header {
+    page-break-after: avoid;
+    margin-bottom: 0.15cm !important;
+    padding: 0 0 0.1cm 0 !important;
+  }
+
+  .printlist-header h2 {
+    margin: 0 !important;
+    font-size: 14px !important;
+    font-weight: bold;
+  }
+
+  .printlist-header p {
+    margin: 0 !important;
+    font-size: 9px !important;
+  }
+
+  .printlist-content {
+    columns: 3;
+    column-gap: 0.4cm;
+    font-size: 9px;
+    line-height: 1;
+  }
+
+  .printlist-content > div {
+    margin-bottom: 0.08cm !important;
+    padding: 0 !important;
+  }
+
+  .printlist-content h3 {
+    font-size: 9px !important;
+    margin: 0 !important;
+    padding: 0.05cm 0 !important;
+    border-bottom: 0.5px solid #666 !important;
+    font-weight: bold;
+  }
+
+  .printlist-content .space-y-0 {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .printlist-content .flex {
+    display: flex !important;
+    padding: 0.05cm 0 !important;
+    gap: 0.15cm !important;
+    border-bottom: 0.5px solid #ddd !important;
+    align-items: flex-start;
+  }
+
+  .print-box {
+    width: 1.2rem !important;
+    height: 0.6rem !important;
+    min-width: 1.2rem !important;
+    flex-shrink: 0;
+    border: 1px solid #000 !important;
+  }
+
+  .flex-1 {
+    font-size: 9px;
+    padding: 0 !important;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 767px) {
+  .printlist-content {
+    columns: 1;
+  }
 }
 </style>
