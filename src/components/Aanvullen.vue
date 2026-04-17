@@ -262,6 +262,49 @@
         Geen flesjes ingegeven. Ga terug om aantallen in te voeren.
       </div>
 
+      <div v-else class="grid gap-3 sm:grid-cols-3">
+        <button
+          type="button"
+          class="btn-success flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareCurrentSessionViaWhatsApp"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M19.05 4.91A9.82 9.82 0 0 0 12.03 2C6.6 2 2.17 6.42 2.17 11.86c0 1.74.45 3.43 1.31 4.93L2 22l5.38-1.41a9.8 9.8 0 0 0 4.64 1.18h.01c5.43 0 9.86-4.43 9.86-9.87a9.8 9.8 0 0 0-2.84-6.99Zm-7.02 15.2h-.01a8.13 8.13 0 0 1-4.14-1.14l-.3-.18-3.19.84.85-3.11-.2-.32a8.14 8.14 0 0 1-1.25-4.33c0-4.5 3.66-8.17 8.18-8.17 2.18 0 4.22.85 5.76 2.4a8.1 8.1 0 0 1 2.39 5.77c0 4.51-3.67 8.18-8.17 8.18Zm4.48-6.12c-.25-.13-1.47-.72-1.7-.81-.23-.08-.4-.12-.57.13-.16.25-.65.81-.79.97-.15.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.48-1.39-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.57-1.36-.78-1.86-.21-.5-.42-.43-.57-.44h-.49c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.02s.87 2.34.99 2.5c.13.17 1.71 2.61 4.15 3.65.58.25 1.03.4 1.38.51.58.18 1.11.15 1.53.09.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"
+            />
+          </svg>
+          WhatsApp
+        </button>
+        <button
+          v-if="canUseNativeShare"
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareCurrentSession"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C9.886 12.733 11.174 12.4 12.5 12.4c1.326 0 2.614.333 3.816.942M10 6l2-2 2 2M12 4v10" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+          </svg>
+          Delen
+        </button>
+        <button
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="copyCurrentSessionSummary"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V5a2 2 0 012-2h7a2 2 0 012 2v9a2 2 0 01-2 2h-2" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h7a2 2 0 012 2v9a2 2 0 01-2 2H7a2 2 0 01-2-2v-9a2 2 0 012-2Z" />
+          </svg>
+          Kopieer lijst
+        </button>
+      </div>
+
+      <p v-if="shareFeedback" class="px-1 text-sm text-sky-100">
+        {{ shareFeedback }}
+      </p>
+
       <div
         v-for="fridge in fridgesWithItems(currentSession)"
         :key="fridge.id"
@@ -458,10 +501,10 @@
             </button>
           </div>
 
-          <!-- Quick buttons 1–10 -->
+          <!-- Quick buttons 1–15 -->
           <div class="grid grid-cols-5 gap-2">
             <button
-              v-for="n in 10"
+              v-for="n in 15"
               :key="n"
               @click="setQty(n)"
               class="qty-btn rounded-lg py-3 text-sm font-bold transition"
@@ -715,11 +758,13 @@ const newDrinkName = ref('')
 const addDrinkInput = ref(null)
 
 const newFridgeName = ref('')
+const shareFeedback = ref('')
 
 // ──────────────────────────────────────────────
 // Computed / helpers
 // ──────────────────────────────────────────────
 const currentFridge = computed(() => fridges.value[currentFridgeIndex.value])
+const canUseNativeShare = computed(() => typeof navigator !== 'undefined' && typeof navigator.share === 'function')
 
 function fridgesWithItems(session) {
   if (!session) return []
@@ -758,6 +803,38 @@ function formatDate(iso) {
     weekday: 'short', day: 'numeric', month: 'long',
     hour: '2-digit', minute: '2-digit',
   })
+}
+
+let shareFeedbackTimeout = null
+
+function setShareFeedback(message) {
+  shareFeedback.value = message
+  if (shareFeedbackTimeout) {
+    window.clearTimeout(shareFeedbackTimeout)
+  }
+  shareFeedbackTimeout = window.setTimeout(() => {
+    shareFeedback.value = ''
+    shareFeedbackTimeout = null
+  }, 3000)
+}
+
+function buildSessionSummary(session = currentSession.value) {
+  if (!session || totalItems(session) === 0) return ''
+
+  const lines = [
+    `Aanvullijst dranken (${formatDate(session.date)})`,
+    '',
+  ]
+
+  fridgesWithItems(session).forEach(fridge => {
+    lines.push(`${fridge.name}:`)
+    fridge.items.forEach(item => {
+      lines.push(`- ${item.name}: ${item.qty}x`)
+    })
+    lines.push('')
+  })
+
+  return lines.join('\n').trim()
 }
 
 // ──────────────────────────────────────────────
@@ -879,6 +956,43 @@ function goToSummaryFridge(fridgeId) {
 
 function scrollToSummaryTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+async function copyCurrentSessionSummary() {
+  const summary = buildSessionSummary()
+  if (!summary) return
+
+  try {
+    await navigator.clipboard.writeText(summary)
+    setShareFeedback('Lijst gekopieerd. Je kan die nu plakken in WhatsApp, mail of sms.')
+  } catch {
+    setShareFeedback('Kopieren lukte niet op dit toestel.')
+  }
+}
+
+async function shareCurrentSession() {
+  const summary = buildSessionSummary()
+  if (!summary || !canUseNativeShare.value) return
+
+  try {
+    await navigator.share({
+      title: 'Aanvullijst dranken',
+      text: summary,
+    })
+  } catch (error) {
+    if (error?.name !== 'AbortError') {
+      setShareFeedback('Delen lukte niet. Gebruik eventueel de kopieerknop.')
+    }
+  }
+}
+
+function shareCurrentSessionViaWhatsApp() {
+  const summary = buildSessionSummary()
+  if (!summary) return
+
+  const url = `https://wa.me/?text=${encodeURIComponent(summary)}`
+  window.open(url, '_blank', 'noopener')
+  setShareFeedback('WhatsApp geopend met de aanvullijst als bericht.')
 }
 
 // ──────────────────────────────────────────────
