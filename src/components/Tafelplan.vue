@@ -38,8 +38,8 @@
 
             <!-- BINNEN -->
             <template v-if="view === 'binnen'">
-              <div class="struct room-box" style="left:20%;top:22%;width:55%;height:47%"></div>
-              <div class="struct bar-box" style="left:27%;top:71%;width:40%;height:13%">
+              <div class="struct room-box" style="left:20%;top:24%;width:55%;height:47%"></div>
+              <div class="struct bar-box" style="left:27%;top:73%;width:40%;height:13%">
                 <span>bar</span>
               </div>
               <div class="plan-label" style="right:2%;top:0.5%">ingang ↑</div>
@@ -63,9 +63,11 @@
                 <span
                   v-if="tafelBill[t.nr]"
                   class="t-badge t-badge--bill"
-                  :title="`Rekening ${getBillLabel(tafelBill[t.nr]).toLowerCase()}`"
+                  title="Rekening geschreven"
                 >
-                  {{ getBillShort(tafelBill[t.nr]) }}
+                  <svg class="t-badge-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 1 1 2.97 2.97L8.62 17.67 4 18.999l1.33-4.62L16.862 3.487Z" />
+                  </svg>
                 </span>
                 <span
                   v-if="tafelNote[t.nr]"
@@ -100,9 +102,11 @@
                 <span
                   v-if="tafelBill[t.nr]"
                   class="t-badge t-badge--bill"
-                  :title="`Rekening ${getBillLabel(tafelBill[t.nr]).toLowerCase()}`"
+                  title="Rekening geschreven"
                 >
-                  {{ getBillShort(tafelBill[t.nr]) }}
+                  <svg class="t-badge-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 1 1 2.97 2.97L8.62 17.67 4 18.999l1.33-4.62L16.862 3.487Z" />
+                  </svg>
                 </span>
                 <span
                   v-if="tafelNote[t.nr]"
@@ -139,21 +143,18 @@
               <span class="lang-name">{{ lang.name }}</span>
             </button>
           </div>
-          <div class="tp-section">
-            <p class="tp-section-title">Rekening</p>
-            <div class="tp-bill-options">
-              <button
-                v-for="option in billOptions"
-                :key="option.code"
-                type="button"
-                class="tp-bill-btn"
-                :class="{ selected: selectedBill === option.code }"
-                @click="selectedBill = option.code"
-              >
-                <span class="tp-bill-short">{{ option.short }}</span>
-                <span>{{ option.label }}</span>
-              </button>
-            </div>
+          <div class="tp-section tp-section--compact">
+            <button
+              type="button"
+              class="tp-bill-btn tp-bill-btn--icon"
+              :class="{ selected: selectedBill === 'geschreven' }"
+              :title="selectedBill === 'geschreven' ? 'Geschreven rekening geselecteerd' : 'Markeer rekening als geschreven'"
+              @click="selectedBill = selectedBill === 'geschreven' ? '' : 'geschreven'"
+            >
+              <svg class="tp-bill-pen" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 3.487a2.1 2.1 0 1 1 2.97 2.97L8.62 17.67 4 18.999l1.33-4.62L16.862 3.487Z" />
+              </svg>
+            </button>
           </div>
           <div class="tp-section">
             <label class="tp-section-title" for="tp-note">Speciale opmerking</label>
@@ -217,11 +218,6 @@ const languages = [
 ]
 const langFlags = { nl: '🇳🇱', fr: '🇫🇷', en: '🇬🇧', de: '🇩🇪', es: '🇪🇸' }
 const languageMap = Object.fromEntries(languages.map(lang => [lang.code, lang]))
-const billOptions = [
-  { code: 'geschreven', label: 'Geschreven', short: 'G' },
-  { code: 'getikt', label: 'Getikt', short: 'T' },
-]
-const billMap = Object.fromEntries(billOptions.map(option => [option.code, option]))
 
 // Indoor layout — entrance at top, tafel 25 at bottom
 // x/y = center of table in % of plan container
@@ -234,38 +230,38 @@ const binnenTafels = [
   { nr: 6,   x: 50, y: 8 },
   { nr: 7,   x: 59, y: 8 },
   // Same line below entrance
-  { nr: 101, x: 9,  y: 17 },
-  { nr: 103, x: 27, y: 17 },
-  { nr: 104, x: 50, y: 17 },
-  { nr: 105, x: 64, y: 17 },
+  { nr: 101, x: 9,  y: 19.5 },
+  { nr: 103, x: 27, y: 19.5 },
+  { nr: 104, x: 50, y: 19.5 },
+  { nr: 105, x: 64, y: 19.5 },
   // Main room — row 1
-  { nr: 37,  x: 25, y: 28 },
-  { nr: 38,  x: 44, y: 28 },
-  { nr: 39,  x: 60, y: 28 },
+  { nr: 37,  x: 25, y: 30 },
+  { nr: 38,  x: 44, y: 30 },
+  { nr: 39,  x: 60, y: 30 },
   // Main room — row 2 (touching row 1)
-  { nr: 137, x: 25, y: 36 },
-  { nr: 138, x: 44, y: 36 },
+  { nr: 137, x: 25, y: 38 },
+  { nr: 138, x: 44, y: 38 },
   // Main room — row 3
-  { nr: 33,  x: 25, y: 49 },
-  { nr: 36,  x: 62, y: 43 },
+  { nr: 33,  x: 25, y: 51 },
+  { nr: 36,  x: 62, y: 45 },
   // Main room — row 4 (bottom of box)
-  { nr: 30,  x: 25, y: 60 },
-  { nr: 31,  x: 36, y: 60 },
-  { nr: 32,  x: 49, y: 60 },
-  { nr: 35,  x: 62, y: 54 },
+  { nr: 30,  x: 25, y: 62 },
+  { nr: 31,  x: 36, y: 62 },
+  { nr: 32,  x: 49, y: 62 },
+  { nr: 35,  x: 62, y: 56 },
   // Right of main room — touching
-  { nr: 128, x: 76, y: 37 },
-  { nr: 28,  x: 83, y: 37 },
+  { nr: 128, x: 76, y: 39 },
+  { nr: 28,  x: 83, y: 39 },
   // Far right column (lower)
-  { nr: 21,  x: 93, y: 46 },
-  { nr: 22,  x: 93, y: 60 },
-  { nr: 23,  x: 93, y: 74 },
+  { nr: 21,  x: 93, y: 48 },
+  { nr: 22,  x: 93, y: 62 },
+  { nr: 23,  x: 93, y: 76 },
   // Oval/round table
-  { nr: 27,  x: 83, y: 64, round: true },
+  { nr: 27,  x: 83, y: 66, round: true },
   // Bottom right (near bar exit)
-  { nr: 26,  x: 73, y: 88 },
-  { nr: 25,  x: 83, y: 88 },
-  { nr: 24,  x: 92, y: 88 },
+  { nr: 26,  x: 73, y: 90 },
+  { nr: 25,  x: 83, y: 90 },
+  { nr: 24,  x: 92, y: 90 },
 ]
 
 // Terrace layout — compact 3x4 grid, tafel 50 at top left
@@ -290,14 +286,6 @@ function getLanguageName(code) {
   return languageMap[code]?.name || code
 }
 
-function getBillLabel(code) {
-  return billMap[code]?.label || code
-}
-
-function getBillShort(code) {
-  return billMap[code]?.short || '?'
-}
-
 function hasTableInfo(nr) {
   return !!tafelLang[nr] || !!tafelBill[nr] || !!tafelNote[nr]
 }
@@ -305,7 +293,7 @@ function hasTableInfo(nr) {
 function openModal(t) {
   selectedTafel.value = t
   selectedLang.value = tafelLang[t.nr] || ''
-  selectedBill.value = tafelBill[t.nr] || ''
+  selectedBill.value = tafelBill[t.nr] === 'geschreven' ? 'geschreven' : ''
   selectedNote.value = tafelNote[t.nr] || ''
   showModal.value = true
 }
@@ -327,7 +315,7 @@ function saveTableInfo() {
   if (selectedLang.value) tafelLang[tafelNr] = selectedLang.value
   else delete tafelLang[tafelNr]
 
-  if (selectedBill.value) tafelBill[tafelNr] = selectedBill.value
+  if (selectedBill.value === 'geschreven') tafelBill[tafelNr] = 'geschreven'
   else delete tafelBill[tafelNr]
 
   if (note) tafelNote[tafelNr] = note
@@ -721,6 +709,11 @@ function resetTableInfo() {
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.24);
 }
 
+.t-badge-icon {
+  width: 0.72rem;
+  height: 0.72rem;
+}
+
 .t-badge--bill {
   left: -0.35rem;
   bottom: -0.35rem;
@@ -833,6 +826,11 @@ function resetTableInfo() {
   margin-bottom: 1rem;
 }
 
+.tp-section--compact {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .tp-section-title {
   display: block;
   margin: 0 0 0.45rem;
@@ -841,12 +839,6 @@ function resetTableInfo() {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #4b5563;
-}
-
-.tp-bill-options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.55rem;
 }
 
 .tp-bill-btn {
@@ -860,6 +852,17 @@ function resetTableInfo() {
   color: #374151;
   cursor: pointer;
   transition: all 0.12s;
+}
+
+.tp-bill-btn--single {
+  width: 100%;
+}
+
+.tp-bill-btn--icon {
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
 }
 
 .tp-bill-btn:hover {
@@ -882,6 +885,11 @@ function resetTableInfo() {
   border-radius: 999px;
   background: rgba(13, 74, 152, 0.1);
   font-weight: 800;
+}
+
+.tp-bill-pen {
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .tp-note-input {
@@ -1004,10 +1012,6 @@ function resetTableInfo() {
 
   .tp-langs {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .tp-bill-options {
-    grid-template-columns: 1fr;
   }
 }
 </style>

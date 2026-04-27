@@ -756,6 +756,7 @@ const DEFAULT_FRIDGES = [
       { id: 'baby-moet', name: 'Baby Moët' },
       { id: 'cava-recoda', name: 'Cava Recoda Brut' },
       { id: 'lillet-blanc', name: 'Lillet Blanc' },
+      { id: 'picon', name: 'Picon' },
     ],
   },
   {
