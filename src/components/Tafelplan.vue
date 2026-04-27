@@ -1,12 +1,6 @@
 <template>
   <div class="tp-wrapper">
     <section class="tp-card">
-      <div class="tp-header">
-        <div class="tp-header-copy">
-          <h1 class="tp-title">Tafelplan</h1>
-        </div>
-      </div>
-
       <div class="tp-toolbar">
         <div class="tp-tabs">
           <button :class="['tp-tab', view === 'binnen' && 'active']" @click="view = 'binnen'">
@@ -27,7 +21,7 @@
               Tafelinfo ingevuld
             </span>
           </div>
-          <button class="tp-reset-btn" @click="resetTableInfo">↺ Reset tafelinfo</button>
+          <button class="tp-reset-btn" @click="openResetConfirm">↺ Reset tafelinfo</button>
         </div>
       </div>
 
@@ -182,6 +176,30 @@
       </div>
     </Teleport>
 
+    <Teleport to="body">
+      <div v-if="showResetConfirm" class="tp-overlay" @click.self="closeResetConfirm">
+        <div class="tp-modal tp-modal--confirm">
+          <div class="tp-modal-head">
+            <h3>Tafelinfo resetten</h3>
+            <button class="tp-modal-x" @click="closeResetConfirm">✕</button>
+          </div>
+          <p class="tp-modal-hint tp-modal-hint--confirm">
+            Deze actie verwijdert alle talen, notities en rekeningmarkeringen van zowel restaurant als terras.
+          </p>
+          <div class="tp-confirm-box">
+            <svg class="tp-confirm-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86l-7.36 12.78A1 1 0 0 0 3.79 18h16.42a1 1 0 0 0 .86-1.5L13.71 3.86a1 1 0 0 0-1.72 0Z" />
+            </svg>
+            <span>Dit kan je niet ongedaan maken.</span>
+          </div>
+          <div class="tp-modal-foot">
+            <button class="tp-btn-close" @click="closeResetConfirm">Annuleren</button>
+            <button class="tp-btn-danger" @click="confirmResetTableInfo">Ja, reset alles</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
   </div>
 </template>
 
@@ -194,6 +212,7 @@ const BILL_STORE_KEY = 'tp-bills'
 
 const view = ref('binnen')
 const showModal = ref(false)
+const showResetConfirm = ref(false)
 const selectedTafel = ref(null)
 const selectedLang = ref('')
 const selectedNote = ref('')
@@ -337,11 +356,20 @@ function clearTableInfo() {
   closeModal()
 }
 
-function resetTableInfo() {
+function openResetConfirm() {
+  showResetConfirm.value = true
+}
+
+function closeResetConfirm() {
+  showResetConfirm.value = false
+}
+
+function confirmResetTableInfo() {
   Object.keys(tafelLang).forEach(k => delete tafelLang[k])
   Object.keys(tafelBill).forEach(k => delete tafelBill[k])
   Object.keys(tafelNote).forEach(k => delete tafelNote[k])
   save()
+  closeResetConfirm()
 }
 </script>
 
@@ -747,6 +775,10 @@ function resetTableInfo() {
   border: 1px solid rgba(191, 219, 254, 0.5);
 }
 
+.tp-modal--confirm {
+  width: min(92vw, 430px);
+}
+
 .tp-modal-head {
   display: flex;
   align-items: center;
@@ -778,6 +810,31 @@ function resetTableInfo() {
   margin: 0 0 1rem;
   font-size: 0.83rem;
   color: #6b7280;
+}
+
+.tp-modal-hint--confirm {
+  margin-bottom: 0.8rem;
+  line-height: 1.55;
+}
+
+.tp-confirm-box {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  border-radius: 0.9rem;
+  background: linear-gradient(180deg, #fff1f2 0%, #ffe4e6 100%);
+  color: #9f1239;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.tp-confirm-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
 }
 
 .tp-langs {
@@ -960,6 +1017,23 @@ function resetTableInfo() {
 .tp-btn-save:hover {
   background: #0b3f81;
   border-color: #0b3f81;
+}
+
+.tp-btn-danger {
+  padding: 0.42rem 1rem;
+  border: 1px solid #dc2626;
+  border-radius: 7px;
+  background: #dc2626;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.83rem;
+  font-weight: 700;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.tp-btn-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
 }
 
 @media (max-width: 980px) {
