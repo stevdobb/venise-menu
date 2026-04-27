@@ -91,6 +91,62 @@
         Geen flesjes ingegeven in deze sessie.
       </div>
 
+      <div v-else class="grid gap-3 sm:grid-cols-4">
+        <button
+          type="button"
+          class="btn-success flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareSelectedSessionViaWhatsApp"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M19.05 4.91A9.82 9.82 0 0 0 12.03 2C6.6 2 2.17 6.42 2.17 11.86c0 1.74.45 3.43 1.31 4.93L2 22l5.38-1.41a9.8 9.8 0 0 0 4.64 1.18h.01c5.43 0 9.86-4.43 9.86-9.87a9.8 9.8 0 0 0-2.84-6.99Zm-7.02 15.2h-.01a8.13 8.13 0 0 1-4.14-1.14l-.3-.18-3.19.84.85-3.11-.2-.32a8.14 8.14 0 0 1-1.25-4.33c0-4.5 3.66-8.17 8.18-8.17 2.18 0 4.22.85 5.76 2.4a8.1 8.1 0 0 1 2.39 5.77c0 4.51-3.67 8.18-8.17 8.18Zm4.48-6.12c-.25-.13-1.47-.72-1.7-.81-.23-.08-.4-.12-.57.13-.16.25-.65.81-.79.97-.15.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.48-1.39-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.57-1.36-.78-1.86-.21-.5-.42-.43-.57-.44h-.49c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.02s.87 2.34.99 2.5c.13.17 1.71 2.61 4.15 3.65.58.25 1.03.4 1.38.51.58.18 1.11.15 1.53.09.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"
+            />
+          </svg>
+          WhatsApp
+        </button>
+        <button
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareSelectedSessionViaMessenger"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.15 2 11.27c0 2.92 1.46 5.52 3.74 7.22V22l3.28-1.8c.95.27 1.95.4 2.98.4 5.52 0 10-4.15 10-9.27S17.52 2 12 2Zm1 12.5-2.55-2.72-4.45 2.44 4.89-5.18 2.66 2.72L17.96 9 13 14.5Z"
+            />
+          </svg>
+          Messenger
+        </button>
+        <button
+          v-if="canUseNativeShare"
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareSelectedSession"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C9.886 12.733 11.174 12.4 12.5 12.4c1.326 0 2.614.333 3.816.942M10 6l2-2 2 2M12 4v10" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+          </svg>
+          Delen
+        </button>
+        <button
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="copySelectedSessionSummary"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V5a2 2 0 012-2h7a2 2 0 012 2v9a2 2 0 01-2 2h-2" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h7a2 2 0 012 2v9a2 2 0 01-2 2H7a2 2 0 01-2-2v-9a2 2 0 012-2Z" />
+          </svg>
+          Kopieer lijst
+        </button>
+      </div>
+
+      <p v-if="shareFeedback" class="px-1 text-sm text-sky-100">
+        {{ shareFeedback }}
+      </p>
+
       <div v-for="fridge in fridgesWithItems(selectedSession)" :key="fridge.id" class="space-y-1.5">
         <p class="text-xs font-semibold uppercase tracking-widest text-sky-300 px-1">{{ fridge.name }}</p>
         <div class="dw-mini-card rounded-lg overflow-hidden">
@@ -151,7 +207,7 @@
           class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg fridge-tab-overview whitespace-nowrap"
           @click="showSummary"
         >
-          📋 Overzicht
+          Overzicht
         </button>
       </div>
 
@@ -254,13 +310,69 @@
           class="fridge-tab shrink-1 rounded-lg px-3 py-3 text-sm font-bold transition shadow-md hover:shadow-lg fridge-tab-overview whitespace-nowrap"
           @click="scrollToSummaryTop"
         >
-          📋 Overzicht
+          Overzicht
         </button>
       </div>
 
       <div v-if="totalItems(currentSession) === 0" class="dw-mini-card rounded-lg p-6 text-center text-sky-200 text-sm">
         Geen flesjes ingegeven. Ga terug om aantallen in te voeren.
       </div>
+
+      <div v-else class="grid gap-3 sm:grid-cols-4">
+        <button
+          type="button"
+          class="btn-success flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareCurrentSessionViaWhatsApp"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M19.05 4.91A9.82 9.82 0 0 0 12.03 2C6.6 2 2.17 6.42 2.17 11.86c0 1.74.45 3.43 1.31 4.93L2 22l5.38-1.41a9.8 9.8 0 0 0 4.64 1.18h.01c5.43 0 9.86-4.43 9.86-9.87a9.8 9.8 0 0 0-2.84-6.99Zm-7.02 15.2h-.01a8.13 8.13 0 0 1-4.14-1.14l-.3-.18-3.19.84.85-3.11-.2-.32a8.14 8.14 0 0 1-1.25-4.33c0-4.5 3.66-8.17 8.18-8.17 2.18 0 4.22.85 5.76 2.4a8.1 8.1 0 0 1 2.39 5.77c0 4.51-3.67 8.18-8.17 8.18Zm4.48-6.12c-.25-.13-1.47-.72-1.7-.81-.23-.08-.4-.12-.57.13-.16.25-.65.81-.79.97-.15.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.24-.74-.66-1.24-1.48-1.39-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.13-.57-1.36-.78-1.86-.21-.5-.42-.43-.57-.44h-.49c-.16 0-.43.06-.65.31-.22.25-.85.83-.85 2.02s.87 2.34.99 2.5c.13.17 1.71 2.61 4.15 3.65.58.25 1.03.4 1.38.51.58.18 1.11.15 1.53.09.47-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"
+            />
+          </svg>
+          WhatsApp
+        </button>
+        <button
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareCurrentSessionViaMessenger"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 2C6.48 2 2 6.15 2 11.27c0 2.92 1.46 5.52 3.74 7.22V22l3.28-1.8c.95.27 1.95.4 2.98.4 5.52 0 10-4.15 10-9.27S17.52 2 12 2Zm1 12.5-2.55-2.72-4.45 2.44 4.89-5.18 2.66 2.72L17.96 9 13 14.5Z"
+            />
+          </svg>
+          Messenger
+        </button>
+        <button
+          v-if="canUseNativeShare"
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="shareCurrentSession"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C9.886 12.733 11.174 12.4 12.5 12.4c1.326 0 2.614.333 3.816.942M10 6l2-2 2 2M12 4v10" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 20h14" />
+          </svg>
+          Delen
+        </button>
+        <button
+          type="button"
+          class="btn-secondary flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold shadow-lg transition-all hover:shadow-xl hover:scale-[1.01]"
+          @click="copyCurrentSessionSummary"
+        >
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V5a2 2 0 012-2h7a2 2 0 012 2v9a2 2 0 01-2 2h-2" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 8h7a2 2 0 012 2v9a2 2 0 01-2 2H7a2 2 0 01-2-2v-9a2 2 0 012-2Z" />
+          </svg>
+          Kopieer lijst
+        </button>
+      </div>
+
+      <p v-if="shareFeedback" class="px-1 text-sm text-sky-100">
+        {{ shareFeedback }}
+      </p>
 
       <div
         v-for="fridge in fridgesWithItems(currentSession)"
@@ -458,10 +570,10 @@
             </button>
           </div>
 
-          <!-- Quick buttons 1–10 -->
+          <!-- Quick buttons 1–15 -->
           <div class="grid grid-cols-5 gap-2">
             <button
-              v-for="n in 10"
+              v-for="n in 15"
               :key="n"
               @click="setQty(n)"
               class="qty-btn rounded-lg py-3 text-sm font-bold transition"
@@ -575,6 +687,15 @@ const DEFAULT_FRIDGES = [
       { id: 'tripel-lefort', name: 'Tripel Lefort' },
       { id: 'cornet-strong', name: 'Cornet Strong' },
       { id: 'cornet-blond', name: 'Cornet Alcoholfree' },
+    ],
+  },
+  {
+    id: 'frigo-kleine-waters-cola',
+    name: 'Kleine waters',
+    drinks: [
+      { id: 'kleine-cola', name: 'Cola' },
+      { id: 'klein-plat-water', name: 'Plat water' },
+      { id: 'klein-spuitwater', name: 'Spuitwater' },
     ],
   },
   {
@@ -715,11 +836,13 @@ const newDrinkName = ref('')
 const addDrinkInput = ref(null)
 
 const newFridgeName = ref('')
+const shareFeedback = ref('')
 
 // ──────────────────────────────────────────────
 // Computed / helpers
 // ──────────────────────────────────────────────
 const currentFridge = computed(() => fridges.value[currentFridgeIndex.value])
+const canUseNativeShare = computed(() => typeof navigator !== 'undefined' && typeof navigator.share === 'function')
 
 function fridgesWithItems(session) {
   if (!session) return []
@@ -758,6 +881,38 @@ function formatDate(iso) {
     weekday: 'short', day: 'numeric', month: 'long',
     hour: '2-digit', minute: '2-digit',
   })
+}
+
+let shareFeedbackTimeout = null
+
+function setShareFeedback(message) {
+  shareFeedback.value = message
+  if (shareFeedbackTimeout) {
+    window.clearTimeout(shareFeedbackTimeout)
+  }
+  shareFeedbackTimeout = window.setTimeout(() => {
+    shareFeedback.value = ''
+    shareFeedbackTimeout = null
+  }, 3000)
+}
+
+function buildSessionSummary(session = currentSession.value) {
+  if (!session || totalItems(session) === 0) return ''
+
+  const lines = [
+    `Aanvullijst dranken (${formatDate(session.date)})`,
+    '',
+  ]
+
+  fridgesWithItems(session).forEach(fridge => {
+    lines.push(`${fridge.name}:`)
+    fridge.items.forEach(item => {
+      lines.push(`- ${item.name}: ${item.qty}x`)
+    })
+    lines.push('')
+  })
+
+  return lines.join('\n').trim()
 }
 
 // ──────────────────────────────────────────────
@@ -881,6 +1036,103 @@ function scrollToSummaryTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+async function copyCurrentSessionSummary() {
+  await copySessionSummary(currentSession.value)
+}
+
+async function shareCurrentSession() {
+  await shareSession(currentSession.value)
+}
+
+function shareCurrentSessionViaWhatsApp() {
+  shareSessionViaWhatsApp(currentSession.value)
+}
+
+async function shareCurrentSessionViaMessenger() {
+  await shareSessionViaMessenger(currentSession.value)
+}
+
+async function copySelectedSessionSummary() {
+  await copySessionSummary(selectedSession.value)
+}
+
+async function shareSelectedSession() {
+  await shareSession(selectedSession.value)
+}
+
+function shareSelectedSessionViaWhatsApp() {
+  shareSessionViaWhatsApp(selectedSession.value)
+}
+
+async function shareSelectedSessionViaMessenger() {
+  await shareSessionViaMessenger(selectedSession.value)
+}
+
+async function copySessionSummary(session) {
+  const summary = buildSessionSummary(session)
+  if (!summary) return
+
+  try {
+    await navigator.clipboard.writeText(summary)
+    setShareFeedback('Lijst gekopieerd. Je kan die nu plakken in WhatsApp, mail of sms.')
+  } catch {
+    setShareFeedback('Kopieren lukte niet op dit toestel.')
+  }
+}
+
+async function shareSession(session) {
+  const summary = buildSessionSummary(session)
+  if (!summary || !canUseNativeShare.value) return
+
+  try {
+    await navigator.share({
+      title: 'Aanvullijst dranken',
+      text: summary,
+    })
+  } catch (error) {
+    if (error?.name !== 'AbortError') {
+      setShareFeedback('Delen lukte niet. Gebruik eventueel de kopieerknop.')
+    }
+  }
+}
+
+function shareSessionViaWhatsApp(session) {
+  const summary = buildSessionSummary(session)
+  if (!summary) return
+
+  const url = `https://wa.me/?text=${encodeURIComponent(summary)}`
+  window.open(url, '_blank', 'noopener')
+  setShareFeedback('WhatsApp geopend met de aanvullijst als bericht.')
+}
+
+async function shareSessionViaMessenger(session) {
+  const summary = buildSessionSummary(session)
+  if (!summary) return
+
+  if (canUseNativeShare.value) {
+    try {
+      await navigator.share({
+        title: 'Aanvullijst dranken',
+        text: summary,
+      })
+      setShareFeedback('Kies Messenger in het deelvenster om de lijst door te sturen.')
+      return
+    } catch (error) {
+      if (error?.name === 'AbortError') {
+        return
+      }
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(summary)
+    window.open('https://www.messenger.com/', '_blank', 'noopener')
+    setShareFeedback('Lijst gekopieerd. Messenger is geopend zodat je ze kan plakken.')
+  } catch {
+    setShareFeedback('Messenger delen lukte niet. Gebruik eventueel de kopieerknop.')
+  }
+}
+
 // ──────────────────────────────────────────────
 // Print List
 // ──────────────────────────────────────────────
@@ -919,7 +1171,22 @@ function exportToExcel() {
 }
 
 function getFridgeButtonLabel(name) {
-  return name.replace(/^Frigo\s+/i, '')
+  const normalizedName = name.replace(/^Frigo\s+/i, '')
+
+  switch (normalizedName) {
+    case 'Frisdranken':
+      return 'Frisdrank'
+    case 'Bieren':
+      return 'Bier'
+    case 'Witte Wijnen':
+      return 'Witte wijn'
+    case 'Rode Wijnen':
+      return 'Rode wijn'
+    case 'Schuimwijnen':
+      return 'Schuimwijn'
+    default:
+      return normalizedName
+  }
 }
 
 // ──────────────────────────────────────────────

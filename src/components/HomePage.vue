@@ -333,7 +333,7 @@
         </div>
         <form @submit.prevent="addReservation" class="space-y-4">
           <div class="flex flex-wrap gap-4">
-            <input v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" required />
+            <input ref="timeInput" v-model="newReservation.time" type="text" placeholder="Tijdstip (bv. 18:00)" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" required />
             <input v-model="newReservation.name" type="text" placeholder="Naam" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" required />
             <input v-model="newReservation.people" type="text" placeholder="Aantal Personen" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" />
             <input v-model="newReservation.table" type="text" placeholder="Tafel" class="dw-modal-input flex-1 px-4 py-2 border rounded-lg" />
@@ -341,7 +341,7 @@
 
           <div>
             <h2 class="text-sm font-bold mb-2 text-white">Persoonlijke notitie</h2>
-            <div id="editorBlock1" class="dw-editor editor-small border rounded-lg h-32"></div>
+            <div id="editorBlock1" class="dw-editor editor-small border h-32"></div>
           </div>
 
           <div class="flex justify-end gap-2">
@@ -459,9 +459,7 @@ export default {
       this.showAddModal = true;
       this.$nextTick(() => {
         this.initEditor();
-        if (this.editorBlock1) {
-          this.editorBlock1.focus();
-        }
+        this.$refs.timeInput?.focus();
       });
     },
     openEditModal(entry) {
@@ -475,6 +473,7 @@ export default {
       this.showAddModal = true;
       this.$nextTick(() => {
         this.initEditor();
+        this.$refs.timeInput?.focus();
         if (this.editorBlock1 && entry.note) {
           this.editorBlock1.root.innerHTML = entry.note;
         }
@@ -1036,5 +1035,11 @@ export default {
 .dw-editor {
   border-color: rgba(172, 221, 255, 0.45);
   background: rgba(6, 44, 96, 0.52);
+  border-radius: 0;
+}
+
+.dw-editor :deep(.ql-toolbar.ql-snow),
+.dw-editor :deep(.ql-container.ql-snow) {
+  border-radius: 0;
 }
 </style>
