@@ -1,3 +1,4 @@
+import Tafelplan from "@/components/Tafelplan.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "@/components/HomePage.vue";
 import EditPage from "@/components/EditPage.vue";
@@ -36,6 +37,11 @@ const routes = [
     path: "/wijngids",
     name: "WijnGids",
     component: WijnGidsPage,
+  },
+  {
+    path: "/tafelplan",
+    name: "Tafelplan",
+    component: Tafelplan,
   },
 ];
 
