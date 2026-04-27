@@ -224,11 +224,11 @@ const languageMap = Object.fromEntries(languages.map(lang => [lang.code, lang]))
 const binnenTafels = [
   // Entrance row (top)
   { nr: 1,   x: 9,  y: 8 },
-  { nr: 2,   x: 18, y: 8 },
-  { nr: 3,   x: 27, y: 8 },
-  { nr: 4,   x: 36, y: 8 },
-  { nr: 6,   x: 50, y: 8 },
-  { nr: 7,   x: 59, y: 8 },
+  { nr: 2,   x: 24, y: 8 },
+  { nr: 3,   x: 39, y: 8 },
+  { nr: 4,   x: 54, y: 8 },
+  { nr: 6,   x: 69, y: 8 },
+  { nr: 7,   x: 84, y: 8 },
   // Same line below entrance
   { nr: 101, x: 9,  y: 19.5 },
   { nr: 103, x: 27, y: 19.5 },
@@ -624,7 +624,7 @@ function resetTableInfo() {
 
 .tafel {
   position: absolute;
-  width: 7.4%;
+  width: 6.5%;
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   background: linear-gradient(180deg, #355f9f 0%, #233f73 100%);
@@ -666,7 +666,7 @@ function resetTableInfo() {
 }
 
 .t-nr {
-  font-size: clamp(0.52rem, 1.3vw, 0.82rem);
+  font-size: clamp(0.48rem, 1.15vw, 0.74rem);
   font-weight: 700;
   color: #fff;
   line-height: 1;
