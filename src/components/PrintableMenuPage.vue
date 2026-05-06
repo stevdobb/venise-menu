@@ -60,6 +60,9 @@
         <!-- Drinks block -->
         <div class="pmc-preview-label">Dranken</div>
         <div class="pmc-screen-page">
+          <div class="pmc-logo-container">
+            <img src="/logo-venise-white.png" alt="Bistro Venise" class="pmc-logo">
+          </div>
           <div class="pmc-cols">
             <template v-for="group in drinkGroups" :key="'sd-'+group.id">
               <GroupBlock v-bind="groupProps(group)" />
@@ -89,6 +92,9 @@
 
         <!-- Drinks: fills A4 pages until done, then hard page break -->
         <div class="pmc-print-section pmc-print-drinks">
+          <div class="pmc-logo-container">
+            <img src="/logo-venise-white.png" alt="Bistro Venise" class="pmc-logo">
+          </div>
           <template v-for="group in drinkGroups" :key="'pd-'+group.id">
             <GroupBlock v-bind="groupProps(group)" />
           </template>
@@ -536,6 +542,22 @@ onMounted(loadMenu)
   column-rule: 0.5pt dashed #c0c8d8;
 }
 
+/* ── Logo ──────────────────────────────────────────────────────── */
+.pmc-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10mm;
+  padding-bottom: 8mm;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.pmc-logo {
+  max-width: 60mm;
+  height: auto;
+  object-fit: contain;
+}
+
 /* ── Shared typography ────────────────────────────────────────── */
 .pmc-group {
   break-inside: auto;
@@ -689,5 +711,23 @@ onMounted(loadMenu)
   .pmc-item-price { color: #1a1a1a !important; }
   .pmc-item-desc  { color: #666 !important; }
   .pmc-dots       { border-bottom-color: #bbb !important; }
+
+  /* Logo styling for print */
+  .pmc-logo-container {
+    break-after: avoid;
+    break-inside: avoid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10mm;
+    padding-bottom: 8mm;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  .pmc-logo {
+    max-width: 60mm;
+    height: auto;
+    object-fit: contain;
+  }
 }
 </style>
