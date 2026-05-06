@@ -45,7 +45,7 @@ const routes = [
     component: Tafelplan,
   },
   {
-    path: "/menukaart",
+    path: "/menukaart-generator",
     name: "PrintableMenu",
     component: PrintableMenuPage,
   },
