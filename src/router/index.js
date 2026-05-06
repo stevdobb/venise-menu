@@ -6,6 +6,7 @@ import SchoolvakantiesPage from "@/components/Schoolvakanties.vue";
 import RestaurantTranslationsPage from "@/components/RestaurantTranslations.vue";
 import AanvullenPage from "@/components/Aanvullen.vue";
 import WijnGidsPage from "@/components/WijnGids.vue";
+import PrintableMenuPage from "@/components/PrintableMenuPage.vue";
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: "/tafelplan",
     name: "Tafelplan",
     component: Tafelplan,
+  },
+  {
+    path: "/menukaart",
+    name: "PrintableMenu",
+    component: PrintableMenuPage,
   },
 ];
 

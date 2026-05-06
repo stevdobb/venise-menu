@@ -202,6 +202,7 @@ const navItems = [
   { path: "/schoolvakanties", label: "Schoolvakanties" },
   { path: "/vertalingen", label: "Vertalingen" },
   { path: "/tafelplan", label: "Tafelplan" },
+  { path: "/menukaart", label: "Menukaart" },
   { path: "https://detailweather.pages.dev/location/Oostduinkerke/now", label: "Weer", external: true },
 ];
 let pwaPromptHandler = null;

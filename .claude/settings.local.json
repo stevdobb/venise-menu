@@ -22,7 +22,10 @@
       "Bash(ls /Applications/MAMP/htdocs/venise-menu/public/*.png)",
       "Bash(sips -g all /Applications/MAMP/htdocs/venise-menu/public/icons/icon-512x512-pwa.png)",
       "Bash(npm install:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(curl -s \"https://tmc-prod-api.azurewebsites.net/slug/veniseodk/menus\")",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }
