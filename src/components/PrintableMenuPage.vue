@@ -27,6 +27,17 @@
             </svg>
             Afdrukken
           </button>
+          <button v-if="!loading && !fetchError" @click="downloadPDF" :disabled="pdfBusy" class="pmc-btn-pdf">
+            <svg v-if="!pdfBusy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            <svg v-else class="pmc-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"/>
+              <path fill="currentColor" d="M4 12a8 8 0 018-8v8z" class="opacity-75"/>
+            </svg>
+            {{ pdfBusy ? 'Genereren…' : 'Download PDF' }}
+          </button>
         </div>
       </div>
     </div>
@@ -98,6 +109,7 @@
 
 <script setup>
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
+import jsPDF from 'jspdf'
 
 /* ── Shared item renderer ──────────────────────────────────────── */
 function renderItem(item, props) {
@@ -216,6 +228,204 @@ async function loadMenu() {
 }
 
 function printNow() { window.print() }
+
+/* ── PDF generation ─────────────────────────────────────────────
+   Two-column A4 layout built programmatically with jsPDF.
+   No html2canvas – layout is calculated directly so fonts,
+   columns and page breaks are always correct.
+──────────────────────────────────────────────────────────────── */
+const pdfBusy = ref(false)
+
+async function downloadPDF() {
+  pdfBusy.value = true
+  await new Promise(r => setTimeout(r, 20)) // allow UI to update
+
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+
+  // ── Page geometry ──────────────────────────────────────────────
+  const PW = 210, PH = 297
+  const ML = 11, MR = 11, MT = 11, MB = 11
+  const GAP = 13                              // between columns
+  const COL_W = (PW - ML - MR - GAP) / 2     // ≈ 87.5 mm
+  const COL_X = [ML, ML + COL_W + GAP]       // left edge per column
+  const MAX_Y = PH - MB
+
+  let col = 0   // 0 = left, 1 = right
+  let y   = MT
+
+  // ── Column / page helpers ──────────────────────────────────────
+  function x() { return COL_X[col] }
+
+  function nextCol() {
+    if (col === 0) { col = 1; y = MT }
+    else           { doc.addPage(); col = 0; y = MT }
+  }
+
+  function ensureSpace(needed) {
+    if (y + needed > MAX_Y) nextCol()
+  }
+
+  function forcePage() {
+    doc.addPage(); col = 0; y = MT
+  }
+
+  // ── Draw helpers ───────────────────────────────────────────────
+  const NAVY  = [12,  45, 107]
+  const BLACK = [26,  26,  26]
+  const GREY  = [100, 100, 100]
+  const LGREY = [187, 187, 187]
+
+  function setColor(rgb) { doc.setTextColor(...rgb) }
+
+  function drawGroupTitle(title) {
+    // Keep title + at least one item together: reserve ~8 mm
+    ensureSpace(8)
+    setColor(NAVY)
+    doc.setFont('times', 'bold')
+    doc.setFontSize(8)
+    const t = title.toUpperCase()
+    doc.text(t, x(), y)
+    // underline
+    doc.setDrawColor(...NAVY)
+    doc.setLineWidth(0.25)
+    doc.line(x(), y + 0.6, x() + COL_W, y + 0.6)
+    y += 3.8
+  }
+
+  function drawSubgroupTitle(title) {
+    ensureSpace(5)
+    y += 0.8
+    setColor(GREY)
+    doc.setFont('times', 'italic')
+    doc.setFontSize(7)
+    doc.text(title, x(), y)
+    y += 3
+  }
+
+  function drawItem(name, priceStr, description) {
+    const lineH   = 3.4
+    const descH   = description ? 2.8 : 0
+    ensureSpace(lineH + descH)
+
+    // Name
+    doc.setFont('times', 'normal')
+    doc.setFontSize(7.5)
+    setColor(BLACK)
+    const priceW  = doc.getTextWidth(priceStr) + 0.5
+    const maxNameW = COL_W - priceW - 3
+
+    let displayName = name
+    // Trim name to fit
+    while (doc.getTextWidth(displayName) > maxNameW && displayName.length > 1) {
+      displayName = displayName.slice(0, -1)
+    }
+    if (displayName !== name) displayName = displayName.trimEnd() + '…'
+    doc.text(displayName, x(), y)
+
+    // Price (right-aligned)
+    doc.setFont('times', 'bold')
+    doc.setFontSize(7)
+    setColor(BLACK)
+    doc.text(priceStr, x() + COL_W, y, { align: 'right' })
+
+    // Dot leaders
+    const nameEndX  = x() + doc.setFontSize(7.5).getTextWidth(displayName) + 1.5
+    const priceStartX = x() + COL_W - priceW
+    if (priceStartX > nameEndX + 2) {
+      doc.setDrawColor(...LGREY)
+      doc.setLineWidth(0.2)
+      doc.setLineDashPattern([0.4, 1.2], 0)
+      doc.line(nameEndX, y - 0.5, priceStartX - 1, y - 0.5)
+      doc.setLineDashPattern([], 0)
+    }
+
+    y += lineH
+
+    // Description
+    if (description) {
+      doc.setFont('times', 'italic')
+      doc.setFontSize(6.5)
+      setColor(GREY)
+      const lines = doc.splitTextToSize(description, COL_W)
+      doc.text(lines[0], x(), y) // max 1 description line to keep compact
+      y += descH
+    }
+  }
+
+  function drawSectionRule(label) {
+    ensureSpace(6)
+    const halfW = (COL_W - doc.getTextWidth(label) - 4) / 2
+    doc.setDrawColor(184, 134, 11)
+    doc.setLineWidth(0.3)
+    doc.line(x(), y - 0.4, x() + halfW, y - 0.4)
+    setColor([184, 134, 11])
+    doc.setFont('times', 'bold')
+    doc.setFontSize(7.5)
+    doc.text(label, x() + halfW + 2, y)
+    doc.setDrawColor(184, 134, 11)
+    doc.line(x() + halfW + doc.getTextWidth(label) + 4, y - 0.4, x() + COL_W, y - 0.4)
+    y += 4
+  }
+
+  // ── Column divider on each page (drawn after content) ─────────
+  // We'll draw it at the end per page using jsPDF events – simpler
+  // to just draw after we know which pages exist.
+  const drawnDividers = new Set()
+  function drawDivider() {
+    const p = doc.internal.getCurrentPageInfo().pageNumber
+    if (drawnDividers.has(p)) return
+    drawnDividers.add(p)
+    const cx = ML + COL_W + GAP / 2
+    doc.setDrawColor(180, 195, 210)
+    doc.setLineWidth(0.25)
+    doc.setLineDashPattern([1, 2], 0)
+    doc.line(cx, MT, cx, PH - MB)
+    doc.setLineDashPattern([], 0)
+  }
+
+  // ── Render a group (shared for drinks and food) ────────────────
+  function renderGroup(g) {
+    drawGroupTitle(nl(g))
+
+    const directItems = available(g.items || [])
+    for (const item of directItems) {
+      drawItem(nl(item), price(item), desc(item))
+    }
+
+    for (const sg of g.subgroups || []) {
+      const sgItems = available(sg.items || [])
+      if (!sgItems.length) continue
+      drawSubgroupTitle(nl(sg))
+      for (const item of sgItems) {
+        drawItem(nl(item), price(item), desc(item))
+      }
+    }
+
+    y += 2.5 // spacing after group
+  }
+
+  // ── Layout: drinks ─────────────────────────────────────────────
+  drawSectionRule('Dranken')
+  for (const g of drinkGroups.value) renderGroup(g)
+
+  // ── Page break between drinks and food ─────────────────────────
+  forcePage()
+
+  // ── Layout: food ───────────────────────────────────────────────
+  drawSectionRule('Eten')
+  for (const g of foodGroups.value) renderGroup(g)
+
+  // ── Draw column dividers on all pages ──────────────────────────
+  const totalPages = doc.internal.getNumberOfPages()
+  for (let p = 1; p <= totalPages; p++) {
+    doc.setPage(p)
+    drawDivider()
+  }
+
+  doc.save('menukaart-venise.pdf')
+  pdfBusy.value = false
+}
+
 onMounted(loadMenu)
 </script>
 
@@ -250,6 +460,16 @@ onMounted(loadMenu)
 }
 .pmc-btn-print svg { width: 0.85rem; height: 0.85rem; }
 .pmc-btn-print:hover { background: #e8f0fe; }
+.pmc-btn-pdf {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  background: rgba(255,255,255,0.15); color: #fff; font-size: 0.8rem; font-weight: 600;
+  padding: 0.38rem 0.9rem; border-radius: 0.35rem;
+  border: 1px solid rgba(255,255,255,0.35); cursor: pointer;
+  transition: background 0.12s;
+}
+.pmc-btn-pdf svg { width: 0.85rem; height: 0.85rem; }
+.pmc-btn-pdf:hover:not(:disabled) { background: rgba(255,255,255,0.25); }
+.pmc-btn-pdf:disabled { opacity: 0.6; cursor: default; }
 .pmc-btn-retry {
   background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff;
   font-size: 0.78rem; padding: 0.32rem 0.7rem; border-radius: 0.35rem; cursor: pointer;
